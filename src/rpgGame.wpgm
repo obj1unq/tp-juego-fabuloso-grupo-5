@@ -1,0 +1,11 @@
+import fightingsystem.*
+import wollok.game.*
+
+program RPGGame {
+	//CONFIG
+	game.title("rpg")
+	
+	//KEYBOARD
+	keyboard.up().onPressDo { fightingSystem.teamTurn().nextChar() }
+	keyboard.down().onPressDo { fightingSystem.teamTurn().previousChar() }
+}
