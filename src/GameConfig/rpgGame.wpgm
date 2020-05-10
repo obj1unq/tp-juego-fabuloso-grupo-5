@@ -4,9 +4,17 @@ import wollok.game.*
 program RPGGame {
 	//CONFIG
 	game.title("rpg")
+	game.cellSize(50)
+	game.height(10)
+	game.width(10)
 	
 	//KEYBOARD
+	
+	//Movements
 	keyboard.up().onPressDo { fightingSystem.teamTurn().nextChar() }
 	keyboard.down().onPressDo { fightingSystem.teamTurn().previousChar() }
-	keyboard.a().onPressDo { fightingSystem.executeTurn() }
+	
+	//Attacks
+	keyboard.a().onPressDo { fightingSystem.executeTurnMagic() }
+	keyboard.e().onPressDo { fightingSystem.executeTurnPhysical() }
 }

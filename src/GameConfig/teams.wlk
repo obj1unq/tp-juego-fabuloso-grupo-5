@@ -6,7 +6,7 @@ object teamLight {
 	var property charSelected = null
 	var property enemySelected = null
 		
-	method nextChar() {
+	method nextChar() { 
 		chars.add(chars.head())
 		chars = chars.drop(1)
 		charSelected = chars.head()
@@ -32,6 +32,10 @@ object teamLight {
 		charsEnemy.remove(charsEnemy.last())
 		enemySelected = charsEnemy.head()
 		cursorEnemy.position(enemySelected.position())
+	}
+	
+	method nextTeam() {
+		return teamDarkness
 	}
 }
 
@@ -67,5 +71,9 @@ object teamDarkness {
 		charsEnemy.remove(charsEnemy.last())
 		enemySelected = charsEnemy.head()
 		cursorEnemy.position(enemySelected.position())
+	}
+	
+	method nextTeam() {
+		return teamLight
 	}
 }

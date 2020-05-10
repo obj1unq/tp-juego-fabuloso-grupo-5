@@ -5,10 +5,17 @@ object fightingSystem {
 	var property charSelected = null
 	var property teamTurn = teamLight
 	
-	method executeTurn() {
-		teamTurn.charSelected().attack(teamTurn.enemySelected())
+	method executeTurnMagic() {
+		teamTurn.charSelected().magicalAttack
+			(teamTurn.enemySelected(), charSelected.spell())
+		teamTurn = teamTurn.nextTeam()
 	}
 	
+	method executeTurnPhysical() {
+		teamTurn.charSelected().physicalAttack
+			(teamTurn.enemySelected(), charSelected.weapon())
+		teamTurn = teamTurn.nextTeam()
+	}
 }
 
 object cursor {
