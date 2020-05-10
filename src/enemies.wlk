@@ -1,5 +1,5 @@
 import wollok.game.*
-//import equipement.*
+import equipement.*
 
 
 object ogre {
