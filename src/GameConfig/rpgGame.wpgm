@@ -8,4 +8,5 @@ program RPGGame {
 	//KEYBOARD
 	keyboard.up().onPressDo { fightingSystem.teamTurn().nextChar() }
 	keyboard.down().onPressDo { fightingSystem.teamTurn().previousChar() }
+	keyboard.a().onPressDo { fightingSystem.executeTurn() }
 }
