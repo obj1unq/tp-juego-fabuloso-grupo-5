@@ -1,20 +1,21 @@
 import wollok.game.*
 import teams.*
+import enemies.*
+import heroes.*
+import equipement.*
 
 object fightingSystem {
 	var property charSelected = null
 	var property teamTurn = teamLight
 	
 	method executeTurnMagic() {
-		teamTurn.charSelected().magicalAttack
-			(teamTurn.enemySelected(), charSelected.spell())
+		teamTurn.charSelected().magicalAttack(teamTurn.enemySelected(), darkBlast)
 		self.kill(teamTurn.enemySelected())
 		teamTurn = teamTurn.nextTeam()
 	}
 	
 	method executeTurnPhysical() {
-		teamTurn.charSelected().physicalAttack
-			(teamTurn.enemySelected(), charSelected.weapon())
+		teamTurn.charSelected().physicalAttack(teamTurn.enemySelected(), axe)
 		self.kill(teamTurn.enemySelected())
 		teamTurn = teamTurn.nextTeam()
 	}
@@ -28,13 +29,13 @@ object fightingSystem {
 }
 
 object cursor {
-	var property position = null
+	var property position = wizard.position()
 	
 	method image() { return "allyCursor.png"}
 }
 
 object enemyCursor {
-	var property position = null
+	var property position = ogre.position()
 	
 	method image() { return "enemyCursor.png"}
 }

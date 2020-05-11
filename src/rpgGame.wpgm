@@ -1,20 +1,35 @@
 import fightingsystem.*
 import wollok.game.*
+import heroes.*
+import enemies.*
 
-program RPGGame {
+program RPGGame {	
 	//CONFIG
 	game.title("rpg")
 	game.cellSize(50)
 	game.height(10)
 	game.width(10)
 	
+	//VISUALS
+	game.addVisual(knight)
+	game.addVisual(wizard)
+	game.addVisual(ogre)
+	game.addVisual(darkElf)
+
 	//KEYBOARD
 	
 	//Movements
 	keyboard.up().onPressDo { fightingSystem.teamTurn().nextChar() }
-	keyboard.down().onPressDo { fightingSystem.teamTurn().previousChar() }
+	keyboard.w().onPressDo { fightingSystem.teamTurn().nextEnemy() }
 	
 	//Attacks
 	keyboard.a().onPressDo { fightingSystem.executeTurnMagic() }
 	keyboard.e().onPressDo { fightingSystem.executeTurnPhysical() }
+	
+	keyboard.enter().onPressDo { 
+		game.addVisual(cursor)
+		game.addVisual(enemyCursor)
+	}
+	
+	game.start()
 }

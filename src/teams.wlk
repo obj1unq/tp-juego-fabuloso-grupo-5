@@ -1,8 +1,11 @@
 import fightingsystem.*
+import enemies.*
+import heroes.*
+import enemies.*
 
 object teamLight {
-	var property chars = []
-	var property charsEnemy = []
+	var property chars = [wizard, knight]
+	var property charsEnemy = [ogre, darkElf]
 	var property charSelected = null
 	var property enemySelected = null
 		
@@ -13,12 +16,6 @@ object teamLight {
 		cursor.position(charSelected.position())
 	}
 	
-	method previousChar() {
-		chars = chars.last() + chars
-		chars.remove(chars.last())
-		charSelected = chars.head()
-		cursor.position(charSelected.position())
-	}
 	
 	method nextEnemy() {
 		charsEnemy.add(charsEnemy.head())
@@ -45,21 +42,14 @@ object teamLight {
 }
 
 object teamDarkness {
-	var property chars = []
-	var property charsEnemy = []
+	var property chars = [ogre, darkElf]
+	var property charsEnemy = [wizard, knight]
 	var property charSelected = null
 	var property enemySelected = null
 		
 	method nextChar() {
 		chars.add(chars.head())
 		chars = chars.drop(1)
-		charSelected = chars.head()
-		cursor.position(charSelected.position())
-	}
-	
-	method previousChar() {
-		chars = chars.last() + chars
-		chars.remove(chars.last())
 		charSelected = chars.head()
 		cursor.position(charSelected.position())
 	}
