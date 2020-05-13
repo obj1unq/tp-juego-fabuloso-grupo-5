@@ -42,3 +42,28 @@ test "el elfo oscuro recibe 5 de daño de luz magico
 
 	assert.equals(darkElf.hp(), darkElf.maxHP())
 }
+test "el caballero recibe 10 de daño oscuro y pierde vida"{
+	knight.takeDamage(-10)
+	
+	assert.that(knight.hp()<knight.maxHP())
+}
+
+test "el caballero recibe 5 de daño magico oscuro y pierde vida"{
+	knight.takeMagicalDamage(-5)
+	
+	assert.that(knight.hp()<knight.maxHP())
+}
+
+
+test "el mago recibe 10 de daño oscuro y pierde vida"{
+	wizard.takeDamage(-10)
+	
+	assert.that(wizard.hp()<wizard.maxHP())
+}
+
+test "el mago recibe 5 de daño oscuro magico 
+	 pero no pierde vida porque su armadura lo cubre"{
+	wizard.takeMagicalDamage(-5)
+	
+	assert.equals(wizard.hp(), wizard.maxHP())
+}
