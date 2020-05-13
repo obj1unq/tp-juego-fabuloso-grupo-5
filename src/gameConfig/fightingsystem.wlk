@@ -12,19 +12,26 @@ object fightingSystem {
 		teamTurn.charSelected().magicalAttack(teamTurn.enemySelected(), darkBlast)
 		self.kill(teamTurn.enemySelected())
 		teamTurn = teamTurn.nextTeam()
+		self.changeCursors()
 	}
 	
 	method executeTurnPhysical() {
-		teamTurn.charSelected().physicalAttack(teamTurn.enemySelected(), axe)
+		teamTurn.charSelected().physicalAttack(teamTurn.enemySelected(), sword)
 		self.kill(teamTurn.enemySelected())
 		teamTurn = teamTurn.nextTeam()
+		self.changeCursors()
 	}
 	
 	method kill(objective) {
 		if (objective.hp() == 0) {
 			teamLight.kill(objective)
 			teamDarkness.kill(objective)
-		} 
+		}
+	}
+	
+	method changeCursors() {
+		teamTurn.nextChar()
+		teamTurn.nextEnemy()
 	}
 }
 
@@ -37,6 +44,5 @@ object cursor {
 object enemyCursor {
 	var property position = ogre.position()
 	
-	method image() { return "enemyCursor.png"}
+	method image() { return "enemyCursor.png" }
 }
-

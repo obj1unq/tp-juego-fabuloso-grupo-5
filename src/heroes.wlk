@@ -31,10 +31,10 @@ var property spell = darkBlast
 	method move(nuevaPosicion) {
 		self.position(nuevaPosicion)
 	}
-	method physicalAttack(obj){
-		obj.takeDamage((weapon.damage()+self.strength()+buff.physicalGains()))
+	method physicalAttack(objective, _weapon){
+		objective.takeDamage((weapon.damage()+self.strength()+buff.physicalGains()))
 	}
-	method magicalAttack(objective){
+	method magicalAttack(objective){ //REVISAR
 		objective.takeMagicalDamage((spell.damage()+self.sabidury()+buff.magicGains()))
 	}
 	method takeDamage(damage){
@@ -49,17 +49,17 @@ var property spell = darkBlast
 
 object wizard {
 	
-var property position = game.at(1,5)
+	var property position = game.at(1,3)
 	
-var property maxHp = (10).randomUpTo(25).truncate(0)
-var property hp = maxHp
-var property strength = 1
-var property sabidury = 5
-var property status = "alive"
-var property weapon = bow
-var property armor = leatherArmor 
-var property buff = noBuff
-var property spell = darkBlast
+	var property maxHp = (10).randomUpTo(25).truncate(0)
+	var property hp = maxHp
+	var property strength = 1
+	var property sabidury = 5
+	var property status = "alive"
+	var property weapon = bow
+	var property armor = leatherArmor 
+	var property buff = noBuff
+	var property spell = darkBlast
 
 
 	method image() {

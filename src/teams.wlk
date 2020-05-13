@@ -1,4 +1,4 @@
-import fightingsystem.*
+import gameConfig.fightingsystem.*
 import enemies.*
 import heroes.*
 import enemies.*
