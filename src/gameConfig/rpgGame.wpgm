@@ -4,6 +4,7 @@ import heroes.*
 import enemies.*
 
 program RPGGame {	
+	
 	//CONFIG
 	game.title("rpg")
 	game.cellSize(50)
