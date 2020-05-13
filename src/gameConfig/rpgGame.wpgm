@@ -2,7 +2,8 @@ import fightingsystem.*
 import wollok.game.*
 import heroes.*
 import enemies.*
-import hPbar.*
+import cursor.*
+import startScreen.*
 
 program RPGGame {	
 	
@@ -11,29 +12,33 @@ program RPGGame {
 	game.cellSize(50)
 	game.height(10)
 	game.width(10)
+	game.boardGround("map.png")
 	
 	//VISUALS
 	game.addVisual(knight)
 	game.addVisual(wizard)
 	game.addVisual(ogre)
 	game.addVisual(darkElf)
-	game.addVisual(hpBarAlly)
-	game.addVisual(hpBarEnemy)
+	game.addVisual(startScreen)
 
 	//KEYBOARD
 	
-	//Movements
+	//Cursor movements
 	keyboard.up().onPressDo { fightingSystem.teamTurn().nextChar() }
-	keyboard.w().onPressDo { fightingSystem.teamTurn().nextEnemy() }
 	
 	//Attacks
 	keyboard.a().onPressDo { fightingSystem.executeTurnMagic() }
 	keyboard.e().onPressDo { fightingSystem.executeTurnPhysical() }
+	keyboard.r().onPressDo { fightingSystem.selectChar() }
 	
-	keyboard.enter().onPressDo { 
-		game.addVisual(cursor)
-		game.addVisual(enemyCursor)
-	}
-	
+	keyboard.enter().onPressDo { game.removeVisual(startScreen)
+								 game.addVisual(cursor)
+								 knight.hpBar()
+								 wizard.hpBar()
+								 ogre.hpBar()
+								 darkElf.hpBar()
+								}
+		
+								
 	game.start()
 }

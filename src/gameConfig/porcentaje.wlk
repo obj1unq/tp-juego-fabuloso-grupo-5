@@ -1,7 +1,7 @@
 object porcentaje {
 
 	method es100(nActual, nTotal) {
-		return ( (nActual.abs() * 100) / nTotal.abs() ) == 100 
+		return ( (nActual.abs() * 100) / nTotal.abs() ) >= 100 
 	}
 	method es90(nActual, nTotal) {
 		return ( (nActual.abs() * 100) / nTotal.abs() ) >= 90 

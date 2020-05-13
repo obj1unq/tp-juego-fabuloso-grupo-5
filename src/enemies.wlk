@@ -1,13 +1,15 @@
 import wollok.game.*
 import equipement.*
+import gameConfig.hpBarOgre.*
+import gameConfig.hpBarDarkElf.*
 
 
 object ogre {
 	//Visuals
-	var property position = game.at(3,6)
+	var property position = game.at(5,5)
 	//Visuals
 	//Stats
-	var maxHP = (-25).randomUpTo(-50).truncate(0)
+	const maxHP = (-25).randomUpTo(-50).truncate(0)
 	var hp = maxHP
 	var property status = "alive"
 	var property buff = noBuff
@@ -19,6 +21,10 @@ object ogre {
 	var property armor = heavyArmor
 	var property spell = acidSpit
 	//Equipment
+	
+	method hpBar() {
+		game.addVisual(hpBarOgre)
+	}
 	
 	//Visuals
 	method image(){
@@ -45,11 +51,11 @@ object ogre {
 	method move(nuevaPosicion) {
 		self.position(nuevaPosicion)
 	}
-	method physicalAttack(objective, _weapon){
-		objective.takeDamage(-(_weapon.damage()+self.strenght()+buff.physicalGains()))
+	method physicalAttack(objective){
+		objective.takeDamage(-(weapon.damage()+self.strenght()+buff.physicalGains()))
 	}
-	method magicalAttack(objective, _spell){
-		objective.takeMagicalDamage(-(_spell.damage()+self.sabidury()+buff.magicGains()))
+	method magicalAttack(objective){
+		objective.takeMagicalDamage(-(spell.damage()+self.sabidury()+buff.magicGains()))
 	}
 	method takeDamage(damage){
 		hp = (hp + (damage-armor.pR())).min(0)
@@ -62,10 +68,10 @@ object ogre {
 
 object darkElf {
 	//Visuals
-	var property position = game.at(4,5)
+	var property position = game.at(6,4)
 	//Visuals
 	//Stats
-	var maxHP = (-10).randomUpTo(-25).truncate(0)
+	const maxHP = (-10).randomUpTo(-25).truncate(0)
 	var hp = maxHP
 	var property status = "alive"
 	var property buff = noBuff
@@ -77,6 +83,10 @@ object darkElf {
 	var property weapon = bow
 	var property spell = darkBlast
 	//Equipment
+	
+	method hpBar() {
+		game.addVisual(hpBarDarkElf)
+	}
 	
 	//Visuals
 	method image(){
@@ -104,11 +114,11 @@ object darkElf {
 		self.position(nuevaPosicion)
 	}
 	
-	method physicalAttack(objective, _weapon){
-		objective.takeDamage(-(_weapon.damage()+self.strenght()+buff.physicalGains()))
+	method physicalAttack(objective){
+		objective.takeDamage(-(weapon.damage()+self.strenght()+buff.physicalGains()))
 	}
-	method magicalAttack(objective, _spell){
-		objective.takeMagicalDamage(-(_spell.damage()+self.sabidury()+buff.magicGains()))
+	method magicalAttack(objective){
+		objective.takeMagicalDamage(-(spell.damage()+self.sabidury()+buff.magicGains()))
 	}
 	method takeDamage(damage){
 		hp = (hp + (damage-armor.pR())).min(0)

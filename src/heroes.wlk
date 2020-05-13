@@ -1,21 +1,27 @@
 import wollok.game.*
 import equipement.*
 import enemies.*
+import gameConfig.hpBarKnight.*
+import gameConfig.hpBarWizard.*
 
 object knight {
 	
-var property position = game.at(1,6)
+var property position = game.at(4,5)
 	
 var property maxHP = (25).randomUpTo(50).truncate(0)
 var property hp = maxHP
 var property strength = 5
 var property sabidury = 1
 var property status = "alive"
-var property weapon = axe
+var property weapon = sword
 var property armor = heavyArmor 
 var property buff = noBuff 
-var property spell = darkBlast
+var property spell = shieldHit
 
+	method hpBar() {
+		game.addVisual(hpBarKnight)
+	}
+	
 
 	method image() {
 		if (hp > 0)
@@ -31,7 +37,7 @@ var property spell = darkBlast
 	method move(nuevaPosicion) {
 		self.position(nuevaPosicion)
 	}
-	method physicalAttack(objective, _weapon){
+	method physicalAttack(objective){
 		objective.takeDamage((weapon.damage()+self.strength()+buff.physicalGains()))
 	}
 	method magicalAttack(objective){ //REVISAR
@@ -49,18 +55,21 @@ var property spell = darkBlast
 
 object wizard {
 	
-	var property position = game.at(1,3)
+	var property position = game.at(3,4)
 	
 	var property maxHP = (10).randomUpTo(25).truncate(0)
 	var property hp = maxHP
 	var property strength = 1
 	var property sabidury = 5
 	var property status = "alive"
-	var property weapon = bow
+	var property weapon = wand
 	var property armor = leatherArmor 
-	var property buff = noBuff
-	var property spell = darkBlast
+	var property buff = illumination
+	var property spell = lightBlast
 
+	method hpBar() {
+		game.addVisual(hpBarWizard)
+	}
 
 	method image() {
 		if (hp > 0)
@@ -76,10 +85,10 @@ object wizard {
 	method move(nuevaPosicion) {
 		self.position(nuevaPosicion)
 	}
-	method physicalAtack(objective, _weapon){
+	method physicalAttack(objective){
 		objective.takeDamage((weapon.damage()+self.strength()+buff.physicalGains()))
 	}
-	method magicalAttack(objective, _spell){
+	method magicalAttack(objective){
 		objective.takeMagicalDamage((spell.damage()+self.sabidury()+buff.magicGains()))
 	}
 	method takeDamage(damage){

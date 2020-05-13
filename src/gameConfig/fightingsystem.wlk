@@ -3,23 +3,35 @@ import teams.*
 import enemies.*
 import heroes.*
 import equipement.*
+import cursor.*
 
 object fightingSystem {
 	var property charSelected = null
+	var property enemySelected = null
 	var property teamTurn = teamLight
 	
 	method executeTurnMagic() {
-		teamTurn.charSelected().magicalAttack(teamTurn.enemySelected(), darkBlast)
-		self.kill(teamTurn.enemySelected())
-		teamTurn = teamTurn.nextTeam()
-		self.changeCursors()
+		charSelected.magicalAttack(enemySelected)
+		self.kill(enemySelected)
+		teamTurn.nextTeam()
+		self.nextRound()
 	}
 	
 	method executeTurnPhysical() {
-		teamTurn.charSelected().physicalAttack(teamTurn.enemySelected(), sword)
-		self.kill(teamTurn.enemySelected())
-		teamTurn = teamTurn.nextTeam()
-		self.changeCursors()
+		charSelected.physicalAttack(enemySelected)
+		self.kill(enemySelected)
+		teamTurn.nextTeam()
+		self.nextRound()
+	}
+	
+	method nextRound() {
+		if(teamTurn.ownChars().size() == 0) {
+			self.gameOver()
+		} cursor.changeTeam(teamTurn)
+	}
+	
+	method gameOver() {
+		game.say(knight,"gameOver")
 	}
 	
 	method kill(objective) {
@@ -29,20 +41,22 @@ object fightingSystem {
 		}
 	}
 	
-	method changeCursors() {
+	method selectAttacker() {
+		charSelected = teamTurn.charSelected()
 		teamTurn.nextChar()
-		teamTurn.nextEnemy()
 	}
-}
-
-object cursor {
-	var property position = wizard.position()
 	
-	method image() { return "allyCursor.png"}
-}
-
-object enemyCursor {
-	var property position = ogre.position()
+	method selectEnemy() {
+		enemySelected = teamTurn.charSelected()
+	}
 	
-	method image() { return "enemyCursor.png" }
+	method selectChar() {
+		if (cursor.stage() == "attacker") {
+			self.selectAttacker()
+			cursor.nextStage()
+		} else { 
+			self.selectEnemy()
+			cursor.nextStage()			
+		}
+	}
 }

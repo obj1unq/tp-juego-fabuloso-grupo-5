@@ -1,0 +1,28 @@
+import wollok.game.*
+import heroes.*
+import enemies.*
+import equipement.*
+import teams.*
+import gameConfig.fightingsystem.*
+
+describe "Tests Sobre Pjs" {
+
+	fixture {
+		game.clear()
+	}
+
+	test "Al asesinar al elfo oscuro, ya no es un personaje seleccionable." {
+		
+		fightingSystem.charSelected(knight)
+		fightingSystem.enemySelected(darkElf)
+		darkElf.takeDamage(10)
+		fightingSystem.executeTurnPhysical()
+		
+		//El elfo oscuro ya debería morir
+		
+		assert.notThat(teamDarkness.chars().contains(darkElf))
+		assert.notThat(teamDarkness.ownChars().contains(darkElf))
+		
+	}
+
+}
