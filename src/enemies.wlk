@@ -8,7 +8,7 @@ object ogre {
 	//Visuals
 	//Stats
 	var maxHP = (-25).randomUpTo(-50).truncate(0)
-	var actualHP = maxHP
+	var hp = maxHP
 	var property status = "alive"
 	var property buff = noBuff
 	var property strenght = 5
@@ -22,7 +22,7 @@ object ogre {
 	
 	//Visuals
 	method image(){
-		if (actualHP<0)
+		if (hp<0)
 			return "ogre.png"
 		else{
 			status= "dead"
@@ -35,7 +35,7 @@ object ogre {
 		return maxHP.abs()
 	}
 	method hp() {
-		return actualHP.abs()
+		return hp.abs()
 	}
 	method totalHP() {
 		return self.hp().toString() + "/" + self.maxHP().toString()
@@ -52,10 +52,10 @@ object ogre {
 		objective.takeMagicalDamage(-(_spell.damage()+self.sabidury()+buff.magicGains()))
 	}
 	method takeDamage(damage){
-		actualHP = (actualHP + (damage-armor.pR())).min(0)
+		hp = (hp + (damage-armor.pR())).min(0)
 	}
 	method takeMagicalDamage(damage){
-		actualHP = (actualHP + (damage-armor.mR())).min(0)
+		hp = (hp + (damage-armor.mR())).min(0)
 	}
 	//Actions
 }
@@ -66,7 +66,7 @@ object darkElf {
 	//Visuals
 	//Stats
 	var maxHP = (-10).randomUpTo(-25).truncate(0)
-	var actualHP = maxHP
+	var hp = maxHP
 	var property status = "alive"
 	var property buff = noBuff
 	var property strenght = 2
@@ -80,7 +80,7 @@ object darkElf {
 	
 	//Visuals
 	method image(){
-		if (actualHP<0)
+		if (hp<0)
 			return "darkElf.png"
 		else{
 			status= "dead"
@@ -93,7 +93,7 @@ object darkElf {
 		return maxHP.abs()
 	}
 	method hp() {
-		return actualHP.abs()
+		return hp.abs()
 	}
 	method totalHP() {
 		return self.hp().toString() + "/" + self.maxHP().toString()
@@ -111,10 +111,10 @@ object darkElf {
 		objective.takeMagicalDamage(-(_spell.damage()+self.sabidury()+buff.magicGains()))
 	}
 	method takeDamage(damage){
-		actualHP = (actualHP + (damage-armor.pR())).min(0)
+		hp = (hp + (damage-armor.pR())).min(0)
 	}
 	method takeMagicalDamage(damage){
-		actualHP = (actualHP + (damage-armor.mR())).min(0)
+		hp = (hp + (damage-armor.mR())).min(0)
 	}
 	//Actions
 }

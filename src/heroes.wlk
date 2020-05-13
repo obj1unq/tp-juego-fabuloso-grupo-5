@@ -6,8 +6,8 @@ object knight {
 	
 var property position = game.at(1,6)
 	
-var property maxHp = (25).randomUpTo(50).truncate(0)
-var property hp = maxHp
+var property maxHP = (25).randomUpTo(50).truncate(0)
+var property hp = maxHP
 var property strength = 5
 var property sabidury = 1
 var property status = "alive"
@@ -25,7 +25,7 @@ var property spell = darkBlast
 	}
 	
 	method totalHP() {
-		return self.hp().toString() + "/" + self.maxHp().toString()
+		return self.hp().toString() + "/" + self.maxHP().toString()
 	}
 	
 	method move(nuevaPosicion) {
@@ -51,8 +51,8 @@ object wizard {
 	
 	var property position = game.at(1,3)
 	
-	var property maxHp = (10).randomUpTo(25).truncate(0)
-	var property hp = maxHp
+	var property maxHP = (10).randomUpTo(25).truncate(0)
+	var property hp = maxHP
 	var property strength = 1
 	var property sabidury = 5
 	var property status = "alive"
@@ -70,7 +70,7 @@ object wizard {
 	}	
 	
 	method totalHP() {
-		return self.hp().toString() + "/" + self.maxHp().toString()
+		return self.hp().toString() + "/" + self.maxHP().toString()
 	}
 	
 	method move(nuevaPosicion) {

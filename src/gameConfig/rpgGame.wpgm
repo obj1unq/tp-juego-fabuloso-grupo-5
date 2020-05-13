@@ -2,6 +2,7 @@ import fightingsystem.*
 import wollok.game.*
 import heroes.*
 import enemies.*
+import hPbar.*
 
 program RPGGame {	
 	
@@ -16,6 +17,8 @@ program RPGGame {
 	game.addVisual(wizard)
 	game.addVisual(ogre)
 	game.addVisual(darkElf)
+	game.addVisual(hpBarAlly)
+	game.addVisual(hpBarEnemy)
 
 	//KEYBOARD
 	
