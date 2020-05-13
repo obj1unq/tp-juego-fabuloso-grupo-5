@@ -22,7 +22,7 @@ object cursor {
 		return if (stage == "attacker") { img1 } else { img2 }
 	}
 	
-	method changeTeam() {
-		teamTurn.nextChar()
+	method changeTeam(team) {
+		self.position(team.ownChars().head().position())
 	}
 }

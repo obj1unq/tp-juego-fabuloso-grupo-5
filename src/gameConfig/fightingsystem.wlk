@@ -13,13 +13,25 @@ object fightingSystem {
 	method executeTurnMagic() {
 		charSelected.magicalAttack(enemySelected, darkBlast)
 		self.kill(enemySelected)
-		teamTurn = teamTurn.nextTeam()
+		teamTurn.nextTeam()
+		self.nextRound()
 	}
 	
 	method executeTurnPhysical() {
 		charSelected.physicalAttack(enemySelected, sword)
 		self.kill(enemySelected)
-		teamTurn = teamTurn.nextTeam()
+		teamTurn.nextTeam()
+		self.nextRound()
+	}
+	
+	method nextRound() {
+		if(teamTurn.ownChars().size() == 0) {
+			self.gameOver()
+		} cursor.changeTeam(teamTurn)
+	}
+	
+	method gameOver() {
+		game.say(knight,"gameOver")
 	}
 	
 	method kill(objective) {
@@ -31,11 +43,11 @@ object fightingSystem {
 	
 	method selectAttacker() {
 		charSelected = teamTurn.charSelected()
-		cursor.changeTeam()
+		teamTurn.nextChar()
 	}
 	
 	method selectEnemy() {
-		enemySelected = teamTurn.enemySelected()
+		enemySelected = teamTurn.charSelected()
 	}
 	
 	method selectChar() {
