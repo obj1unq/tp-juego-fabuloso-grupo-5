@@ -3,23 +3,23 @@ import teams.*
 import enemies.*
 import heroes.*
 import equipement.*
+import cursor.*
 
 object fightingSystem {
 	var property charSelected = null
+	var property enemySelected = null
 	var property teamTurn = teamLight
 	
 	method executeTurnMagic() {
-		teamTurn.charSelected().magicalAttack(teamTurn.enemySelected(), darkBlast)
-		self.kill(teamTurn.enemySelected())
+		charSelected.magicalAttack(enemySelected, darkBlast)
+		self.kill(enemySelected)
 		teamTurn = teamTurn.nextTeam()
-		self.changeCursors()
 	}
 	
 	method executeTurnPhysical() {
-		teamTurn.charSelected().physicalAttack(teamTurn.enemySelected(), sword)
-		self.kill(teamTurn.enemySelected())
+		charSelected.physicalAttack(enemySelected, sword)
+		self.kill(enemySelected)
 		teamTurn = teamTurn.nextTeam()
-		self.changeCursors()
 	}
 	
 	method kill(objective) {
@@ -29,20 +29,22 @@ object fightingSystem {
 		}
 	}
 	
-	method changeCursors() {
-		teamTurn.nextChar()
-		teamTurn.nextEnemy()
+	method selectAttacker() {
+		charSelected = teamTurn.charSelected()
+		cursor.changeTeam()
 	}
-}
-
-object cursor {
-	var property position = wizard.position()
 	
-	method image() { return "allyCursor.png"}
-}
-
-object enemyCursor {
-	var property position = ogre.position()
+	method selectEnemy() {
+		enemySelected = teamTurn.enemySelected()
+	}
 	
-	method image() { return "enemyCursor.png" }
+	method selectChar() {
+		if (cursor.stage() == "attacker") {
+			self.selectAttacker()
+			cursor.nextStage()
+		} else { 
+			self.selectEnemy()
+			cursor.nextStage()			
+		}
+	}
 }

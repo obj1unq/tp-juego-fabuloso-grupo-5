@@ -1,6 +1,7 @@
 import gameConfig.fightingsystem.*
 import enemies.*
 import heroes.*
+import gameConfig.cursor.*
 import enemies.*
 
 object teamLight {
@@ -9,26 +10,26 @@ object teamLight {
 	var property charSelected = null
 	var property enemySelected = null
 		
-	method nextChar() { 
+	method nextAlly() { 
 		chars.add(chars.head())
 		chars = chars.drop(1)
 		charSelected = chars.head()
 		cursor.position(charSelected.position())
 	}
 	
-	
 	method nextEnemy() {
 		charsEnemy.add(charsEnemy.head())
 		charsEnemy = charsEnemy.drop(1)
 		enemySelected = charsEnemy.head()
-		enemyCursor.position(enemySelected.position())
+		cursor.position(enemySelected.position())
 	}
 	
-	method previousEnemy() {
-		charsEnemy = charsEnemy.last() + charsEnemy
-		charsEnemy.remove(charsEnemy.last())
-		enemySelected = charsEnemy.head()
-		enemyCursor.position(enemySelected.position())
+	method nextChar() {
+		if (cursor.stage() == "attacker") {
+			self.nextAlly()
+		} else {
+			self.nextEnemy()
+		}
 	}
 	
 	method nextTeam() {
@@ -47,7 +48,7 @@ object teamDarkness {
 	var property charSelected = null
 	var property enemySelected = null
 		
-	method nextChar() {
+	method nextAlly() {
 		chars.add(chars.head())
 		chars = chars.drop(1)
 		charSelected = chars.head()
@@ -58,14 +59,15 @@ object teamDarkness {
 		charsEnemy.add(charsEnemy.head())
 		charsEnemy = charsEnemy.drop(1)
 		enemySelected = charsEnemy.head()
-		enemyCursor.position(enemySelected.position())
+		cursor.position(enemySelected.position())
 	}
 	
-	method previousEnemy() {
-		charsEnemy = charsEnemy.last() + charsEnemy
-		charsEnemy.remove(charsEnemy.last())
-		enemySelected = charsEnemy.head()
-		enemyCursor.position(enemySelected.position())
+	method nextChar() {
+		if (cursor.stage() == "attacker") {
+			self.nextAlly()
+		} else {
+			self.nextEnemy()
+		}
 	}
 	
 	method nextTeam() {

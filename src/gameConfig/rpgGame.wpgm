@@ -2,6 +2,7 @@ import fightingsystem.*
 import wollok.game.*
 import heroes.*
 import enemies.*
+import cursor.*
 
 program RPGGame {	
 	
@@ -16,21 +17,19 @@ program RPGGame {
 	game.addVisual(wizard)
 	game.addVisual(ogre)
 	game.addVisual(darkElf)
+	
 
 	//KEYBOARD
 	
-	//Movements
+	//Cursor movements
 	keyboard.up().onPressDo { fightingSystem.teamTurn().nextChar() }
-	keyboard.w().onPressDo { fightingSystem.teamTurn().nextEnemy() }
 	
 	//Attacks
 	keyboard.a().onPressDo { fightingSystem.executeTurnMagic() }
 	keyboard.e().onPressDo { fightingSystem.executeTurnPhysical() }
+	keyboard.r().onPressDo { fightingSystem.selectChar() }
 	
-	keyboard.enter().onPressDo { 
-		game.addVisual(cursor)
-		game.addVisual(enemyCursor)
-	}
+	keyboard.enter().onPressDo { game.addVisual(cursor) }
 	
 	game.start()
 }
