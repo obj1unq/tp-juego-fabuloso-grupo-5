@@ -1,28 +1,28 @@
 //Armor
 object leatherArmor{
 	method pR(){
-		return 4
+		return 10
 	}
 	method mR(){
-		return 2
+		return 5
 	}
 }
 
 object steelArmor{
 	method pR(){
-		return 6
+		return 17
 	}
 	method mR(){
-		return 3
+		return 8
 	}
 }
 
 object godsArmor{
 	method pR() {
-		return 8
+		return 30
 	}
 	method mR() {
-		return 4
+		return 15
 	}
 }
 //Armor
@@ -30,16 +30,16 @@ object godsArmor{
 //Weapons
 object sword{
 	method pD(){
-		return 5
+		return 15
 	}
 	method mD() {
-		return 0
+		return 5
 	}
 }
 
 object axe {
 	method pD(){
-		return 8
+		return 20
 	}
 	method mD() {
 		return 0
@@ -48,19 +48,19 @@ object axe {
 
  object magicBow {
  	method pD(){
- 		return 2
+ 		return 5
  	}
  	method mD() {
-		return 4
+		return 15
 	}
  }
 
  object wand {
  	method pD() {
- 		return 0
+ 		return 2
  	}
  	method mD() {
- 		return 6
+ 		return 20
  	}
  }
  //Weapons

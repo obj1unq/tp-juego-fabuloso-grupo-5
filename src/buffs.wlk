@@ -5,15 +5,15 @@ object noBuff {
 }
 
 object illumination {
-	method physicalGains() { return 10 }
-	method magicGains() { return 10 }
-	method cost() { return 0 }
-}
-
-object darkness {
 	method physicalGains() { return 15 }
 	method magicGains() { return 15 }
 	method cost() { return 5 }
+}
+
+object darker {
+	method physicalGains() { return 23 }
+	method magicGains() { return 23 }
+	method cost() { return 15 }
 }
 
 object sacrifice {

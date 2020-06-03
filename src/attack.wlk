@@ -1,7 +1,10 @@
 import wollok.game.*
-import heroes.*
-import enemies.*
-import equipment.*
+import starting.*
+import teams2.*
+import players2.*
+import champions.*
+import battle.*
+import fightingSystem.*
 import buffs.*
 
 object physicalAttack {

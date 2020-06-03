@@ -1,5 +1,8 @@
-import heroes.*
-import enemies.*
+import champions.*
+import attributes.*
+import battle.*
+import fightingSystem.*
+import attack.*
 import equipment.*
 import spells.*
 

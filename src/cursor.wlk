@@ -1,12 +1,10 @@
 import wollok.game.*
-import teams.*
-import heroes.*
-import enemies.*
+import teams2.*
 import fightingSystem.*
 
 object cursor {
 	
-	var property position = knight.position()
+	var property position
 	var property stage = "attacker"
 	var property teamTurn = warSystem.teamTurn()
 	
@@ -21,9 +19,9 @@ object cursor {
 	}
 	
 	method cursorType(img1, img2, img3) {
-		return if (stage == "attacker") { img1 } 
-			   else if(stage == "enemy" && warSystem.teamTurn().isFromTeam(self.champInActualPosition())) { img2 } 
-			   else { img3 }
+		return if (stage == "attacker") { img2 } 
+			   else if(stage == "enemy" && warSystem.teamTurn().isFromTeam(self.champInActualPosition())) { img3 } 
+			   else { img1 }
 	}
 	
 	method champInActualPosition() {

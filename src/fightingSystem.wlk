@@ -1,31 +1,26 @@
 import wollok.game.*
-import teams.*
-import enemies.*
-import heroes.*
-import equipment.*
+import teams2.*
+import starting.*
+import champions.*
+import battle.*
 import cursor.*
-import attack.*
-import spellCast.*
 import attackInterfaces.*
-import gameOver.*
+import attack.*
+
 
 object warSystem {
 	
-	//PARA PROGRAMAR DE 1 SOLO JUGADOR
-	//var property objectivesNow = [knight, wizard, ogre, darkWizard]
-	//var property objectivesToLater = [knight, wizard, ogre, darkWizard]
-	//const property totalAttacks = [{self.executeTurnMagic()}, {self.executeTurnPhysical()}, {self.executeSpellCast()} ]
+var property selectedAttacker 
+var property selectedEnemy 
+var property teamTurn = teamSelector.winnerPlayer().team()
 	
-var property selectedAttacker = knight
-var property selectedEnemy = ogre
-var property teamTurn = lightDefenders
 	
 	method resetAttack() {
 		selectedAttacker = teamTurn.champions().head()
 		selectedEnemy = teamTurn.champions().head()
 		if (game.hasVisual(attackSystem)) { 
 		    game.removeVisual(attackSystem) }
-		cursor.stage("attacker")
+			cursor.stage("attacker")
 	}
 	
 	method executeTurnMagic() {
@@ -65,8 +60,8 @@ var property teamTurn = lightDefenders
 
 	method nextRound() {
 		if(teamTurn.champions().size() == 0 || teamTurn.nextTeam().champions().size() == 0) {
-			gameOver.end()
-		} cursor.changeTeam(teamTurn)
+			game.say(battle, "GAME OVER")
+		} cursor.changeTeam(teamTurn.nextTeam())
 	}
 	
 	method kill(objective) {
@@ -88,29 +83,18 @@ var property teamTurn = lightDefenders
 		if (cursor.stage() == "attacker") {
 			self.selectAttacker()
 			cursor.nextStage()
+			keyboard.down().onPressDo({ self.teamTurn().nextChar() })
+			keyboard.up().onPressDo({ self.teamTurn().previousChar() })
 		} else { 
+			keyboard.down().onPressDo({ self.teamTurn().nextChar() })
+			keyboard.up().onPressDo({ self.teamTurn().previousChar() })
 			self.selectEnemy()
 			game.addVisual(attackSystem)
 	//		cursor.nextStage()			
 		}
 	} 
 	
-	//method enemyTurn() {
-		//if ( selectedChar.team() != teamTurn ) {
-			//game.say(teamTurn.champions().anyOne(), "Ahora es nuestro turno")
-			//game.onTick(5000, "ataque del enemigo", {self.attackOfEnemy()})
-	//	}
-//	}
-	
-	//PARA PROGRAMAR DE 1 SOLO JUGADOR
-	//La idea era que el enemigo ejecute un ataque random al terminar el turno de un jugador.
-	//method attackOfEnemy() {
-		//selectedChar = teamTurn.champions().anyOne()
-		//objectivesNow = objectivesNow.copyWithout(selectedChar)
-		//selectedEnemy = objectivesNow.anyOne()
-		//totalAttacks.anyOne()
-		//objectivesNow = objectivesToLater
-		//game.removeTickEvent("ataque del enemigo")
-	//}
-	
 }
+
+
+

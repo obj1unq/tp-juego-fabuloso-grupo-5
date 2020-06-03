@@ -1,21 +1,21 @@
 import wollok.game.*
-import heroes.*
-import enemies.*
+import champions.*
+import attributes.*
 import attack.*
 import buffs.*
-import teams.*
+import teams2.*
 
 //LIGHT SPELLS
  object destructiveLightWave {
  	method effect(attacker, objective) {
- 		objective.takeDamage(attacker.wisdom() * 2)
- 		attacker.wisdom( (attacker.wisdom() - 2).max(0) )
+ 		objective.takeDamage(attacker.wisdom() * 4)
+ 		attacker.wisdom( (attacker.wisdom() / 2) )
  	}
  }
  
  object healingLightWave {
  	method effect(attacker, objective) {
- 		if (lightDefenders.isFromTeam( objective )) {
+ 		if (lightness.isFromTeam( objective )) {
  		objective.hp( (objective.hp() + (attacker.wisdom() * 4)).min(objective.maxHP()) )
  		}
  		else { game.say(attacker, "¡No debo curar a mi enemigo!") }
@@ -32,15 +32,15 @@ import teams.*
 //DARK SPELLS
 object destructiveDarkWave {
 	method effect(attacker, objective) {
- 		objective.takeDamage(attacker.wisdom() * 3)
- 		attacker.wisdom( (attacker.wisdom() - 4).max(0) )
+ 		objective.takeDamage(attacker.wisdom() * 5)
+ 		attacker.wisdom( (attacker.wisdom() / 2) )
  	}
  }
  
  object healingDarkWave {
  	method effect(attacker, objective) {
- 		if (darkDefenders.isFromTeam( objective )) {
- 		objective.hp( (objective.hp() - (attacker.wisdom() * 3)).min(objective.maxHP()) )
+ 		if (darkness.isFromTeam( objective )) {
+ 		objective.hp( (objective.hp() - (attacker.wisdom() * 4)).max(objective.maxHP()) )
  		}
  		else { game.say(attacker, "¡No debo curar a mi enemigo!") }
  	}
@@ -48,6 +48,6 @@ object destructiveDarkWave {
  
  object invigoratingDarkWave {
  	method effect(attacker, objective) {
- 		objective.buff(darkness)
+ 		objective.buff(darker)
  	}
  }

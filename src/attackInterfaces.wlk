@@ -1,22 +1,22 @@
 import wollok.game.*
-import teams.*
+import teams2.*
 import fightingSystem.*
 
 object attackSystem {
 	
 	method position() {
 		return
-		if (lightDefenders.isFromTeam(warSystem.selectedAttacker())) {
+		if (lightness.isFromTeam(warSystem.selectedAttacker())) {
  			warSystem.selectedAttacker().position().left(5).down(1)}
  		else { warSystem.selectedAttacker().position().right(2).down(1) }
   }
 	
 	method image() {
-		return if (warSystem.selectedAttacker().knowsSorcery() && lightDefenders.isFromTeam(warSystem.selectedAttacker())) {
-		"lightSpells2.png" //mago
+		return if (warSystem.selectedAttacker().knowsSorcery() && lightness.isFromTeam(warSystem.selectedAttacker())) {
+		"lightSpells2.png"
 		}
-		else if ( warSystem.selectedAttacker().knowsSorcery() && darkDefenders.isFromTeam(warSystem.selectedAttacker())) { "darkSpells2.png" } //mago oscuro
-		else { "attackSystemNoSorcery.png" } //caballero y ogro 
+		else if ( warSystem.selectedAttacker().knowsSorcery() && lightness.isFromTeam(warSystem.selectedAttacker())) { "darkSpells2.png" }
+		else { "attackSystemNoSorcery.png" } 
 		}
 	
 }

@@ -85,18 +85,19 @@ object teamSelection {
 		game.clear()
 		startScreen.image("selectTeam" + playerSelector.turn().toString() + ".png")
 		game.addVisual(startScreen)
-		game.addVisual(lightness)
-		game.addVisual(darkness)
+		game.addVisual(initialLightness)
+		game.addVisual(initialDarkness)
 		game.addVisual(initialCursor)
 		keyboard.right().onPressDo({initialCursor.position(initialCursor.actualTeam().nextTeam().position())})
 		keyboard.left().onPressDo({initialCursor.position(initialCursor.actualTeam().nextTeam().position())})
-		keyboard.s().onPressDo({ teamSelector.winnerPlayer().team(initialCursor.actualTeam())
-								 teamSelector.loserPlayer().team(initialCursor.actualTeam().nextTeam())
+		keyboard.s().onPressDo({ teamSelector.winnerPlayer().team(initialCursor.actualComplexTeam())
+								 teamSelector.loserPlayer().team(initialCursor.actualTeam().nextComplexTeam())
 								 champsSelection.show() 
 								 })
 	}
 	
 }
+
 
 //FIFTH MENU
 object champsSelection {
@@ -188,7 +189,8 @@ var property actualChar = teamSelector.winnerPlayer().team().leader()
 		if(self.ready()) 
 		   { game.removeVisual(initialCursor)
 		   	 game.say(startScreen, "FINALIZAN LAS ELECCIONES")
-		   	 game.onTick(2000, "Comienzo", {battle.start()})
+		   	 game.addVisual(enterArena)
+		   	 keyboard.space().onPressDo({battle.start()})
 		   }
 	}
 	
@@ -203,19 +205,47 @@ var property actualChar = teamSelector.winnerPlayer().team().leader()
 }
 
 
-
-object initialCursor {
+object enterArena {
 	
-var property position = lightness.position()
-var property image = "initialCursor.png"	
-	
-	method actualTeam() {
-		return game.uniqueCollider(self)
-	}		
+var property position = game.at(10,5)
+var property image = "enterToArena.png"	
 	
 }
 
 
+
+object initialCursor {
+	
+var property position = initialLightness.position()
+var property image = "initialCursor.png"	
+	
+	method actualTeam() {
+		return game.uniqueCollider(self)
+	}	
+	
+	method actualComplexTeam() {
+		if ( self.actualTeam().isLight() ) { return lightness }
+		else { return darkness }
+	}	
+	
+}
+
+
+object initialLightness {
+const property position = game.at(2,6)
+const property image = "light.png"
+	method nextTeam() { return initialDarkness }
+	method nextComplexTeam() { return darkness }
+	method isLight() { return true }		
+}
+
+object initialDarkness {
+const property position = game.at(24,6)
+const property image = "dark.png"
+	method nextTeam() { return initialLightness }
+	method nextComplexTeam() { return lightness }
+	method isLight() { return false }
+}
 
 
 
