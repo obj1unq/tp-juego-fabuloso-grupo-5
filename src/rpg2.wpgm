@@ -1,72 +1,20 @@
 import wollok.game.*
-import fightingSystem.*
-import cursor.*
-import startScreen.*
-import heroes.*
-import enemies.*
-import equipment.*
-import teams.*
-import gameOver.*
-import attackInterfaces.*
+import starting.*
+import battle.*
+import teams2.*
 
 
-program rpg2 {
+program rpg {
 
-	game.title("rpg2")
+	game.title("The Best RPG")
 	game.cellSize(50)
 	game.height(15)
 	game.width(30)
-	game.boardGround("mapDay.png")
-	
-	//VISUALS
-	game.addVisual(knight)
-	game.addVisual(wizard)
-	game.addVisual(ogre)
-	game.addVisual(darkWizard)
 	game.addVisual(startScreen)
-
-	//KEYBOARD
 	
-	//EXTRAS
-	//Intento de settear movimiento de personajes en pantalla xD 
-	//importados en "assets" 4 imagenes de cada pj
-	//game.onTick(500, "posicion de ataque caballero", {knight.attackPositionImg()})
-	//game.onTick(600, "posicion de ataque mago", {wizard.attackPositionImg()})
+	keyboard.enter().onPressDo({rules.show()})
+	keyboard.backspace().onPressDo({game.stop()})
 	
-	//game.onTick(400, "posicion de ataque ogro", {ogre.attackPositionImg()})
-	//game.onTick(700, "posicion de ataque mago oscuro", {darkWizard.attackPositionImg()})
-	
-	//Cursor movements
-	keyboard.up().onPressDo { warSystem.teamTurn().nextChar() }
-	keyboard.down().onPressDo { warSystem.teamTurn().previousChar() }
-	
-	//Attacks
-	
-	keyboard.s().onPressDo { warSystem.selectChar()}
-	
-	keyboard.x().onPressDo { warSystem.executeTurnMagic() }
-	keyboard.z().onPressDo { warSystem.executeTurnPhysical() }
-	
-	keyboard.num1().onPressDo { warSystem.selectedAttacker().firstSpell()
-								warSystem.executeSpellCast()
-	}
-	keyboard.num2().onPressDo { warSystem.selectedAttacker().secondSpell()
-								warSystem.executeSpellCast()
-	}
-	keyboard.num3().onPressDo { warSystem.selectedAttacker().thirdSpell()
-								warSystem.executeSpellCast()
-	}
-	
-	keyboard.r().onPressDo { warSystem.resetAttack() }
-	
-	keyboard.enter().onPressDo { game.removeVisual(startScreen)
-								 game.addVisual(cursor)
-								 knight.hpBar()
-								 wizard.hpBar()
-								 ogre.hpBar()
-								 darkWizard.hpBar()
-								}
-		
-								
 	game.start()
+
 }
