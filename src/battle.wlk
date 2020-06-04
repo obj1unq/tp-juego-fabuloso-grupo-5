@@ -15,15 +15,13 @@ var property position = game.origin()
 	method start() {
 		game.clear()
 		game.addVisual(self)
+		attributes.setAll()
 		game.addVisual(cursor)
 		lightness.selectedChar(lightness.champions().first())
 		darkness.selectedChar(darkness.champions().first())
-		self.setChampionsVisuals()
 		self.addChampions()
-		attributes.setAll()
-		//self.battlePoses()
-		lightness.champions().forEach({ champion => game.onTick((200..500).anyOne(), "dance" + champion.name(), {self.pose(champion)}) })
-		darkness.champions().forEach({ champion => game.onTick((200..500).anyOne(), "dance" + champion.name(), {self.pose(champion)}) })
+		game.onTick(400, "lightMoves", lightness.champions().forEach({champion => champion.battlePose()}))
+		game.onTick(300, "darkMoves", darkness.champions().forEach({champion => champion.battlePose()}))
 		self.selectFirstChamp()
 		keyboard.down().onPressDo({ warSystem.teamTurn().nextChamp() })
 		keyboard.up().onPressDo({ warSystem.teamTurn().previousChamp() })
@@ -52,11 +50,6 @@ var property position = game.origin()
 		darkness.champions().forEach({ champion => game.addVisual(champion) })
 	}
 	
-	method setChampionsVisuals() {
-		lightness.champions().forEach({ champion => champion.image(champion.name() + "1.png") })
-		darkness.champions().forEach({ champion => champion.image(champion.name() + "1.png") })
-	}
-	
 	method selectFirstChamp() {
 		   warSystem.selectedAttacker(teamSelector.winnerPlayer().team().champions().first())
 	}
@@ -69,18 +62,6 @@ var property position = game.origin()
 		 darkness.champions().forEach({ champion => game.onTick((200..500).anyOne(), "dance" + champion.name(), {self.pose(champion)}) }) })
 	}
 	*/
-	
-	method pose(champion) {
-		if (champion.image() == champion.name() + "1.png") {
-			champion.image(champion.name() + "2.png")
-		}
-		else if (champion.image() == champion.name() + "2.png") {
-			champion.image(champion.name() + "2.png")
-		}
-		else { game.removeTickEvent("dance" + champion.name())
-			   image = champion.name() + "4.png"
-		}
-	}
 	
 	
 }

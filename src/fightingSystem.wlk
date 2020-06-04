@@ -10,8 +10,8 @@ import attack.*
 
 object warSystem {
 	
-var property selectedAttacker 
-var property selectedEnemy 
+var property selectedAttacker = null
+var property selectedEnemy = null
 var property teamTurn = teamSelector.winnerPlayer().team()
 	
 	
@@ -30,7 +30,6 @@ var property teamTurn = teamSelector.winnerPlayer().team()
 		teamTurn.nextTeam()
 		self.nextRound()
 		cursor.nextStage()
-	//	self.enemyTurn()
 	}
 	
 	method executeTurnPhysical() {
@@ -40,7 +39,6 @@ var property teamTurn = teamSelector.winnerPlayer().team()
 		teamTurn.nextTeam()
 		self.nextRound()
 		cursor.nextStage()
-	//	self.enemyTurn()
 	}
 	 
 	method executeSpellCast() {
@@ -51,7 +49,6 @@ var property teamTurn = teamSelector.winnerPlayer().team()
 			teamTurn.nextTeam()
 			self.nextRound()
 			cursor.nextStage()
-	//		self.enemyTurn()
 		}
 		else { game.say(selectedAttacker, "No sé lanzar conjuros, pero me gustaría aprender, ¿sabes?")
 			   self.resetAttack()
@@ -89,8 +86,7 @@ var property teamTurn = teamSelector.winnerPlayer().team()
 			keyboard.down().onPressDo({ self.teamTurn().nextChar() })
 			keyboard.up().onPressDo({ self.teamTurn().previousChar() })
 			self.selectEnemy()
-			game.addVisual(attackSystem)
-	//		cursor.nextStage()			
+			game.addVisual(attackSystem)			
 		}
 	} 
 	

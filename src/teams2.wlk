@@ -10,7 +10,8 @@ const property image = "light.png"
 const property champions = []
 const property characters = []
 var property positionOfCursor = 1
-var property selectedChar = "nobody"
+var property selectedChar = null
+const property isLight = true
 
 
 	method nextTeam() {
@@ -115,7 +116,8 @@ const property image = "dark.png"
 const property champions = []
 const property characters = []
 var property positionOfCursor = 1
-var property selectedChar = "nobody"
+var property selectedChar = null
+const property isLight = false
 
 	
 	method nextTeam() {

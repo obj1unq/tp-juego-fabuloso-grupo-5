@@ -25,7 +25,6 @@ object rules {
 	
 }
 
-
 //THIRD MENU
 object teamSelector {
 	
@@ -171,6 +170,8 @@ var property actualChar = teamSelector.winnerPlayer().team().leader()
 	method selectChar() {
 		self.champActual().image(self.champActual().name() + "S.png")
 		turn.team().champions().add(self.champActual())
+		//turn.team().characters().add(self.champActual())
+		//turn.team().nextTeam().characters().add(self.champActual())
 		self.changeTurn()
 		self.endSelection()
 	}	
@@ -180,6 +181,7 @@ var property actualChar = teamSelector.winnerPlayer().team().leader()
 			turn = teamSelector.loserPlayer()
 			actualChar = teamSelector.loserPlayer().team().leader()
 			initialPosition = 0
+			playerSelector.turn(turn.number())
 			game.say(startScreen, "Elige 3 campeones el jugador" + playerSelector.turn().toString())
 			initialCursor.position(self.actualChar().position())
 		}
@@ -199,7 +201,7 @@ var property actualChar = teamSelector.winnerPlayer().team().leader()
 	}
 	
 	method ready() {
-		return teamSelector.loserPlayer().team().fullTeam() and teamSelector.loserPlayer().team().fullTeam()
+		return teamSelector.winnerPlayer().team().fullTeam() and teamSelector.loserPlayer().team().fullTeam()
 	}
 	
 }

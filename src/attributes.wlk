@@ -89,7 +89,10 @@ var property pinkyDemon = new Champion(image="pinkyDemon1.png",
 							 strength=17,
 							 wisdom=17)
 				
-const property allCharacters = [paladin,berserker,archer,mage,doomGuy,knight,dracula,goblin,wizard,darkBerserker,spellCaster,pinkyDemon]				
+const property allCharacters = [paladin,berserker,archer,mage,doomGuy,knight,dracula,goblin,wizard,darkBerserker,spellCaster,pinkyDemon]
+
+const property selectedLightnessChamps = []
+const property selectedDarknessChamps = []				
 							 
 
 		method setAll() {
@@ -98,14 +101,32 @@ const property allCharacters = [paladin,berserker,archer,mage,doomGuy,knight,dra
 		}
 		
 		method setActual(champion) {
-			teamSelector.winnerPlayer().team().champions().add(self.finded(champion))
-			teamSelector.winnerPlayer().team().champions().remove(teamSelector.winnerPlayer().team().champions().first())
-			teamSelector.loserPlayer().team().champions().add(self.finded(champion))
-			teamSelector.loserPlayer().team().champions().remove(teamSelector.loserPlayer().team().champions().first())
+			if (lightness.isFromTeam(champion)) {
+				selectedLightnessChamps.add(self.finded(champion))
+			}
+			else { selectedDarknessChamps.add(self.finded(champion)) }
+			self.setChampsInTeams()
 		}
 		
 		method finded(champion) {
 			return allCharacters.find({ character => character.name() == champion.name() })
+		}
+		
+		method setChampsInTeams() {
+				if (selectedLightnessChamps.size() == 3 and selectedDarknessChamps.size() == 3 
+					and teamSelector.winnerPlayer().team().isLight() ) {
+						teamSelector.winnerPlayer().team().champions().clear()
+						teamSelector.winnerPlayer().team().champions().add(selectedLightnessChamps)
+						teamSelector.loserPlayer().team().champions().clear()
+						teamSelector.loserPlayer().team().champions().add(selectedDarknessChamps)
+				}
+	 	  else if( selectedLightnessChamps.size() == 3 and selectedDarknessChamps.size() == 3 
+					and not teamSelector.winnerPlayer().team().isLight() ) {
+						teamSelector.winnerPlayer().team().champions().clear()
+						teamSelector.winnerPlayer().team().champions().add(selectedDarknessChamps)
+						teamSelector.loserPlayer().team().champions().clear()
+						teamSelector.loserPlayer().team().champions().add(selectedLightnessChamps)
+		  }
 		}
 
 	
