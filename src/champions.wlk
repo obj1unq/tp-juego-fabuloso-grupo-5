@@ -1,83 +1,58 @@
 import wollok.game.*
-import buffs.*
-import equipment.*
-import spells.*
-import attack.*
-import spellCast.*
+import teams.*
+import cursor.*
 import fightingSystem.*
 
 class Champion {
 	
 	var property position = game.origin()
 	var property image  
-	const property team
+	var property team = lightness
 	var property name 
 	
-	var property maxHP = 0
-	var property hp = maxHP
-	var property strength = 0
-	var property wisdom = 0
-	var property status = "alive"
-	var property weapon = sword
-	var property armor = steelArmor 
-	var property buff = noBuff
-	var property knowsSorcery = false
-	const property spells = []
-	var property spellToUse = "null"
+}
+
+
+
+object allChampions {
 	
-	method battlePose() {
-		if (image == name + "1.png") {
-			image = name + "2.png"
+//CONFIGURACIÓN PARA SU PRIMERA SELECCIÓN
+//LIGHTNESS
+const property paladin = new Champion(position=game.at(10,11), image="paladin.png", team=lightness, name="paladin")
+const property berserker = new Champion(position=game.at(12,11), image="berserker.png", team=lightness, name="berserker")
+const property archer = new Champion(position=game.at(14,11), image="archer.png", team=lightness, name="archer")
+const property mage = new Champion(position=game.at(16,11), image="mage.png", team=lightness, name="mage")
+const property doomGuy = new Champion(position=game.at(18,11), image="doomGuy.png", team=lightness, name="doomGuy")
+const property knight = new Champion(position=game.at(20,11), image="knight.png", team=lightness, name="knight")
+//DARKNESS
+const property dracula = new Champion(position=game.at(10,2), image="dracula.png", team=darkness, name="dracula")
+const property darkBerserker = new Champion(position=game.at(12,2), image="darkBerserker.png", team=darkness, name="darkBerserker")
+const property goblin = new Champion(position=game.at(14,2), image="goblin.png", team=darkness, name="goblin")
+const property wizard = new Champion(position=game.at(16,2), image="wizard.png", team=darkness, name="wizard")
+const property pinkyDemon = new Champion(position=game.at(18,2), image="pinkyDemon.png", team=darkness, name="pinkyDemon")
+const property spellCaster = new Champion(position=game.at(20,2), image="spellCaster.png", team=darkness, name="spellCaster")
+//TEAMS
+const property lightTeam = [paladin,berserker,archer,mage,doomGuy,knight]
+const property darkTeam = [dracula,darkBerserker,goblin,wizard,pinkyDemon,spellCaster]
+
+
+	method battlePose(champ) {
+		if (champ.image() == champ.name() + "1.png") {
+			champ.image(champ.name() + "2.png")
 		}
-		else if (image == name + "2.png") {
-			image = name + "2.png"
+		else if (champ.image() == champ.name() + "2.png") {
+				 champ.image(champ.name() + "3.png")
 		}
-		else { game.removeTickEvent("dance" + name)
-			   image = name + "4.png"
+		else if (champ.image() == champ.name() + "3.png") {
+				 champ.image(champ.name() + "1.png")
+		}
+		else { game.removeTickEvent(champ.name())
+			   champ.image(champ.name() + "4.png")
 		}
 	}
 	
-	method totalHP() {
-		return hp.toString() + "/" + self.maxHP().toString()
-	}
 	
-	method physicalAttackTo(objective) {
-		physicalAttack.attacker(self)
-		physicalAttack.attacked(objective)
-		physicalAttack.executePhysicalAttack()
+	method isFromTeam(_champ, _team) {
+		return _champ.team() == _team
 	}
-	
-	method magicAttackTo(objective) {
-		magicAttack.attacker(self)
-		magicAttack.attacked(objective)
-		magicAttack.executeMagicAttack()
-	}
-	
-	method takeDamage(value) {
-		hp = (hp - value).max(0)
-	}
-	
-	method receiveSpell(_spell) {
-		spellCast.attacked(self)
-		_spell.effect(spellCast.attacker(), self)
-	}
-	
-	method firstSpell() {
-		spellToUse = spells.get(0)
-	}
-	
-	method secondSpell() {
-		spellToUse = spells.get(1)
-	}
-	
-	method thirdSpell() {
-		spellToUse = spells.get(2)
-	}
-	
-	method castSpell(objective) {
-		spellCast.attacker(self)
-		spellCast.attacked(objective)
-		spellCast.executeSpell()
-	}
-	
 }

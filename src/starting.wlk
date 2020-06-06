@@ -1,9 +1,11 @@
 import wollok.game.*
 import dice.*
-import players2.*
-import teams2.*
+import players.*
+import teams.*
 import champions.*
-import battle.*
+import fightingSystem.*
+import cursor.*
+
 
 //PRINCIPAL MENU
 object startScreen {
@@ -11,31 +13,47 @@ object startScreen {
 var property image = "1.png"
 var property position = game.origin()
 	
-}
-
-//SECONDARY MENU
-object rules {
-	
-	method show() {
+	method start() {
 		game.clear()
-		startScreen.image("2.png")
-		game.addVisual(startScreen)
-		keyboard.enter().onPressDo({teamSelector.rollDiceScreen()})
+		game.addVisual(self)
+		keyboard.enter().onPressDo({rules.show()})
+		keyboard.backspace().onPressDo({game.stop()})
 	}
 	
 }
 
+
+//SECONDARY MENU
+object rules {
+	
+var property image = "2.png"
+var property position = game.origin()
+	
+	method show() {
+		game.clear()
+		game.addVisual(self)
+		keyboard.enter().onPressDo({teamSelector.rollDiceScreen()})
+		keyboard.backspace().onPressDo({startScreen.start()})
+	}
+	
+}
+
+
 //THIRD MENU
 object teamSelector {
+	
+var property image = "3.png"
+var property position = game.origin()
 	
 const dice1 = new Dice(position=game.at(4,5))
 const dice2 = new Dice(position=game.at(24,5))	
 	
 	method rollDiceScreen() {
 		game.clear()
-		startScreen.image("3.png")
-		game.addVisual(startScreen)
+		game.addVisual(self)
+		game.say(self, "Tira el dado el jugador 1")
 		keyboard.s().onPressDo({self.rollDice()})
+		keyboard.backspace().onPressDo({rules.show()})
 	}
 	
 	method rollDice() {
@@ -43,34 +61,30 @@ const dice2 = new Dice(position=game.at(24,5))
 			dice1.roll()
 			game.addVisual(dice1)
 			playerSelector.turn(2)
+			game.say(self, "Tira el dado el jugador 2")
 		}
 		else { 
 			dice2.roll()
 			game.addVisual(dice2)
-			self.winner()
+			self.winSet()
 		}
 	}
 	
-	method winner() {
+	method winSet() {
 		       if(dice1.number() > dice2.number()) { playerSelector.turn(1) 
-		       										 game.say(startScreen, "El jugador 1 elige")
-		       										 game.onTick(2000, "team Selection", { teamSelection.show() })
+		       										 game.say(self, "El jugador 1 elige")
+		       										 game.onTick(1500, "team Selection", { teamSelection.show() })
 		       }
 		  else if(dice2.number() > dice1.number()) { playerSelector.turn(2)
-		  											 game.say(startScreen, "El jugador 2 elige")
-		  											 game.onTick(2000, "team Selection", { teamSelection.show() })
+		  											 playerSelector.firstSelector(player2)
+		  											 playerSelector.secondSelector(player1)
+		  											 game.say(self, "El jugador 2 elige")
+		  											 game.onTick(1500, "team Selection", { teamSelection.show() })
 		  }
-		  else { game.say(startScreen, "Un justo empate, otro intento...")
-		  		 game.onTick(2000, "empate", {playerSelector.turn(1) 
+		  else { game.say(self, "Un justo empate, otro intento...")
+		  		 game.onTick(1500, "empate", {playerSelector.turn(1) 
 		  		 							  self.rollDiceScreen()})
 		  }
-	}
-	
-	method winnerPlayer() {
-		return if(dice1.number() > dice2.number()) { player1 } else { player2 }
-	}
-	method loserPlayer() {
-		return if(dice1.number() > dice2.number()) { player2 } else { player1 }
 	}
 	
 	
@@ -79,20 +93,25 @@ const dice2 = new Dice(position=game.at(24,5))
 
 //FOURTH MENU
 object teamSelection {	
+
+const property position = game.origin()
+
+	method image() {
+		return "selectTeam" + playerSelector.turn().toString() + ".png"
+	}	
 	
 	method show() {
 		game.clear()
-		startScreen.image("selectTeam" + playerSelector.turn().toString() + ".png")
-		game.addVisual(startScreen)
-		game.addVisual(initialLightness)
-		game.addVisual(initialDarkness)
-		game.addVisual(initialCursor)
-		keyboard.right().onPressDo({initialCursor.position(initialCursor.actualTeam().nextTeam().position())})
-		keyboard.left().onPressDo({initialCursor.position(initialCursor.actualTeam().nextTeam().position())})
-		keyboard.s().onPressDo({ teamSelector.winnerPlayer().team(initialCursor.actualComplexTeam())
-								 teamSelector.loserPlayer().team(initialCursor.actualTeam().nextComplexTeam())
-								 champsSelection.show() 
-								 })
+		game.addVisual(self)
+		game.addVisual(lightness)
+		game.addVisual(darkness)
+		cursor.position(lightness.position())
+		game.addVisual(cursor)
+		keyboard.right().onPressDo({cursor.position(cursor.collider().nextTeam().position())})
+		keyboard.left().onPressDo({cursor.position(cursor.collider().nextTeam().position())})
+		keyboard.s().onPressDo({ playerSelector.firstSelector().team(cursor.collider())
+								 playerSelector.secondSelector().team(cursor.collider().nextTeam())
+								 champsSelection.show() })
 	}
 	
 }
@@ -101,153 +120,129 @@ object teamSelection {
 //FIFTH MENU
 object champsSelection {
 	
-//LIGHTNESS
-const property paladin = new Champion(position=game.at(10,11), image="paladin.png", team=lightness, name="paladin")
-const property berserker = new Champion(position=game.at(12,11), image="berserker.png", team=lightness, name="berserker")
-const property archer = new Champion(position=game.at(14,11), image="archer.png", team=lightness, name="archer")
-const property mage = new Champion(position=game.at(16,11), image="mage.png", team=lightness, name="mage")
-const property doomGuy = new Champion(position=game.at(18,11), image="doomGuy.png", team=lightness, name="doomGuy")
-const property knight = new Champion(position=game.at(20,11), image="knight.png", team=lightness, name="knight")
-//DARKNESS
-const property dracula = new Champion(position=game.at(10,2), image="dracula.png", team=darkness, name="dracula")
-const property darkBerserker = new Champion(position=game.at(12,2), image="darkBerserker.png", team=darkness, name="darkBerserker")
-const property goblin = new Champion(position=game.at(14,2), image="goblin.png", team=darkness, name="goblin")
-const property wizard = new Champion(position=game.at(16,2), image="wizard.png", team=darkness, name="wizard")
-const property pinkyDemon = new Champion(position=game.at(18,2), image="pinkyDemon.png", team=darkness, name="pinkyDemon")
-const property spellCaster = new Champion(position=game.at(20,2), image="spellCaster.png", team=darkness, name="spellCaster")
-//TEAMS
-const property lightTeam = [paladin,berserker,archer,mage,doomGuy,knight]
-const property darkTeam = [dracula,darkBerserker,goblin,wizard,pinkyDemon,spellCaster]
-var property initialPosition= 0
-var property turn = teamSelector.winnerPlayer()
-var property actualChar = teamSelector.winnerPlayer().team().leader()
+const property position = game.origin()
+const property image = "selectPJ.png"
+var property actualTurn = playerSelector.firstSelector()
 
 	
+	
+	method initialCharS() {
+		return actualTurn.team().leader()
+	}
+	
+	method actualTeamOfTurn() {
+		return if (actualTurn.team().isLight()) { allChampions.lightTeam() }
+			   else { allChampions.darkTeam() }
+	}
+
+
 	method show() {
 		game.clear()
-		startScreen.image("selectPJ.png")
-		game.addVisual(startScreen)
+		game.addVisual(self)
 		self.addCharactersVisual()
-		game.say(startScreen, "Elige 3 campeones el jugador " + playerSelector.turn().toString())
-		initialCursor.position(actualChar.position())
-		game.addVisual(initialCursor)
-		keyboard.right().onPressDo({self.nextChar()})
-		keyboard.left().onPressDo({self.previousChar()})
+		game.say(self, "Elige 3 campeones el jugador " + playerSelector.turn().toString())
+		cursor.position(self.initialCharS().position())
+		game.addVisual(cursor)
+		game.addVisual(selectorChampIndicator)
+		keyboard.right().onPressDo({cursor.nextChar(self.actualTeamOfTurn())})
+		keyboard.left().onPressDo({cursor.previousChar(self.actualTeamOfTurn())})
 		keyboard.s().onPressDo({self.selectChar()})
+		keyboard.i().onPressDo({self.showInfo()})
+		keyboard.backspace().onPressDo({self.back()})
+		keyboard.space().onPressDo({self.toBattle()})
 	}
+	
+	method toBattle() {
+		if(self.ready()) { warSystem.start() }
+	}
+
+	//Queda agregar stats para luego mostrarlos como valores fijos en los primeros 5 pj de cada equipo.
+	method showInfo() {
+		if(!game.hasVisual(info)) {
+			game.addVisual(info)
+		}
+	}
+
+	method back() {
+		if(game.hasVisual(info)) {
+		   game.removeVisual(info)
+		}
+	}
+	//Queda agregar stats para luego mostrarlos como valores fijos en los primeros 5 pj de cada equipo.
 	
 	
 	method addCharactersVisual() {
-		game.addVisual(paladin)
-		game.addVisual(berserker)
-		game.addVisual(archer)
-		game.addVisual(mage)
-		game.addVisual(doomGuy)
-		game.addVisual(knight)
-		game.addVisual(dracula)
-		game.addVisual(darkBerserker)
-		game.addVisual(goblin)
-		game.addVisual(wizard)
-		game.addVisual(pinkyDemon)
-		game.addVisual(spellCaster)
+		game.addVisual(allChampions.paladin())
+		game.addVisual(allChampions.berserker())
+		game.addVisual(allChampions.archer())
+		game.addVisual(allChampions.mage())
+		game.addVisual(allChampions.doomGuy())
+		game.addVisual(allChampions.knight())
+		game.addVisual(allChampions.dracula())
+		game.addVisual(allChampions.darkBerserker())
+		game.addVisual(allChampions.goblin())
+		game.addVisual(allChampions.wizard())
+		game.addVisual(allChampions.pinkyDemon())
+		game.addVisual(allChampions.spellCaster())
 	}
 
-	
-	method nextChar() {
-		if (initialPosition < 5) {
-			initialPosition += 1
-			initialCursor.position(initialCursor.position().right(2))
-		}
-	}
-	
-	method previousChar() {
-		if (initialPosition > 0) {
-			initialPosition -= 1 
-			initialCursor.position(initialCursor.position().left(2))
-		}
-	}
-	
 	method selectChar() {
-		self.champActual().image(self.champActual().name() + "S.png")
-		turn.team().champions().add(self.champActual())
-		//turn.team().characters().add(self.champActual())
-		//turn.team().nextTeam().characters().add(self.champActual())
-		self.changeTurn()
-		self.endSelection()
+		if(!self.ready()) {
+			self.actualChamp().image(self.actualChamp().name() + "S.png")
+			actualTurn.team().addChampion(self.actualChamp())
+			cursor.removeActual(self.actualTeamOfTurn())
+			cursor.adjustAfterSelection(self.actualTeamOfTurn())
+			self.changeTurn()
+			}
+			else { game.removeVisual(cursor)
+		   	 	   game.say(self, "¡QUE COMIENCE LA BATALLA!") }
 	}	
 	
 	method changeTurn() {
-		if(turn.team().fullTeam() and not self.ready()) {
-			turn = teamSelector.loserPlayer()
-			actualChar = teamSelector.loserPlayer().team().leader()
-			initialPosition = 0
-			playerSelector.turn(turn.number())
-			game.say(startScreen, "Elige 3 campeones el jugador" + playerSelector.turn().toString())
-			initialCursor.position(self.actualChar().position())
+		if(actualTurn.team().fullTeam() && not self.ready()) {
+			actualTurn = playerSelector.secondSelector()
+			playerSelector.turn(actualTurn.number())
+			game.say(self, "Elige 3 campeones el jugador" + playerSelector.turn().toString())
+			cursor.adjustAfterSelection(self.actualTeamOfTurn())
 		}
 	}	
 	
-	method endSelection() {
-		if(self.ready()) 
-		   { game.removeVisual(initialCursor)
-		   	 game.say(startScreen, "FINALIZAN LAS ELECCIONES")
-		   	 game.addVisual(enterArena)
-		   	 keyboard.space().onPressDo({battle.start()})
-		   }
-	}
-	
-	method champActual() {
-		return game.uniqueCollider(initialCursor)
+	method actualChamp() {
+		return cursor.collider()
 	}
 	
 	method ready() {
-		return teamSelector.winnerPlayer().team().fullTeam() and teamSelector.loserPlayer().team().fullTeam()
+		return playerSelector.firstSelector().team().fullTeam() and playerSelector.secondSelector().team().fullTeam()
 	}
 	
 }
 
 
-object enterArena {
+object selectorChampIndicator {
 	
-var property position = game.at(10,5)
-var property image = "enterToArena.png"	
+	method position() {
+		if(champsSelection.ready()) {
+			return game.at(10,6)
+		}
+		else { return game.at(13,6) }
+	}
 	
-}
-
-
-
-object initialCursor {
-	
-var property position = initialLightness.position()
-var property image = "initialCursor.png"	
-	
-	method actualTeam() {
-		return game.uniqueCollider(self)
-	}	
-	
-	method actualComplexTeam() {
-		if ( self.actualTeam().isLight() ) { return lightness }
-		else { return darkness }
-	}	
+	method image() {
+		if(champsSelection.ready()) {
+			return "enterArena.png"
+		}
+		else { return champsSelection.actualTurn().team().name() + "Select.png" }
+		}
 	
 }
 
 
-object initialLightness {
-const property position = game.at(2,6)
-const property image = "light.png"
-	method nextTeam() { return initialDarkness }
-	method nextComplexTeam() { return darkness }
-	method isLight() { return true }		
+object info {
+	
+const property position = game.origin()
+
+	method image() {
+		return cursor.collider().name().toString() + "I.png"
+	}
+	
 }
-
-object initialDarkness {
-const property position = game.at(24,6)
-const property image = "dark.png"
-	method nextTeam() { return initialLightness }
-	method nextComplexTeam() { return lightness }
-	method isLight() { return false }
-}
-
-
-

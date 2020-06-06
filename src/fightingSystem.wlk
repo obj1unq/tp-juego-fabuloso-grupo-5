@@ -1,96 +1,45 @@
 import wollok.game.*
-import teams2.*
 import starting.*
-import champions.*
-import battle.*
+import players.*
+import teams.*
 import cursor.*
-import attackInterfaces.*
-import attack.*
-
+import champions.*
 
 object warSystem {
 	
-var property selectedAttacker = null
-var property selectedEnemy = null
-var property teamTurn = teamSelector.winnerPlayer().team()
-	
-	
-	method resetAttack() {
-		selectedAttacker = teamTurn.champions().head()
-		selectedEnemy = teamTurn.champions().head()
-		if (game.hasVisual(attackSystem)) { 
-		    game.removeVisual(attackSystem) }
-			cursor.stage("attacker")
-	}
-	
-	method executeTurnMagic() {
-		game.removeVisual(attackSystem)
-		selectedAttacker.magicAttackTo(selectedEnemy)
-		self.kill(selectedEnemy)
-		teamTurn.nextTeam()
-		self.nextRound()
-		cursor.nextStage()
-	}
-	
-	method executeTurnPhysical() {
-		game.removeVisual(attackSystem)
-		selectedAttacker.physicalAttackTo(selectedEnemy)
-		self.kill(selectedEnemy)
-		teamTurn.nextTeam()
-		self.nextRound()
-		cursor.nextStage()
-	}
-	 
-	method executeSpellCast() {
-		game.removeVisual(attackSystem)
-		if (selectedAttacker.knowsSorcery()) {
-			selectedAttacker.castSpell(selectedEnemy)
-			self.kill(selectedEnemy)
-			teamTurn.nextTeam()
-			self.nextRound()
-			cursor.nextStage()
-		}
-		else { game.say(selectedAttacker, "No sé lanzar conjuros, pero me gustaría aprender, ¿sabes?")
-			   self.resetAttack()
-		}
-	}
+var property image = "arena.png"
+const property position = game.origin()
 
-	method nextRound() {
-		if(teamTurn.champions().size() == 0 || teamTurn.nextTeam().champions().size() == 0) {
-			game.say(battle, "GAME OVER")
-		} cursor.changeTeam(teamTurn.nextTeam())
+var property actualTurn = playerSelector.firstSelector()
+	
+	method start() {
+		game.clear()
+		game.addVisual(self)
+		lightness.configForBattle()
+		darkness.configForBattle()
+		cursor.position(playerSelector.firstSelector().team().champions().head().position())
+		game.addVisual(cursor)
+		keyboard.up().onPressDo({cursor.previousChar(self.possibleCurrentMove())})
+		keyboard.down().onPressDo({cursor.nextChar(self.possibleCurrentMove())})
+		keyboard.s().onPressDo({self.selectCharB()})
 	}
 	
-	method kill(objective) {
-		if (objective.hp() == 0) {
-			teamTurn.nextTeam().kill(objective)
-			teamTurn.kill(objective)
+	
+	method possibleCurrentMove() {
+		return if(cursor.attackStage()) {
+			actualTurn.team().characters()
 		}
+		else { actualTurn.team().champions() }
 	}
 	
-	method selectAttacker() {
-		selectedAttacker = teamTurn.selectedChar()
+	// Imagen 3 sería la "posición de ataque"
+	// pero al seleccionar este pj de nuevo, rompe ya que no detecta el evento removido.
+	method selectCharB() {
+		cursor.attackStage(true)
+		game.removeTickEvent(cursor.collider().name())
+		cursor.collider().image(cursor.collider().name() +"3.png")
+		cursor.adjustAfterSelectionBattle(actualTurn.team())
+			
 	}
-	
-	method selectEnemy() {
-		selectedEnemy = teamTurn.selectedChar()
-	}
-	
-	method selectChar() {
-		if (cursor.stage() == "attacker") {
-			self.selectAttacker()
-			cursor.nextStage()
-			keyboard.down().onPressDo({ self.teamTurn().nextChar() })
-			keyboard.up().onPressDo({ self.teamTurn().previousChar() })
-		} else { 
-			keyboard.down().onPressDo({ self.teamTurn().nextChar() })
-			keyboard.up().onPressDo({ self.teamTurn().previousChar() })
-			self.selectEnemy()
-			game.addVisual(attackSystem)			
-		}
-	} 
 	
 }
-
-
-

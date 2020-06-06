@@ -1,36 +1,66 @@
 import wollok.game.*
-import teams2.*
 import fightingSystem.*
+import champions.*
 
 object cursor {
 	
-	var property position
-	var property stage = "attacker"
-	var property teamTurn = warSystem.teamTurn()
+var property position = game.origin()
+var property image = "cursor1.png"	
+var property initialPosition = 0
+var property attackStage = false
 	
-	method image() { return self.cursorType("cursor1.png", "cursor2.png", "cursor3.png") }
+	method image() {
+		return if(!attackStage) {
+				  "cursor1.png"
+			   }
+		  else if(attackStage and allChampions.isFromTeam(self.collider(), warSystem.actualTurn().team())) {
+			   	  "cursor2.png"
+			   }
+		  else { "cursor3.png" }
+	}
 	
-	method nextStage() {
-		if (stage == "attacker") {
-			stage = "enemy"
-		} else {
-			stage = "attacker"
+	method nextChar(list) {
+		if (initialPosition < list.size() - 1) {
+			initialPosition += 1
+			//self.position(list.get(initialPosition).position())
+			position = list.get(initialPosition).position()
+		}
+		else {
+			initialPosition = 0
+			self.position(list.head().position())
 		}
 	}
 	
-	method cursorType(img1, img2, img3) {
-		return if (stage == "attacker") { img2 } 
-			   else if(stage == "enemy" && warSystem.teamTurn().isFromTeam(self.champInActualPosition())) { img3 } 
-			   else { img1 }
+	method previousChar(list) {
+		if (initialPosition > 0) {
+			initialPosition -= 1 
+			//self.position(list.get(initialPosition).position())
+			position = list.get(initialPosition).position()
+		}
+		else {
+			initialPosition = list.size() - 1
+			//self.position(list.last().position())
+			position = list.last().position()
+		}
 	}
 	
-	method champInActualPosition() {
+	method adjustAfterSelection(list) {
+		initialPosition = 0
+		//self.position(list.head().position())
+		position = list.head().position()
+	}
+	
+	method adjustAfterSelectionBattle(team) {
+		initialPosition = 0
+		position = team.nextTeam().champions().head().position()
+	}
+	
+	method removeActual(list) {
+		list.remove(game.uniqueCollider(self))
+	}
+	
+	method collider() {
 		return game.uniqueCollider(self)
-	}
-	
-	method changeTeam(team) {
-		if (not team.champions().isEmpty())
-		self.position(team.champions().head().position())
 	}
 	
 }

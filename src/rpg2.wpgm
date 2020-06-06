@@ -1,7 +1,8 @@
 import wollok.game.*
 import starting.*
-import battle.*
-import teams2.*
+import fightingSystem.*
+import teams.*
+
 
 
 program rpg {
@@ -10,10 +11,8 @@ program rpg {
 	game.cellSize(50)
 	game.height(15)
 	game.width(30)
-	game.addVisual(startScreen)
 	
-	keyboard.enter().onPressDo({rules.show()})
-	keyboard.backspace().onPressDo({game.stop()})
+	startScreen.start()
 	
 	game.start()
 
