@@ -1,0 +1,19 @@
+import wollok.game.*
+import starting.*
+import fightingSystem.*
+import teams.*
+
+
+
+program rpg {
+
+	game.title("The Best RPG")
+	game.cellSize(50)
+	game.height(15)
+	game.width(30)
+	
+	startScreen.start()
+	
+	game.start()
+
+}
