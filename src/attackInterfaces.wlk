@@ -1,7 +1,9 @@
 import wollok.game.*
-import teams2.*
+import teams.*
 import fightingSystem.*
 
+
+/* 
 object attackSystem {
 	
 	method position() {
@@ -20,3 +22,4 @@ object attackSystem {
 		}
 	
 }
+*/

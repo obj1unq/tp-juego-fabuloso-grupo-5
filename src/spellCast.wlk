@@ -1,11 +1,10 @@
 import champions.*
-import attributes.*
-import battle.*
 import fightingSystem.*
-import attack.*
 import equipment.*
 import spells.*
+import champions.*
 
+/* 
 object spellCast {
 	
 var property attacker = null
@@ -17,3 +16,4 @@ var property attacked = null
 	
 	
 }
+*/

@@ -12,7 +12,7 @@ program rpg {
 	game.height(15)
 	game.width(30)
 	
-	startScreen.start()
+	startScreen.show()
 	
 	game.start()
 

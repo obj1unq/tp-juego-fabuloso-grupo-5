@@ -7,15 +7,24 @@ import fightingSystem.*
 import cursor.*
 
 
-//PRINCIPAL MENU
-object startScreen {
+class Screen {
 	
-var property image = "1.png"
-var property position = game.origin()
-	
-	method start() {
+const property position = game.origin()
+
+	method show() {
 		game.clear()
 		game.addVisual(self)
+	}
+	
+}
+
+
+object startScreen inherits Screen {
+	
+const property image = "1.png"
+
+	override method show() {
+		super()
 		keyboard.enter().onPressDo({rules.show()})
 		keyboard.backspace().onPressDo({game.stop()})
 	}
@@ -23,51 +32,49 @@ var property position = game.origin()
 }
 
 
-//SECONDARY MENU
-object rules {
+object rules inherits Screen {
 	
-var property image = "2.png"
-var property position = game.origin()
-	
-	method show() {
-		game.clear()
-		game.addVisual(self)
-		keyboard.enter().onPressDo({teamSelector.rollDiceScreen()})
-		keyboard.backspace().onPressDo({startScreen.start()})
-	}
+const property image = "2.png"
+
+	override method show() {
+		super()
+		keyboard.enter().onPressDo({teamSelector.show()})
+		keyboard.backspace().onPressDo({startScreen.show()})
+	}	
 	
 }
 
 
-//THIRD MENU
-object teamSelector {
+object teamSelector inherits Screen {
 	
 var property image = "3.png"
-var property position = game.origin()
 	
 const dice1 = new Dice(position=game.at(4,5))
 const dice2 = new Dice(position=game.at(24,5))	
 	
-	method rollDiceScreen() {
-		game.clear()
-		game.addVisual(self)
+	override method show() {
+		super()
 		game.say(self, "Tira el dado el jugador 1")
 		keyboard.s().onPressDo({self.rollDice()})
 		keyboard.backspace().onPressDo({rules.show()})
 	}
 	
 	method rollDice() {
-		if (playerSelector.turn() == 1) {
+		if (playerSelector.turn() == 1 && !self.thrownDices()) {
 			dice1.roll()
 			game.addVisual(dice1)
 			playerSelector.turn(2)
 			game.say(self, "Tira el dado el jugador 2")
 		}
-		else { 
+		else if (playerSelector.turn() == 2 && !self.thrownDices()) { 
 			dice2.roll()
 			game.addVisual(dice2)
 			self.winSet()
 		}
+	}
+	
+	method thrownDices() {
+		return game.hasVisual(dice1) && game.hasVisual(dice2)
 	}
 	
 	method winSet() {
@@ -82,8 +89,8 @@ const dice2 = new Dice(position=game.at(24,5))
 		  											 game.onTick(1500, "team Selection", { teamSelection.show() })
 		  }
 		  else { game.say(self, "Un justo empate, otro intento...")
-		  		 game.onTick(1500, "empate", {playerSelector.turn(1) 
-		  		 							  self.rollDiceScreen()})
+		  		 game.onTick(2000, "empate", {playerSelector.turn(1) 
+		  		 							  self.show()})
 		  }
 	}
 	
@@ -91,18 +98,13 @@ const dice2 = new Dice(position=game.at(24,5))
 }
 
 
-//FOURTH MENU
-object teamSelection {	
 
-const property position = game.origin()
+object teamSelection inherits Screen {	
 
-	method image() {
-		return "selectTeam" + playerSelector.turn().toString() + ".png"
-	}	
+const property image = "selectTeam" + playerSelector.turn().toString() + ".png"
 	
-	method show() {
-		game.clear()
-		game.addVisual(self)
+	override method show() {
+		super()
 		game.addVisual(lightness)
 		game.addVisual(darkness)
 		cursor.position(lightness.position())
@@ -117,10 +119,9 @@ const property position = game.origin()
 }
 
 
-//FIFTH MENU
-object champsSelection {
+
+object champsSelection inherits Screen {
 	
-const property position = game.origin()
 const property image = "selectPJ.png"
 var property actualTurn = playerSelector.firstSelector()
 
@@ -136,9 +137,8 @@ var property actualTurn = playerSelector.firstSelector()
 	}
 
 
-	method show() {
-		game.clear()
-		game.addVisual(self)
+	override method show() {
+		super()
 		self.addCharactersVisual()
 		game.say(self, "Elige 3 campeones el jugador " + playerSelector.turn().toString())
 		cursor.position(self.initialCharS().position())
@@ -158,13 +158,14 @@ var property actualTurn = playerSelector.firstSelector()
 
 	//Queda agregar stats para luego mostrarlos como valores fijos en los primeros 5 pj de cada equipo.
 	method showInfo() {
-		if(!game.hasVisual(info)) {
+		if(!game.hasVisual(info) && !self.ready()) {
 			game.addVisual(info)
 		}
+		else { game.say(self, "Informaciones no disponibles") }
 	}
 
 	method back() {
-		if(game.hasVisual(info)) {
+		if(game.hasVisual(info) && !self.ready()) {
 		   game.removeVisual(info)
 		}
 	}
@@ -187,15 +188,17 @@ var property actualTurn = playerSelector.firstSelector()
 	}
 
 	method selectChar() {
-		if(!self.ready()) {
-			self.actualChamp().image(self.actualChamp().name() + "S.png")
-			actualTurn.team().addChampion(self.actualChamp())
-			cursor.removeActual(self.actualTeamOfTurn())
-			cursor.adjustAfterSelection(self.actualTeamOfTurn())
-			self.changeTurn()
+			if(!self.ready()) {
+				self.actualChamp().image(self.actualChamp().name() + "S.png")
+				actualTurn.team().addChampion(self.actualChamp())
+				cursor.removeActual(self.actualTeamOfTurn())
+				cursor.adjustAfterSelection(self.actualTeamOfTurn())
+				self.changeTurn()
+				self.validateEndSelection() 
 			}
-			else { game.removeVisual(cursor)
-		   	 	   game.say(self, "¡QUE COMIENCE LA BATALLA!") }
+			else { 
+				game.say(self,"¡Finalizaron las selecciones!")
+			}
 	}	
 	
 	method changeTurn() {
@@ -206,6 +209,13 @@ var property actualTurn = playerSelector.firstSelector()
 			cursor.adjustAfterSelection(self.actualTeamOfTurn())
 		}
 	}	
+	
+	method validateEndSelection() {
+		if (self.ready()) {
+			game.removeVisual(cursor)
+			game.say(self, "¡QUE COMIENCE LA BATALLA!")
+		}
+	}
 	
 	method actualChamp() {
 		return cursor.collider()

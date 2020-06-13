@@ -1,10 +1,9 @@
 import wollok.game.*
 import champions.*
-import attributes.*
-import attack.*
 import buffs.*
-import teams2.*
 
+
+/* 
 //LIGHT SPELLS
  object destructiveLightWave {
  	method effect(attacker, objective) {
@@ -51,3 +50,4 @@ object destructiveDarkWave {
  		objective.buff(darker)
  	}
  }
+ */

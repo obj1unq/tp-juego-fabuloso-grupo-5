@@ -10,6 +10,25 @@ class Champion {
 	var property team = lightness
 	var property name 
 	
+	/*
+	 method attack(type, attacked) {
+	 	attacked.takeDamage(type.dmgCalculation(self, attacked))
+	 }
+	  
+	 method takeDamage() {  }
+	 */
+	
+}
+
+
+object physical {
+	method dmgCalculation(attacker, attacked) { 
+		//operación total = daño total attacker - armadura física attacked
+	}
+}
+
+object magic {
+	method dmgCalculation(attacker, attacked) {  }
 }
 
 
