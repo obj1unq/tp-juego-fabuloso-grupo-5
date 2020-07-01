@@ -3,6 +3,7 @@ import teams.*
 import cursor.*
 import fightingSystem.*
 import hpBar.*
+import buffs.*
 
 class Champion {
 	
