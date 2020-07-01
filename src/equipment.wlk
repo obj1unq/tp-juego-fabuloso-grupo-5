@@ -29,12 +29,9 @@ object godsArmor{
 
 //Weapons
 object sword{
-	method pD(){
-		return 15
-	}
-	method mD() {
-		return 5
-	}
+	var property pD = 15
+	var property mD = 5
+
 }
 
 object axe {

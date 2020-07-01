@@ -2,24 +2,59 @@ import wollok.game.*
 import teams.*
 import cursor.*
 import fightingSystem.*
+import hpBar.*
 
 class Champion {
 	
-	var property position = game.origin()
-	var property image  
-	var property team = lightness
-	var property name 
+	var property position 
+	const maxHP 
+	var hp 
+	var property strength 
+	var property wisdom 
+	var property status = "alive" //pasar a objeto
+	var property weapon 
+	var property armor 
+	var property buff = noBuff 
+	var property spell 
+	const property imageAlive
+	const property imageDead
 	
-	/*
-	 method attack(type, attacked) {
-	 	attacked.takeDamage(type.dmgCalculation(self, attacked))
-	 }
-	  
-	 method takeDamage() {  }
-	 */
+	method image() {
+		if (hp.abs() > 0)
+		return imageAlive
+		else status = "dead"
+			 return imageDead		  		 
+	}
+	method hp(){
+		return hp.abs()
+	}
+	method maxHP(){
+		return maxHP.abs()
+	}
+	method hpBar() {
+		game.addVisual(new HPBar(character = self))
+	}
+	method totalHP() {
+		return self.hp().toString() + "/" + self.maxHP().toString()
+	}
+	method hpPercent(){
+		return (self.hp() * 100) / self.maxHP()
+	}
+	method takeDamage(type, damage){
+		hp = (hp - damage - type.defense(self)).max(0) 
+	}
+	method attack(type, attacked) {
+	 	attacked.takeDamage(type, type.dmgCalculation(self, attacked))
+	}
 	
+	method spellCast(_spell, champion) {
+		champion.recieveSpell(self, _spell)
+	}
+	
+	method recieveSpell(spellCaster, _spell) {
+		_spell.effect(self, spellCaster)
+	}
 }
-
 
 object physical {
 	method dmgCalculation(attacker, attacked) { 

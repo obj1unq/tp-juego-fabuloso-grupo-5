@@ -11,6 +11,10 @@ var property image = "arena.png"
 const property position = game.origin()
 
 var property actualTurn = playerSelector.firstSelector()
+var property selectedAttacker
+var property selectedEnemy
+
+	//selectedAttacker.atacar(selectedEnemy)
 	
 	method start() {
 		game.clear()
