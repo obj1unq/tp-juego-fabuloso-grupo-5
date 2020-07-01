@@ -49,7 +49,7 @@ class Champion {
 		return (self.hp() * 100) / self.maxHP()
 	}
 	method takeDamage(damage){
-		hp = (hp - damage).max(0) 
+		hp = (hp - damage).max(0)
 	}
 	method attack(type, attacked) {
 	 	attacked.takeDamage(type.dmgCalculation(self, attacked))

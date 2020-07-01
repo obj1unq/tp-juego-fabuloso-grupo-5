@@ -1,3 +1,5 @@
+import champions.*
+
 //Armor
 
 class Weapon {
