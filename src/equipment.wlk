@@ -1,63 +1,32 @@
 //Armor
-object leatherArmor{
-	method pR(){
-		return 10
-	}
-	method mR(){
-		return 5
-	}
+
+class Weapon {
+	
+const property physicalDmg
+const property magicDmg
+	
 }
 
-object steelArmor{
-	method pR(){
-		return 17
-	}
-	method mR(){
-		return 8
-	}
+class Armor {
+	
+const physicalRes
+const magicRes
+	
 }
 
-object godsArmor{
-	method pR() {
-		return 30
-	}
-	method mR() {
-		return 15
-	}
-}
-//Armor
+object equipments {
+	
 
-//Weapons
-object sword{
-	var property pD = 15
-	var property mD = 5
-
-}
-
-object axe {
-	method pD(){
-		return 20
-	}
-	method mD() {
-		return 0
-	}
+const property axe = new Weapon(physicalDmg=20, magicDmg=0)
+const property sword = new Weapon(physicalDmg=15, magicDmg=5)
+const property bow = new Weapon(physicalDmg=10, magicDmg=5)
+const property wand = new Weapon(physicalDmg=15, magicDmg=5)
+const property weapons = #{axe, sword, bow, wand}
+	
+const property leatherArmor= new Armor(physicalRes=10, magicRes=5)	
+const property steelArmor= new Armor(physicalRes=17, magicRes=8)	
+const property godsArmor= new Armor(physicalRes=30, magicRes=15)
+const property armors = #{leatherArmor, steelArmor, godsArmor}	
+	
 }
 
- object magicBow {
- 	method pD(){
- 		return 5
- 	}
- 	method mD() {
-		return 15
-	}
- }
-
- object wand {
- 	method pD() {
- 		return 2
- 	}
- 	method mD() {
- 		return 20
- 	}
- }
- //Weapons

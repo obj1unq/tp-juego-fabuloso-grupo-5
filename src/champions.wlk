@@ -3,28 +3,36 @@ import teams.*
 import cursor.*
 import fightingSystem.*
 import hpBar.*
+import buffs.*
+import equipment.*
 
 class Champion {
 	
 	var property position 
-	const maxHP 
-	var hp 
-	var property strength 
-	var property wisdom 
-	var property status = "alive" //pasar a objeto
-	var property weapon 
-	var property armor 
+	const maxHP = 1 
+	var hp = 1
+	var property strength = 0
+	var property wisdom = 0 
+	var property alive = true
+	var property weapon = equipments.sword()
+	var property armor = equipments.leatherArmor()
 	var property buff = noBuff 
-	var property spell 
-	const property imageAlive
-	const property imageDead
+	var property name
+	var property team
+	//var property spells 
+	//const property imageAlive
+	//const property imageDead
+	var property image
 	
+	/*
 	method image() {
 		if (hp.abs() > 0)
 		return imageAlive
 		else status = "dead"
 			 return imageDead		  		 
 	}
+	*/
+	
 	method hp(){
 		return hp.abs()
 	}
@@ -40,11 +48,11 @@ class Champion {
 	method hpPercent(){
 		return (self.hp() * 100) / self.maxHP()
 	}
-	method takeDamage(type, damage){
-		hp = (hp - damage - type.defense(self)).max(0) 
+	method takeDamage(damage){
+		hp = (hp - damage).max(0) 
 	}
 	method attack(type, attacked) {
-	 	attacked.takeDamage(type, type.dmgCalculation(self, attacked))
+	 	attacked.takeDamage(type.dmgCalculation(self, attacked))
 	}
 	
 	method spellCast(_spell, champion) {
@@ -59,13 +67,15 @@ class Champion {
 object physical {
 	method dmgCalculation(attacker, attacked) { 
 		//operación total = daño total attacker - armadura física attacked
+		return ( (attacker.strength() + attacker.buff().physicalGains() + attacker.weapon().physicalDmg()) - attacked.armor().physicalRes() )
 	}
 }
 
 object magic {
-	method dmgCalculation(attacker, attacked) {  }
+	method dmgCalculation(attacker, attacked) { 
+		return ( (attacker.wisdom() + attacker.buff().magicGains() + attacker.weapon().magicDmg()) - attacked.armor().magicalRes() )
+	}
 }
-
 
 
 object allChampions {
