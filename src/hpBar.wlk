@@ -9,6 +9,6 @@ class HPBar {
 	} 
 	
 	method image() {
-		return "HP-" + (character.hpPercent() * 0.1).truncate(0).min(10).toString() + ".png"	
+		return "HP-" +  (character.hpPercent() * 0.1).truncate(0).min(9).toString() + ".png"	
 	}
 }

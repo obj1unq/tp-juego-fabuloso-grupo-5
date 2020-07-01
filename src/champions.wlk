@@ -6,6 +6,7 @@ import hpBar.*
 import buffs.*
 import equipment.*
 
+
 class Champion {
 	
 	var property position 
