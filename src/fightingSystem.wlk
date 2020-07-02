@@ -7,7 +7,7 @@ import champions.*
 
 object warSystem {
 	
-var property image = "arena.png"
+var property image 
 const property position = game.origin()
 
 var property actualTurn = playerSelector.firstSelector()
@@ -40,10 +40,29 @@ var property selectedEnemy
 	// pero al seleccionar este pj de nuevo, rompe ya que no detecta el evento removido.
 	method selectCharB() {
 		cursor.attackStage(true)
-		game.removeTickEvent(cursor.collider().name())
-		cursor.collider().image(cursor.collider().name() +"3.png")
+		selectedAttacker = game.uniqueCollider(cursor)
+		//game.removeTickEvent(cursor.collider().name())
+		//cursor.collider().image(cursor.collider().name() +"3.png")
+		actualSelector.champion(selectedAttacker)
+		game.addVisual(actualSelector)
 		cursor.adjustAfterSelectionBattle(actualTurn.team())
 			
 	}
+	
+}
+
+object actualSelector {
+	
+var property champion
+
+method image() {
+	return if (champion.team().isLight()) { "selectL.png" }
+		   else { "selectD.png" }
+}
+
+method position() {
+	return if (champion.team().isLight()) { champion.position().left(1) }
+		   else { champion.position().right(2) }
+}
 	
 }

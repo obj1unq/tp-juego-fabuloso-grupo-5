@@ -27,7 +27,8 @@ var property attackStage = false
 		}
 		else {
 			initialPosition = 0
-			self.position(list.head().position())
+			//self.position(list.head().position())
+			position = list.head().position()
 		}
 	}
 	
@@ -62,5 +63,14 @@ var property attackStage = false
 	method collider() {
 		return game.uniqueCollider(self)
 	}
+
+}
+
+
+object index {
+
+var index = 0
+
+
 	
 }

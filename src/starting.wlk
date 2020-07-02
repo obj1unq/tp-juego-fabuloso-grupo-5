@@ -94,6 +94,9 @@ const dice2 = new Dice(position=game.at(24,5))
 		  }
 	}
 	
+	method winnerSelectorNumber() {
+		return if (dice1.number() > dice2.number()) { 1 } else { 2 }
+	}
 	
 }
 
@@ -101,7 +104,7 @@ const dice2 = new Dice(position=game.at(24,5))
 
 object teamSelection inherits Screen {	
 
-const property image = "selectTeam" + playerSelector.turn().toString() + ".png"
+const property image = "selectTeam" + teamSelector.winnerSelectorNumber().toString() + ".png"
 	
 	override method show() {
 		super()
@@ -196,9 +199,6 @@ var property actualTurn = playerSelector.firstSelector()
 				self.changeTurn()
 				self.validateEndSelection() 
 			}
-			else { 
-				game.say(self,"¡Finalizaron las selecciones!")
-			}
 	}	
 	
 	method changeTurn() {
@@ -213,7 +213,8 @@ var property actualTurn = playerSelector.firstSelector()
 	method validateEndSelection() {
 		if (self.ready()) {
 			game.removeVisual(cursor)
-			game.say(self, "¡QUE COMIENCE LA BATALLA!")
+			game.say(self, "¡Concluyen las elecciones!")
+			game.schedule(1200, {selectorArenaIndicator.show()})
 		}
 	}
 	
@@ -231,21 +232,56 @@ var property actualTurn = playerSelector.firstSelector()
 object selectorChampIndicator {
 	
 	method position() {
-		if(champsSelection.ready()) {
-			return game.at(10,6)
-		}
-		else { return game.at(13,6) }
+		return game.at(13,6)
 	}
 	
 	method image() {
-		if(champsSelection.ready()) {
-			return "enterArena.png"
-		}
-		else { return champsSelection.actualTurn().team().name() + "Select.png" }
-		}
+		return champsSelection.actualTurn().team().name() + "Select.png"
+	}
 	
 }
 
+object selectorArenaIndicator inherits Screen {
+	
+const property arena1 = new Arena1()
+const property arena2 = new Arena2()
+const property arena3 = new Arena3()
+const property arena4 = new Arena4()
+const property arena5 = new Arena5()
+const property arena6 = new Arena6()
+const property arena7 = new Arena7()
+const property arena8 = new Arena8()
+
+const property arenas = [arena1, arena2, arena3, arena4, arena5, arena6, arena7, arena8]
+
+const property image = "backgroundSelectArena.png"
+
+	method image() {
+		return "backGroundSelectArena" + teamSelector.winnerSelectorNumber().toString() + ".png"
+	}
+
+	override method show() {
+		super()
+		cursor.position(arena1.position())
+		cursor.initialPosition(0)
+		game.addVisual(arena1)
+		game.addVisual(arena2)
+		game.addVisual(arena3)
+		game.addVisual(arena4)
+		game.addVisual(arena5)
+		game.addVisual(arena6)
+		game.addVisual(arena7)
+		game.addVisual(arena8)
+		game.addVisual(cursor)
+		keyboard.right().onPressDo({cursor.nextChar(arenas)})
+		keyboard.left().onPressDo({cursor.previousChar(arenas)})
+		keyboard.s().onPressDo({cursor.collider().isSelected(true)
+								game.say(self, "¡Empieza la batalla!")
+								warSystem.image("arena" + cursor.collider().number().toString() + "SS.png")
+								game.schedule(1200, {warSystem.start()})})
+	}	
+	
+}
 
 object info {
 	
@@ -256,3 +292,53 @@ const property position = game.origin()
 	}
 	
 }
+
+
+
+class Arena1 {
+	
+var property isSelected = false	
+	
+	method number() { return 1 }
+	method image() { return if (isSelected) { "arena" + self.number().toString() + "S.png" }
+					else {"arena" + self.number().toString() + ".png"} }
+	method position() { return game.at(7,8) }
+}
+class Arena2 inherits Arena1{
+	override method number() { return 2 }
+	override method position() { return game.at(11,8) }
+}
+class Arena3 inherits Arena1{
+	override method number() { return 3 }
+	override method position() { return game.at(15,8) }
+}
+class Arena4 inherits Arena1{
+	override method number() { return 4 }
+	override method position() { return game.at(19,8) }
+}
+class Arena5 inherits Arena1{
+	override method number() { return 5 }
+	override method position() { return game.at(7,6) }
+}
+class Arena6 inherits Arena1{
+	override method number() { return 6 }
+	override method position() { return game.at(11,6) }
+}
+class Arena7 inherits Arena1{
+	override method number() { return 7 }
+	override method position() { return game.at(15,6) }
+}
+class Arena8 inherits Arena1{
+	override method number() { return 8 }
+	override method position() { return game.at(19,6) }
+}
+
+
+
+
+
+
+
+
+
+

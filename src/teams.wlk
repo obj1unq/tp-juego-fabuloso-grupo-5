@@ -78,6 +78,7 @@ var property isLight
 	method fullTeam() {return champions.size() == 3}
 	method configForBattle() { if(self.fullTeam()) { champions.forEach({champion=>champion.image(champion.name() + "1.png")})
 													 champions.forEach({champion=>game.addVisual(champion)})
+													 champions.forEach({champion=>champion.hpBar()})
 													 game.onTick(150, champions.get(0).name(), {allChampions.battlePose(champions.get(0))})
 													 game.onTick(150, champions.get(1).name(), {allChampions.battlePose(champions.get(1))})
 													 game.onTick(150, champions.get(2).name(), {allChampions.battlePose(champions.get(2))}) } 
