@@ -63,6 +63,10 @@ var property attackStage = false
 	method collider() {
 		return game.uniqueCollider(self)
 	}
+	
+	method nextStage() {
+		attackStage = !attackStage
+	}
 
 }
 

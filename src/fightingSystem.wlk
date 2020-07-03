@@ -84,7 +84,6 @@ var property selectedEnemy
 		}
 	}
 	
-	
 	method possibleCurrentMove() {
 		return if(cursor.attackStage()) {
 			actualTurn.team().nextTeam().listAfterSelection()
@@ -92,15 +91,28 @@ var property selectedEnemy
 		else { actualTurn.team().champions() }
 	}
 	
-
 	method selectCharB() {
+        if (cursor.attackStage()) {
+            selectedEnemy = cursor.collider()
+   			cursor.nextStage()
+        } else {
+   			selectedAttacker = cursor.collider()
+            cursor.nextStage()
+        }
+        actualSelector.champion(selectedAttacker)
+		actualSelector.addVisual()
+		cursor.adjustAfterSelectionBattle(actualTurn.team())
+    }
+
+	/*method selectCharB() {
+		
+		
 		cursor.attackStage(true)
 		selectedAttacker = game.uniqueCollider(cursor)
 		actualSelector.champion(selectedAttacker)
 		actualSelector.addVisual()
-		cursor.adjustAfterSelectionBattle(actualTurn.team())
-			
-	}
+		cursor.adjustAfterSelectionBattle(actualTurn.team())	
+	}*/
 	
 }
 

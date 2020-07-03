@@ -10,8 +10,8 @@ import equipment.*
 class Champion {
 	
 	var property position 
-	const maxHP = 1 
-	var hp = 1
+	const property maxHP = 1 
+	var property hp = 1
 	var property strength = 0
 	var property wisdom = 0 
 	var property alive = true
@@ -83,7 +83,7 @@ object physical {
 
 object magic {
 	method dmgCalculation(attacker, attacked) { 
-		return ( (attacker.wisdom() + attacker.buff().magicGains() + attacker.weapon().magicDmg()) - attacked.armor().magicalRes() )
+		return ( (attacker.wisdom() + attacker.buff().magicGains() + attacker.weapon().magicDmg()) - attacked.armor().magicRes() )
 	}
 }
 

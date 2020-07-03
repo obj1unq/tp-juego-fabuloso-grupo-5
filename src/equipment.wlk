@@ -11,8 +11,8 @@ const property magicDmg
 
 class Armor {
 	
-const physicalRes
-const magicRes
+const property physicalRes
+const property magicRes
 	
 }
 
