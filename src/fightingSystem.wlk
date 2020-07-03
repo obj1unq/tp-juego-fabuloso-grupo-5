@@ -21,7 +21,7 @@ var property selectedEnemy
 		game.addVisual(self)
 		lightness.configForBattle()
 		darkness.configForBattle()
-		cursor.position(playerSelector.firstSelector().team().champions().head().position())
+		cursor.position(actualTurn.team().champions().head().position())
 		game.addVisual(cursor)
 		keyboard.up().onPressDo({cursor.previousChar(self.possibleCurrentMove())})
 		keyboard.down().onPressDo({cursor.nextChar(self.possibleCurrentMove())})
@@ -31,20 +31,17 @@ var property selectedEnemy
 	
 	method possibleCurrentMove() {
 		return if(cursor.attackStage()) {
-			actualTurn.team().characters()
+			actualTurn.team().nextTeam().listAfterSelection()
 		}
 		else { actualTurn.team().champions() }
 	}
 	
-	// Imagen 3 sería la "posición de ataque"
-	// pero al seleccionar este pj de nuevo, rompe ya que no detecta el evento removido.
+
 	method selectCharB() {
 		cursor.attackStage(true)
 		selectedAttacker = game.uniqueCollider(cursor)
-		//game.removeTickEvent(cursor.collider().name())
-		//cursor.collider().image(cursor.collider().name() +"3.png")
 		actualSelector.champion(selectedAttacker)
-		game.addVisual(actualSelector)
+		actualSelector.addVisual()
 		cursor.adjustAfterSelectionBattle(actualTurn.team())
 			
 	}
@@ -63,6 +60,10 @@ method image() {
 method position() {
 	return if (champion.team().isLight()) { champion.position().left(1) }
 		   else { champion.position().right(2) }
+}
+
+method addVisual() {
+	if(!game.hasVisual(self)) { game.addVisual(self) }
 }
 	
 }

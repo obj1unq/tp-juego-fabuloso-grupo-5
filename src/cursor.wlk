@@ -53,7 +53,7 @@ var property attackStage = false
 	
 	method adjustAfterSelectionBattle(team) {
 		initialPosition = 0
-		position = team.nextTeam().champions().head().position()
+		position = team.nextTeam().listAfterSelection().head().position()
 	}
 	
 	method removeActual(list) {

@@ -278,7 +278,7 @@ const property image = "backgroundSelectArena.png"
 		keyboard.s().onPressDo({cursor.collider().isSelected(true)
 								game.say(self, "¡Empieza la batalla!")
 								warSystem.image("arena" + cursor.collider().number().toString() + "SS.png")
-								game.schedule(1200, {warSystem.start()})})
+								game.schedule(1000, {warSystem.start()})})
 	}	
 	
 }
@@ -292,7 +292,6 @@ const property position = game.origin()
 	}
 	
 }
-
 
 
 class Arena1 {
