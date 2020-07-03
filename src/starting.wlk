@@ -197,9 +197,9 @@ var property actualTurn = playerSelector.firstSelector()
 				cursor.removeActual(self.actualTeamOfTurn())
 				cursor.adjustAfterSelection(self.actualTeamOfTurn())
 				self.changeTurn()
-				self.validateEndSelection() 
+				self.validateEndSelection()
 			}
-	}	
+	}
 	
 	method changeTurn() {
 		if(actualTurn.team().fullTeam() && not self.ready()) {
@@ -215,6 +215,12 @@ var property actualTurn = playerSelector.firstSelector()
 			game.removeVisual(cursor)
 			game.say(self, "¡Concluyen las elecciones!")
 			game.schedule(1200, {selectorArenaIndicator.show()})
+			lightness.champ1(lightness.champions().get(0))
+			lightness.champ2(lightness.champions().get(1))
+			lightness.champ3(lightness.champions().get(2))
+			darkness.champ1(darkness.champions().get(0))
+			darkness.champ2(darkness.champions().get(1))
+			darkness.champ3(darkness.champions().get(2))
 		}
 	}
 	

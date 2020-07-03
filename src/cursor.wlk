@@ -20,12 +20,12 @@ var property attackStage = false
 	}
 	
 	method nextChar(list) {
-		if (initialPosition < list.size() - 1) {
+		if (initialPosition < list.size() - 1 && not list.isEmpty()) {
 			initialPosition += 1
 			//self.position(list.get(initialPosition).position())
 			position = list.get(initialPosition).position()
 		}
-		else {
+		else if (initialPosition >= list.size() - 1 && not list.isEmpty()) { 
 			initialPosition = 0
 			//self.position(list.head().position())
 			position = list.head().position()
@@ -33,12 +33,12 @@ var property attackStage = false
 	}
 	
 	method previousChar(list) {
-		if (initialPosition > 0) {
+		if (initialPosition > 0 && not list.isEmpty()) {
 			initialPosition -= 1 
 			//self.position(list.get(initialPosition).position())
 			position = list.get(initialPosition).position()
 		}
-		else {
+		else if (initialPosition <= 0 && not list.isEmpty()) {
 			initialPosition = list.size() - 1
 			//self.position(list.last().position())
 			position = list.last().position()

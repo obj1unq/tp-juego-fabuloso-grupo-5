@@ -40,6 +40,8 @@ var property selectedEnemy
 	
 	method kill(objective) {
 		if (objective.hp() == 0) {
+			game.removeTickEvent(objective.name())
+			objective.image(objective.name().toString() + "4.png")
 			objective.alive(false)
 			actualTurn.team().champions().remove(objective)
 			actualTurn.team().characters().remove(objective)
@@ -49,6 +51,8 @@ var property selectedEnemy
 	}
 	
 	method finishTurn() {
+		selectedAttacker = null
+		selectedEnemy = null
 		actualTurn = actualTurn.nextPlayer()
 	}
 	

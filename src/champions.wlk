@@ -109,7 +109,7 @@ const property lightTeam = [paladin,berserker,archer,mage,doomGuy,knight]
 const property darkTeam = [dracula,darkBerserker,goblin,wizard,pinkyDemon,spellCaster]
 
 
-	method battlePose(champ) {
+	method battlePose(champ) {   					//TODO
 		if (champ.image() == champ.name() + "1.png") {
 			champ.image(champ.name() + "2.png")
 		}
