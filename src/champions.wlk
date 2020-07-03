@@ -20,6 +20,8 @@ class Champion {
 	var property buff = noBuff 
 	var property name
 	var property team
+	var property knowsSorcery = false
+	
 	//var property spells 
 	//const property imageAlive
 	//const property imageDead
@@ -34,20 +36,14 @@ class Champion {
 	}
 	*/
 	
-	method hp(){
-		return hp.abs()
-	}
-	method maxHP(){
-		return maxHP.abs()
-	}
 	method hpBar() {
 		game.addVisual(new HPBar(character = self))
 	}
 	method totalHP() {
-		return self.hp().toString() + "/" + self.maxHP().toString()
+		return hp.toString() + "/" + maxHP.toString()
 	}
 	method hpPercent(){
-		return (self.hp() * 100) / self.maxHP()
+		return (hp * 100) / maxHP
 	}
 	method takeDamage(damage){
 		hp = (hp - damage).max(0)
@@ -56,12 +52,25 @@ class Champion {
 	 	attacked.takeDamage(type.dmgCalculation(self, attacked))
 	}
 	
-	method spellCast(_spell, champion) {
-		champion.recieveSpell(self, _spell)
-	}
-	
 	method recieveSpell(spellCaster, _spell) {
 		_spell.effect(self, spellCaster)
+	}
+}
+
+class Sorcerer inherits Champion {
+	const property spells
+	var property spellSelected
+	
+	override method knowsSorcery() {
+		return true
+	}
+	
+	method getSpell(number) {
+		spellSelected = spells.get(number)
+	}
+	
+	method spellCast(champion) {
+		champion.recieveSpell(self, spellSelected)
 	}
 }
 
@@ -77,7 +86,6 @@ object magic {
 		return ( (attacker.wisdom() + attacker.buff().magicGains() + attacker.weapon().magicDmg()) - attacked.armor().magicalRes() )
 	}
 }
-
 
 object allChampions {
 	

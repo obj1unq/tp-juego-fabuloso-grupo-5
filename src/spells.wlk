@@ -1,53 +1,42 @@
 import wollok.game.*
 import champions.*
 import buffs.*
+import teams.*
+import fightingSystem.*
 
+class Spell {
+	
+	method effect(attacker, objective)
+	
+	method validate(attacker, objective) {
+		if (warSystem.areSameTeams(attacker, objective)) {
+ 			warSystem.executeSpellCast()
+ 		} else { game.say(attacker, "No debo ayudar a un enemigo") }
+	}
+}
 
-/* 
-//LIGHT SPELLS
- object destructiveLightWave {
- 	method effect(attacker, objective) {
+object destructiveWave inherits Spell {
+	override method effect(attacker, objective) {
  		objective.takeDamage(attacker.wisdom() * 4)
  		attacker.wisdom( (attacker.wisdom() / 2) )
  	}
- }
+ 	
+ 	override method validate(attacker, objective) {
+ 		if (not warSystem.areSameTeams(attacker, objective)) {
+ 			warSystem.executeSpellCast()
+ 		} else { game.say(attacker, "No debo atacar a mi amigo") }
+ 	}
+}
  
- object healingLightWave {
- 	method effect(attacker, objective) {
- 		if (lightness.isFromTeam( objective )) {
+object healingWave inherits Spell {
+ 	override method effect(attacker, objective) {
  		objective.hp( (objective.hp() + (attacker.wisdom() * 4)).min(objective.maxHP()) )
- 		}
- 		else { game.say(attacker, "¡No debo curar a mi enemigo!") }
  	}
- }
+}
  
- object invigoratingLightWave {
- 	method effect(attacker, objective) {
+object invigoratingWave inherits Spell {
+ 	override method effect(attacker, objective) {
  		objective.buff(illumination)
- 	}
- }
- 
- 
-//DARK SPELLS
-object destructiveDarkWave {
-	method effect(attacker, objective) {
- 		objective.takeDamage(attacker.wisdom() * 5)
- 		attacker.wisdom( (attacker.wisdom() / 2) )
- 	}
- }
- 
- object healingDarkWave {
- 	method effect(attacker, objective) {
- 		if (darkness.isFromTeam( objective )) {
- 		objective.hp( (objective.hp() - (attacker.wisdom() * 4)).max(objective.maxHP()) )
- 		}
- 		else { game.say(attacker, "¡No debo curar a mi enemigo!") }
- 	}
- }
- 
- object invigoratingDarkWave {
- 	method effect(attacker, objective) {
- 		objective.buff(darker)
- 	}
- }
- */
+ 	} 
+
+}

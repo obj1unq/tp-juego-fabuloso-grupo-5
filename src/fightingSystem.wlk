@@ -16,6 +16,42 @@ var property selectedEnemy
 
 	//selectedAttacker.atacar(selectedEnemy)
 	
+	method areSameTeams(c1, c2) {
+		return (c1.team().isLight() == c2.team().isLight())
+	}
+	
+	method executeAttack(type) {
+		selectedAttacker.attack(type, selectedEnemy)
+		self.kill(selectedEnemy)
+		self.finishTurn()
+	}
+	
+	method executeSpellCast() {
+		selectedAttacker.spellCast(selectedEnemy)
+		self.kill(selectedEnemy)
+		self.finishTurn()
+	}
+	
+	method resetTurn() {
+		selectedAttacker = null
+        selectedEnemy = null
+        cursor.attackStage(true)
+    }
+	
+	method kill(objective) {
+		if (objective.hp() == 0) {
+			objective.alive(false)
+			actualTurn.team().champions().remove(objective)
+			actualTurn.team().characters().remove(objective)
+			actualTurn.team().nextTeam().champions().remove(objective)
+			actualTurn.team().nextTeam().characters().remove(objective)
+		}
+	}
+	
+	method finishTurn() {
+		actualTurn = actualTurn.nextPlayer()
+	}
+	
 	method start() {
 		game.clear()
 		game.addVisual(self)
@@ -26,6 +62,26 @@ var property selectedEnemy
 		keyboard.up().onPressDo({cursor.previousChar(self.possibleCurrentMove())})
 		keyboard.down().onPressDo({cursor.nextChar(self.possibleCurrentMove())})
 		keyboard.s().onPressDo({self.selectCharB()})
+		
+		keyboard.x().onPressDo({ self.executeAttack(physical) })
+		keyboard.z().onPressDo({ self.executeAttack(magic) })
+		keyboard.c().onPressDo({ self.validateSpellCast() })
+		keyboard.r().onPressDo({ self.resetTurn() })
+		keyboard.num1().onPressDo({ self.validateSorcery(0) })
+		keyboard.num2().onPressDo({ self.validateSorcery(1) })
+		keyboard.num3().onPressDo({ self.validateSorcery(2) })
+	}
+	
+	method validateSpellCast() {
+		if (selectedAttacker.knowsSorcery()) {
+			selectedAttacker.spellSelected().validate(selectedAttacker, selectedEnemy)
+		}
+	}
+	
+	method validateSorcery(num) {
+		if (selectedAttacker.knowsSorcery()) {
+			selectedAttacker.getSpell(num)
+		}
 	}
 	
 	

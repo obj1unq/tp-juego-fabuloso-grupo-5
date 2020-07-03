@@ -26,7 +26,11 @@ var property isLight
 													 }
 	method listAfterSelection() {
 		return champions + self.nextTeam().champions()
-	}												 
+	}
+	
+	method isFromTeam(objective) {
+		 return champions.contains(objective)
+	}								 
 }
 
 
