@@ -22,13 +22,11 @@ var property selectedEnemy
 	
 	method executeAttack(type) {
 		selectedAttacker.attack(type, selectedEnemy)
-		self.kill(selectedEnemy)
 		self.finishTurn()
 	}
 	
 	method executeSpellCast() {
 		selectedAttacker.spellCast(selectedEnemy)
-		self.kill(selectedEnemy)
 		self.finishTurn()
 	}
 	
@@ -51,6 +49,7 @@ var property selectedEnemy
 	}
 	
 	method finishTurn() {
+		self.kill(selectedEnemy)
 		selectedAttacker = null
 		selectedEnemy = null
 		actualTurn = actualTurn.nextPlayer()
@@ -63,6 +62,10 @@ var property selectedEnemy
 		darkness.configForBattle()
 		cursor.position(actualTurn.team().champions().head().position())
 		game.addVisual(cursor)
+		game.addVisual(flag)
+		game.addVisual(new Banner(player = player1))
+		game.addVisual(new Banner(player = player2))
+		
 		keyboard.up().onPressDo({cursor.previousChar(self.possibleCurrentMove())})
 		keyboard.down().onPressDo({cursor.nextChar(self.possibleCurrentMove())})
 		keyboard.s().onPressDo({self.selectCharB()})
@@ -106,18 +109,7 @@ var property selectedEnemy
         actualSelector.champion(selectedAttacker)
 		actualSelector.addVisual()
 		cursor.adjustAfterSelectionBattle(actualTurn.team())
-    }
-
-	/*method selectCharB() {
-		
-		
-		cursor.attackStage(true)
-		selectedAttacker = game.uniqueCollider(cursor)
-		actualSelector.champion(selectedAttacker)
-		actualSelector.addVisual()
-		cursor.adjustAfterSelectionBattle(actualTurn.team())	
-	}*/
-	
+    }	
 }
 
 object actualSelector {

@@ -27,6 +27,8 @@ var property champ3
 													 game.onTick(150, champ2.name(), {allChampions.battlePose(champ2)})
 													 game.onTick(150, champ3.name(), {allChampions.battlePose(champ3)}) 
 													 }
+	}
+	
 	method listAfterSelection() {
 		return champions + self.nextTeam().champions()
 	}
@@ -38,7 +40,8 @@ var property champ3
 
 
 object lightness inherits Team(position=game.at(2,6), image="light.png", name="lightness", isLight=true) {
-
+	const property bannerPosition = game.at(0,14) 
+	
 	override method configForBattle() {
 		champions.get(0).position(game.at(13,5))
 		champions.get(1).position(game.at(12,3))
@@ -57,7 +60,8 @@ object lightness inherits Team(position=game.at(2,6), image="light.png", name="l
 
 
 object darkness inherits Team(position=game.at(24,6), image="dark.png", name="darkness", isLight=false) {
-
+	const property bannerPosition = game.at(28,14)
+	
 	override method configForBattle() {
 		champions.get(0).position(game.at(15,5))
 		champions.get(1).position(game.at(16,3))
