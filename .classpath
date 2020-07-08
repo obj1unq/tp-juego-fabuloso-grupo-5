@@ -8,9 +8,9 @@
 	<classpathentry kind="src" path="cursor"/>
 	<classpathentry kind="src" path="attackInterfaces"/>
 	<classpathentry kind="src" path="infoStats"/>
-	<classpathentry kind="src" path="hpBars"/>
 	<classpathentry kind="src" path="arenas"/>
 	<classpathentry kind="src" path="arenas2"/>
+	<classpathentry kind="src" path="hpBars"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
