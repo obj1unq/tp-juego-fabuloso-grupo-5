@@ -1,6 +1,7 @@
 import wollok.game.*
 import starting.*
 import champions.*
+import hpInterface.*
 
 
 class Team {
@@ -23,6 +24,7 @@ var property champ3
 	method configForBattle() { if(self.fullTeam()) { champions.forEach({champion=>champion.image(champion.name() + "1.png")})
 													 champions.forEach({champion=>game.addVisual(champion)})
 													 champions.forEach({champion=>champion.hpBar()})
+													 self.showHPbars()
 													 game.onTick(150, champ1.name(), {allChampions.battlePose(champ1)})
 													 game.onTick(150, champ2.name(), {allChampions.battlePose(champ2)})
 													 game.onTick(150, champ3.name(), {allChampions.battlePose(champ3)}) 
@@ -35,7 +37,19 @@ var property champ3
 	
 	method isFromTeam(objective) {
 		 return champions.contains(objective)
-	}							 
+	}	
+	
+	method showHPbars() {
+		const hp1 = new HPinterface(champ = champ1, y=9)
+		const hp2 = new HPinterface(champ = champ2, y=5)
+		const hp3 = new HPinterface(champ = champ3, y=1)
+		game.addVisual (hp1)
+		game.addVisual (hp2)
+		game.addVisual (hp3)
+		hp1.showHPbar()
+		hp2.showHPbar()
+		hp3.showHPbar()
+	}						 
 }
 
 

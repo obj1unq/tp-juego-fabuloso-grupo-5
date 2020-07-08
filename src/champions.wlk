@@ -36,9 +36,6 @@ class Champion {
 	}
 	*/
 	
-	method hpBar() {
-		game.addVisual(new HPBar(character = self))
-	}
 	method totalHP() {
 		return hp.toString() + "/" + maxHP.toString()
 	}
