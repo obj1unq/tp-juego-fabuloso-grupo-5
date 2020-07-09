@@ -87,7 +87,6 @@ var property selectedEnemy
 		} 
 	}
 
-	
 	method validateSpellCast() {
 		if (selectedAttacker.knowsSorcery()) {
 			selectedAttacker.spellSelected().validate(selectedAttacker, selectedEnemy)
