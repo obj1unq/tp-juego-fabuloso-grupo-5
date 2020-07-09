@@ -1,7 +1,7 @@
 import wollok.game.*
-import starting.*
+import configuracionGeneral.starting.*
 import champions.*
-import hpInterface.*
+import configuracionCampeones.hpBar.*
 
 
 class Team {
@@ -23,7 +23,6 @@ var property champ3
 	method fullTeam() {return champions.size() == 3}
 	method configForBattle() { if(self.fullTeam()) { champions.forEach({champion=>champion.image(champion.name() + "1.png")})
 													 champions.forEach({champion=>game.addVisual(champion)})
-													 champions.forEach({champion=>champion.hpBar()})
 													 self.showHPbars()
 													 game.onTick(150, champ1.name(), {allChampions.battlePose(champ1)})
 													 game.onTick(150, champ2.name(), {allChampions.battlePose(champ2)})

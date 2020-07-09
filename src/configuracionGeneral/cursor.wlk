@@ -1,6 +1,6 @@
 import wollok.game.*
 import fightingSystem.*
-import champions.*
+import configuracionCampeones.champions.*
 
 object cursor {
 	

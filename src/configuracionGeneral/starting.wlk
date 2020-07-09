@@ -1,8 +1,8 @@
 import wollok.game.*
 import dice.*
 import players.*
-import teams.*
-import champions.*
+import configuracionCampeones.teams.*
+import configuracionCampeones.champions.*
 import fightingSystem.*
 import cursor.*
 

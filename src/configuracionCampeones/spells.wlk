@@ -2,7 +2,7 @@ import wollok.game.*
 import champions.*
 import buffs.*
 import teams.*
-import fightingSystem.*
+import configuracionGeneral.fightingSystem.*
 
 class Spell {
 	

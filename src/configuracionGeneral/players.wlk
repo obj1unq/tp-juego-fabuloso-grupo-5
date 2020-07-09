@@ -1,5 +1,5 @@
 import wollok.game.*
-import teams.*
+import configuracionCampeones.teams.*
 import fightingSystem.*
 
 object playerSelector {
@@ -35,7 +35,7 @@ object flag {
 	const property position = game.at(14,12)
 	
 	method image() {
-		return warSystem.actualTurn().toString() + "flag.png"
+		return "dice1.png"
 	}
 }
 
@@ -43,7 +43,7 @@ class Banner {
 	const property player
 	
 	method image() {
-		return warSystem.actualTurn().toString() + player.toString() + "banner.png"
+		return "dice2.png"
 	}
 	
 	method position() {

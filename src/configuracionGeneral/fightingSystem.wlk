@@ -1,9 +1,10 @@
 import wollok.game.*
 import starting.*
 import players.*
-import teams.*
+import configuracionCampeones.teams.*
 import cursor.*
-import champions.*
+import configuracionCampeones.champions.*
+import gameOverScreen.*
 
 object warSystem {
 	
@@ -14,47 +15,6 @@ var property actualTurn = playerSelector.firstSelector()
 var property selectedAttacker
 var property selectedEnemy
 
-	//selectedAttacker.atacar(selectedEnemy)
-	
-	method areSameTeams(c1, c2) {
-		return (c1.team().isLight() == c2.team().isLight())
-	}
-	
-	method executeAttack(type) {
-		selectedAttacker.attack(type, selectedEnemy)
-		self.finishTurn()
-	}
-	
-	method executeSpellCast() {
-		selectedAttacker.spellCast(selectedEnemy)
-		self.finishTurn()
-	}
-	
-	method resetTurn() {
-		selectedAttacker = null
-        selectedEnemy = null
-        cursor.attackStage(true)
-    }
-	
-	method kill(objective) {
-		if (objective.hp() == 0) {
-			game.removeTickEvent(objective.name())
-			objective.image(objective.name().toString() + "4.png")
-			objective.alive(false)
-			actualTurn.team().champions().remove(objective)
-			actualTurn.team().characters().remove(objective)
-			actualTurn.team().nextTeam().champions().remove(objective)
-			actualTurn.team().nextTeam().characters().remove(objective)
-		}
-	}
-	
-	method finishTurn() {
-		self.kill(selectedEnemy)
-		selectedAttacker = null
-		selectedEnemy = null
-		actualTurn = actualTurn.nextPlayer()
-	}
-	
 	method start() {
 		game.clear()
 		game.addVisual(self)
@@ -78,6 +38,55 @@ var property selectedEnemy
 		keyboard.num2().onPressDo({ self.validateSorcery(1) })
 		keyboard.num3().onPressDo({ self.validateSorcery(2) })
 	}
+
+	//selectedAttacker.atacar(selectedEnemy)
+	
+	method areSameTeams(c1, c2) {
+		return (c1.team().isLight() == c2.team().isLight())
+	}
+	
+	method executeAttack(type) {
+		selectedAttacker.attack(type, selectedEnemy)
+		self.finishTurn()
+	}
+	
+	method executeSpellCast() {
+		selectedAttacker.spellCast(selectedEnemy)
+		self.finishTurn()
+	}
+	
+	method resetTurn() {
+		selectedAttacker = null
+        selectedEnemy = null
+        cursor.attackStage(false)
+    }
+	
+	method kill(objective) {
+		if (objective.hp() == 0) {
+			game.removeTickEvent(objective.name())
+			objective.image(objective.name().toString() + "4.png")
+			objective.alive(false)
+			actualTurn.team().champions().remove(objective)
+			actualTurn.team().characters().remove(objective)
+			actualTurn.team().nextTeam().champions().remove(objective)
+			actualTurn.team().nextTeam().characters().remove(objective)
+		}
+		self.checkTeams()
+	}
+	
+	method finishTurn() {
+		self.kill(selectedEnemy)
+		selectedAttacker = null
+		selectedEnemy = null
+		actualTurn = actualTurn.nextPlayer()
+	}
+	
+	method checkTeams() { 
+		if(actualTurn.team().nextTeam().champions().isEmpty()) {
+			gameOver.win(actualTurn)
+		} 
+	}
+
 	
 	method validateSpellCast() {
 		if (selectedAttacker.knowsSorcery()) {

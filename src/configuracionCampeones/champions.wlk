@@ -1,7 +1,7 @@
 import wollok.game.*
 import teams.*
-import cursor.*
-import fightingSystem.*
+import configuracionGeneral.cursor.*
+import configuracionGeneral.fightingSystem.*
 import hpBar.*
 import buffs.*
 import equipment.*
