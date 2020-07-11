@@ -70,6 +70,8 @@ var property selectedEnemy
         self.addCursor()
         cursor.adjustAfterSelection(actualTurn.team().champions())
         cursor.attackStage(false)
+        actualAllySelector.removeVisual()
+        actualEnemySelector.removeVisual()
     }
     
     method addCursor() {
@@ -98,6 +100,8 @@ var property selectedEnemy
 		self.positionActualTurn()
 		game.addVisual(cursor)
 		cursor.initialPosition(0)
+		game.removeVisual(actualAllySelector)
+		game.removeVisual(actualEnemySelector)
 	}
 	
 	method positionActualTurn() {
@@ -134,35 +138,53 @@ var property selectedEnemy
     method selectCharB() {
         if (cursor.attackStage() && selectedAttacker != cursor.collider()) {
             selectedEnemy = cursor.collider()
-   			cursor.nextStage()
-   			game.removeVisual(cursor)
-        } else if (!cursor.attackStage()) {
-   			selectedAttacker = cursor.collider()
+   			actualEnemySelector.champion(selectedEnemy)
+            actualEnemySelector.addVisual()
             cursor.nextStage()
+            game.removeVisual(cursor)
+            cursor.adjustAfterSelectionBattle(actualTurn.team())
+        } else if (!cursor.attackStage() && selectedAttacker != cursor.collider()) {
+   			selectedAttacker = cursor.collider()
+            
+            actualAllySelector.champion(selectedAttacker)
+            actualAllySelector.addVisual()
+            cursor.nextStage()
+            cursor.adjustAfterSelectionBattle(actualTurn.team())
         }
-        actualSelector.champion(selectedAttacker)
-		actualSelector.addVisual()
-		cursor.adjustAfterSelectionBattle(actualTurn.team())
     }
     
 }
 
-object actualSelector {
+class Selector {
+	var property champion
 	
-var property champion
-
-method image() {
-	return if (champion.team().isLight()) { "selectL.png" }
-		   else { "selectD.png" }
-}
-
-method position() {
-	return if (champion.team().isLight()) { champion.position().left(1) }
+	method image() {
+		return if (champion.team().isLight()) { "select" + self.side() + "L.png" }
+		   else { "select" + self.side() + "D.png" }
+	}
+	
+	method side()
+	
+	method position() {
+		return if (champion.team().isLight()) { champion.position().left(1) }
 		   else { champion.position().right(2) }
+	}
+	
+	method addVisual() {
+		if(!game.hasVisual(self)) { game.addVisual(self) }
+	}
+	
+	method removeVisual() {
+		if (game.hasVisual(self)) {
+			game.removeVisual(self)
+		}
+	}
 }
 
-method addVisual() {
-	if(!game.hasVisual(self)) { game.addVisual(self) }
+object actualAllySelector inherits Selector {
+	override method side() { return "Ally" }
 }
-	
+
+object actualEnemySelector inherits Selector {
+	override method side() { return "Enemy" }
 }
