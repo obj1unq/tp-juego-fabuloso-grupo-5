@@ -29,7 +29,7 @@ var property selectedEnemy
 		
 		keyboard.up().onPressDo({cursor.previousChar(self.possibleCurrentMove())})
 		keyboard.down().onPressDo({cursor.nextChar(self.possibleCurrentMove())})
-		keyboard.s().onPressDo({self.selectCharB()})
+		keyboard.s().onPressDo({self.validateSelectCursor()}) //self.selectCharB()})
 		
 		keyboard.x().onPressDo({ self.executeAttack(physical) })
 		keyboard.z().onPressDo({ self.executeAttack(magic) })
@@ -38,6 +38,12 @@ var property selectedEnemy
 		keyboard.num1().onPressDo({ self.validateSorcery(0) })
 		keyboard.num2().onPressDo({ self.validateSorcery(1) })
 		keyboard.num3().onPressDo({ self.validateSorcery(2) })
+	}
+	
+	method validateSelectCursor() {
+		if (game.hasVisual(cursor)) {
+			self.selectCharB()
+		}
 	}
 
 	//selectedAttacker.atacar(selectedEnemy)
@@ -61,7 +67,15 @@ var property selectedEnemy
 	method resetTurn() {
 		selectedAttacker = null
         selectedEnemy = null
+        self.addCursor()
+        cursor.adjustAfterSelection(actualTurn.team().champions())
         cursor.attackStage(false)
+    }
+    
+    method addCursor() {
+    	if (!game.hasVisual(cursor)) {
+    		game.addVisual(cursor)
+    	}
     }
 	
 	method kill(objective) {
@@ -82,6 +96,7 @@ var property selectedEnemy
 		selectedEnemy = null
 		actualTurn = actualTurn.nextPlayer()
 		self.positionActualTurn()
+		game.addVisual(cursor)
 		cursor.initialPosition(0)
 	}
 	
@@ -120,6 +135,7 @@ var property selectedEnemy
         if (cursor.attackStage() && selectedAttacker != cursor.collider()) {
             selectedEnemy = cursor.collider()
    			cursor.nextStage()
+   			game.removeVisual(cursor)
         } else if (!cursor.attackStage()) {
    			selectedAttacker = cursor.collider()
             cursor.nextStage()
