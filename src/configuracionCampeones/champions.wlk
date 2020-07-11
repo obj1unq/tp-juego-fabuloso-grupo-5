@@ -5,6 +5,7 @@ import configuracionGeneral.fightingSystem.*
 import hpBar.*
 import buffs.*
 import equipment.*
+import spells.*
 
 
 class Champion {
@@ -13,7 +14,7 @@ class Champion {
 	const property maxHP = 1 
 	var property hp = 1
 	var property strength = 0
-	var property wisdom = 0 
+	var property wisdom = 1
 	var property alive = true
 	var property weapon = equipments.sword()
 	var property armor = equipments.leatherArmor()
@@ -36,6 +37,11 @@ class Champion {
 	}
 	*/
 	
+	method die() {
+		image = name + "4.png"
+		alive = false
+	}
+	
 	method totalHP() {
 		return hp.toString() + "/" + maxHP.toString()
 	}
@@ -55,7 +61,7 @@ class Champion {
 }
 
 class Sorcerer inherits Champion {
-	const property spells
+	const property spells = [destructiveWave, healingWave, invigoratingWave]
 	var property spellSelected
 	
 	override method knowsSorcery() {

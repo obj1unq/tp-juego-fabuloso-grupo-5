@@ -5,7 +5,7 @@ import configuracionCampeones.champions.*
 object cursor {
 	
 var property position = game.origin()
-var property image = "cursor1.png"	
+var property image = "cursor1.png"	 
 var property initialPosition = 0
 var property attackStage = false
 	
@@ -35,12 +35,10 @@ var property attackStage = false
 	method previousChar(list) {
 		if (initialPosition > 0 && not list.isEmpty()) {
 			initialPosition -= 1 
-			//self.position(list.get(initialPosition).position())
 			position = list.get(initialPosition).position()
 		}
 		else if (initialPosition <= 0 && not list.isEmpty()) {
 			initialPosition = list.size() - 1
-			//self.position(list.last().position())
 			position = list.last().position()
 		}
 	}
@@ -68,13 +66,4 @@ var property attackStage = false
 		attackStage = !attackStage
 	}
 
-}
-
-
-object index {
-
-var index = 0
-
-
-	
 }

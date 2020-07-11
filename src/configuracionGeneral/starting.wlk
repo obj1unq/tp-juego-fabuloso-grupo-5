@@ -279,13 +279,28 @@ const property image = "backgroundSelectArena.png"
 		game.addVisual(arena7)
 		game.addVisual(arena8)
 		game.addVisual(cursor)
-		keyboard.right().onPressDo({cursor.nextChar(arenas)})
-		keyboard.left().onPressDo({cursor.previousChar(arenas)})
-		keyboard.s().onPressDo({cursor.collider().isSelected(true)
-								game.say(self, "¡Empieza la batalla!")
-								warSystem.image("arena" + cursor.collider().number().toString() + "SS.png")
-								game.schedule(1000, {warSystem.start()})})
+		keyboard.right().onPressDo({self.nextCharA()})
+		keyboard.left().onPressDo({self.previousCharA()})
+		keyboard.s().onPressDo({ self.selectArena() })
+	}
+	
+	method selectArena() {
+		if(game.hasVisual(cursor)) { 
+			cursor.collider().isSelected(true)
+			game.say(self, "¡Empieza la batalla!")
+			warSystem.image("arena" + cursor.collider().number().toString() + "SS.png")
+			game.schedule(1000, {warSystem.start()})
+			game.removeVisual(cursor)
+		}
 	}	
+	
+	method nextCharA() {
+		if(game.hasVisual(cursor)) { cursor.nextChar(arenas) }
+	}
+	
+	method previousCharA() {
+		if(game.hasVisual(cursor)) { cursor.previousChar(arenas) }
+	}
 	
 }
 

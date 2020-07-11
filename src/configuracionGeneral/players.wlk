@@ -43,7 +43,15 @@ class Banner {
 	const property player
 	
 	method image() {
-		return "dice2.png"
+		return player.team().name() + player.number().toString() + self.denoteActualTurn() + ".png" 
+	}
+	
+	method denoteActualTurn() {
+		return
+		if(warSystem.actualTurn().number() == player.number()) {
+			"s"
+		}
+		else { "" }
 	}
 	
 	method position() {

@@ -21,6 +21,7 @@ var property selectedEnemy
 		lightness.configForBattle()
 		darkness.configForBattle()
 		cursor.position(actualTurn.team().champions().head().position())
+		cursor.initialPosition(0)
 		game.addVisual(cursor)
 		game.addVisual(flag)
 		game.addVisual(new Banner(player = player1))
@@ -46,13 +47,15 @@ var property selectedEnemy
 	}
 	
 	method executeAttack(type) {
-		selectedAttacker.attack(type, selectedEnemy)
-		self.finishTurn()
+		if (selectedEnemy != null) { 
+			selectedAttacker.attack(type, selectedEnemy)
+			self.finishTurn() }
 	}
 	
 	method executeSpellCast() {
+		if (selectedEnemy != null) {
 		selectedAttacker.spellCast(selectedEnemy)
-		self.finishTurn()
+		self.finishTurn() }
 	}
 	
 	method resetTurn() {
@@ -64,8 +67,7 @@ var property selectedEnemy
 	method kill(objective) {
 		if (objective.hp() == 0) {
 			game.removeTickEvent(objective.name())
-			objective.image(objective.name().toString() + "4.png")
-			objective.alive(false)
+			objective.die()
 			actualTurn.team().champions().remove(objective)
 			actualTurn.team().characters().remove(objective)
 			actualTurn.team().nextTeam().champions().remove(objective)
@@ -79,6 +81,14 @@ var property selectedEnemy
 		selectedAttacker = null
 		selectedEnemy = null
 		actualTurn = actualTurn.nextPlayer()
+		self.positionActualTurn()
+		cursor.initialPosition(0)
+	}
+	
+	method positionActualTurn() {
+		if(!actualTurn.team().champions().isEmpty()) {
+			cursor.position(actualTurn.team().champions().head().position())
+		}
 	}
 	
 	method checkTeams() { 
@@ -104,20 +114,21 @@ var property selectedEnemy
 			actualTurn.team().nextTeam().listAfterSelection()
 		}
 		else { actualTurn.team().champions() }
-	}
-	
-	method selectCharB() {
-        if (cursor.attackStage()) {
+	}	
+    
+    method selectCharB() {
+        if (cursor.attackStage() && selectedAttacker != cursor.collider()) {
             selectedEnemy = cursor.collider()
    			cursor.nextStage()
-        } else {
+        } else if (!cursor.attackStage()) {
    			selectedAttacker = cursor.collider()
             cursor.nextStage()
         }
         actualSelector.champion(selectedAttacker)
 		actualSelector.addVisual()
 		cursor.adjustAfterSelectionBattle(actualTurn.team())
-    }	
+    }
+    
 }
 
 object actualSelector {
