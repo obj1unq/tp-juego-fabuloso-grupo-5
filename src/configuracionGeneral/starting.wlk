@@ -289,8 +289,8 @@ const property image = "backgroundSelectArena.png"
 			cursor.collider().isSelected(true)
 			game.say(self, "¡Empieza la batalla!")
 			warSystem.image("arena" + cursor.collider().number().toString() + "SS.png")
-			game.schedule(1000, {warSystem.start()})
 			game.removeVisual(cursor)
+			game.schedule(600, {controlsReminder.show()})
 		}
 	}	
 	
@@ -303,6 +303,19 @@ const property image = "backgroundSelectArena.png"
 	}
 	
 }
+
+object controlsReminder inherits Screen {
+	
+const property image = "4.png"
+	
+	override method show() {
+		super()
+		keyboard.enter().onPressDo({ warSystem.start() })
+	}
+	
+}
+
+
 
 object info {
 	

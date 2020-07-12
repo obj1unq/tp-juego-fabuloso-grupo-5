@@ -40,8 +40,11 @@ var property champ3
 	
 	method showHPbars() {
 		const hp1 = new HPinterface(champ = champ1, y=9)
+		champ1.yCoordinateForAttack(9)
 		const hp2 = new HPinterface(champ = champ2, y=5)
+		champ2.yCoordinateForAttack(5)
 		const hp3 = new HPinterface(champ = champ3, y=1)
+		champ3.yCoordinateForAttack(1)
 		game.addVisual (hp1)
 		game.addVisual (hp2)
 		game.addVisual (hp3)

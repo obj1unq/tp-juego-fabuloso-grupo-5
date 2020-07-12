@@ -19,7 +19,8 @@ var property champ
 var property y
 
 	method image() {
-		return champ.name() + "HPInterface.png"
+		return if(champ.alive()) { champ.name() + "HPInterface.png" }
+			   else { champ.name() + "HPInterfacedead.png" }
 	}	
 	
 	method position() {

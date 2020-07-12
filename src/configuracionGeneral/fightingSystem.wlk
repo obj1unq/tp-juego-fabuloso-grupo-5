@@ -4,6 +4,7 @@ import players.*
 import configuracionCampeones.teams.*
 import cursor.*
 import configuracionCampeones.champions.*
+import attackInterfaces.*
 import gameOverScreen.*
 
 object warSystem {
@@ -35,9 +36,9 @@ var property selectedEnemy
 		keyboard.z().onPressDo({ self.executeAttack(magic) })
 		keyboard.c().onPressDo({ self.validateSpellCast() })
 		keyboard.r().onPressDo({ self.resetTurn() })
-		keyboard.num1().onPressDo({ self.validateSorcery(0) })
-		keyboard.num2().onPressDo({ self.validateSorcery(1) })
-		keyboard.num3().onPressDo({ self.validateSorcery(2) })
+		keyboard.num1().onPressDo({ self.castSpell(0) })
+		keyboard.num2().onPressDo({ self.castSpell(1) })
+		keyboard.num3().onPressDo({ self.castSpell(2) })
 	}
 	
 	method validateSelectCursor() {
@@ -53,15 +54,15 @@ var property selectedEnemy
 	}
 	
 	method executeAttack(type) {
-		if (selectedEnemy != null) { 
+		if (selectedAttacker != null && selectedEnemy != null) { 
 			selectedAttacker.attack(type, selectedEnemy)
 			self.finishTurn() }
 	}
 	
 	method executeSpellCast() {
-		if (selectedEnemy != null) {
-		selectedAttacker.spellCast(selectedEnemy)
-		self.finishTurn() }
+		if (selectedAttacker != null && selectedEnemy != null) {
+			selectedAttacker.spellCast(selectedEnemy)
+			self.finishTurn() }
 	}
 	
 	method resetTurn() {
@@ -70,8 +71,10 @@ var property selectedEnemy
         self.addCursor()
         cursor.adjustAfterSelection(actualTurn.team().champions())
         cursor.attackStage(false)
-        actualAllySelector.removeVisual()
-        actualEnemySelector.removeVisual()
+        attackerSelector.removeVisual()
+        attackedSelector.removeVisual()
+        attackSystem.remove()
+        spellsSystem.remove()
     }
     
     method addCursor() {
@@ -82,26 +85,36 @@ var property selectedEnemy
 	
 	method kill(objective) {
 		if (objective.hp() == 0) {
-			game.removeTickEvent(objective.name())
-			objective.die()
-			actualTurn.team().champions().remove(objective)
-			actualTurn.team().characters().remove(objective)
-			actualTurn.team().nextTeam().champions().remove(objective)
-			actualTurn.team().nextTeam().characters().remove(objective)
+			 objective.die()
+			 actualTurn.team().champions().remove(objective)
+			 actualTurn.team().characters().remove(objective)
+			 actualTurn.team().nextTeam().champions().remove(objective)
+			 actualTurn.team().nextTeam().characters().remove(objective)
 		}
+		else { 
+			objective.image(objective.name() + "1.png")
+			game.onTick(150, objective.name(), {allChampions.battlePose(objective)})
+		}
+		game.removeTickEvent("finishTurn")
 		self.checkTeams()
 	}
 	
 	method finishTurn() {
-		self.kill(selectedEnemy)
-		selectedAttacker = null
-		selectedEnemy = null
-		actualTurn = actualTurn.nextPlayer()
-		self.positionActualTurn()
-		game.addVisual(cursor)
-		cursor.initialPosition(0)
-		game.removeVisual(actualAllySelector)
-		game.removeVisual(actualEnemySelector)
+		game.removeTickEvent(selectedEnemy.name())
+		selectedEnemy.image(selectedEnemy.name() + selectedAttacker.team().name() + ".png")
+		game.onTick(500, "finishTurn", {
+			self.kill(selectedEnemy)
+			actualTurn = actualTurn.nextPlayer()
+			self.positionActualTurn()
+			self.addCursor()
+			cursor.initialPosition(0)
+			attackerSelector.removeVisual()
+			attackedSelector.removeVisual()
+			spellsSystem.remove()
+			attackSystem.remove()
+			selectedAttacker = null
+			selectedEnemy = null
+		})
 	}
 	
 	method positionActualTurn() {
@@ -118,14 +131,20 @@ var property selectedEnemy
 
 	method validateSpellCast() {
 		if (selectedAttacker.knowsSorcery()) {
-			selectedAttacker.spellSelected().validate(selectedAttacker, selectedEnemy)
+			spellsSystem.actualChamp(selectedAttacker)
+			game.addVisual(spellsSystem)
+		}
+		else {
+			game.say(selectedAttacker, "Lamentablemente no sé de hechicería...")
 		}
 	}
 	
-	method validateSorcery(num) {
-		if (selectedAttacker.knowsSorcery()) {
+	method castSpell(num) {
+		if(num < selectedAttacker.spells().size()) {
 			selectedAttacker.getSpell(num)
+			selectedAttacker.spellSelected().validate(selectedAttacker, selectedEnemy)
 		}
+		else { game.say(selectedAttacker, "¡Sólo sé un hechizo!") }
 	}
 	
 	method possibleCurrentMove() {
@@ -138,23 +157,26 @@ var property selectedEnemy
     method selectCharB() {
         if (cursor.attackStage() && selectedAttacker != cursor.collider()) {
             selectedEnemy = cursor.collider()
-   			actualEnemySelector.champion(selectedEnemy)
-            actualEnemySelector.addVisual()
+   			attackedSelector.champion(selectedEnemy)
+            attackedSelector.addVisual()
+            attackSystem.actualChamp(selectedAttacker)
+            game.addVisual(attackSystem)
             cursor.nextStage()
             game.removeVisual(cursor)
             cursor.adjustAfterSelectionBattle(actualTurn.team())
         } else if (!cursor.attackStage() && selectedAttacker != cursor.collider()) {
    			selectedAttacker = cursor.collider()
-            
-            actualAllySelector.champion(selectedAttacker)
-            actualAllySelector.addVisual()
+            attackerSelector.champion(selectedAttacker)
+            attackerSelector.addVisual()
             cursor.nextStage()
             cursor.adjustAfterSelectionBattle(actualTurn.team())
+            
         }
     }
     
 }
 
+/* 
 class Selector {
 	var property champion
 	
@@ -187,4 +209,38 @@ object actualAllySelector inherits Selector {
 
 object actualEnemySelector inherits Selector {
 	override method side() { return "Enemy" }
+}
+*/
+
+class SelectorDos {
+	
+var property champion
+
+	method image() {
+		return "select" + champion.team().name() + ".png"
+	}
+	
+	method position() {
+		return if (champion.team().isLight()) { champion.position().left(1) }
+		   else { champion.position().right(2) }
+	}
+	
+	method addVisual() {
+		if(!game.hasVisual(self)) { game.addVisual(self) }
+	}
+	
+	method removeVisual() {
+		if (game.hasVisual(self)) {
+			game.removeVisual(self)
+		}
+	}
+	
+}
+
+object attackerSelector inherits SelectorDos {
+	
+}
+
+object attackedSelector inherits SelectorDos {
+	
 }

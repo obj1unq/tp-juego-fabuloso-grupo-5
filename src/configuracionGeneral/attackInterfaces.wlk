@@ -1,6 +1,7 @@
 import wollok.game.*
 import configuracionCampeones.teams.*
 import fightingSystem.*
+import configuracionCampeones.champions.*
 
 
 /* 
@@ -23,3 +24,49 @@ object attackSystem {
 	
 }
 */
+
+class AttackTabs {
+	
+var property actualChamp
+
+	method position() {
+		return if(actualChamp.team().isLight()) {
+			game.at(4, actualChamp.yCoordinateForAttack())
+		}
+		else { game.at(21, actualChamp.yCoordinateForAttack()) }
+	}	
+	
+	method remove() {
+		if(game.hasVisual(self)) {
+			game.removeVisual(self)
+		}
+	}
+	
+}
+
+object attackSystem inherits AttackTabs {
+	
+	method image() {
+		return 
+		if(actualChamp.knowsSorcery())	{
+			actualChamp.team().name().toString() + "AttackInterfaceS.png"
+		}
+		else {
+			actualChamp.team().name().toString() + "AttackInterface.png"
+		}
+	}
+	
+}
+
+
+object spellsSystem inherits AttackTabs {
+	
+	method image() {
+		return
+		if(actualChamp.spells().size() == 3) {
+			actualChamp.team().name().toString() + "Spells.png"
+		}
+		else { actualChamp.team().name().toString() + "lastBreath.png" }
+	}
+	
+}
