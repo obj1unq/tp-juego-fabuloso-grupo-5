@@ -40,3 +40,19 @@ object invigoratingWave inherits Spell {
  	} 
 
 }
+
+object lastBreath inherits Spell {
+	
+	override method effect(attacker, objective) {
+ 		objective.takeDamage(attacker.wisdom() * 4 + attacker.hp() * 1.5)
+ 		attacker.wisdom(0) 
+ 		attacker.hp(1)
+ 	}
+ 	
+ 	override method validate(attacker, objective) {
+ 		if (not warSystem.areSameTeams(attacker, objective)) {
+ 			warSystem.executeSpellCast()
+ 		} else { game.say(attacker, "No debo atacar a mi amigo") }
+ 	}
+	
+}

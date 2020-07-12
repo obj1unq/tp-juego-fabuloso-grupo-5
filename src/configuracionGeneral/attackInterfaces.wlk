@@ -4,27 +4,6 @@ import fightingSystem.*
 import configuracionCampeones.champions.*
 
 
-/* 
-object attackSystem {
-	
-	method position() {
-		return
-		if (lightness.isFromTeam(warSystem.selectedAttacker())) {
- 			warSystem.selectedAttacker().position().left(5).down(1)}
- 		else { warSystem.selectedAttacker().position().right(2).down(1) }
-  }
-	
-	method image() {
-		return if (warSystem.selectedAttacker().knowsSorcery() && lightness.isFromTeam(warSystem.selectedAttacker())) {
-		"lightSpells2.png"
-		}
-		else if ( warSystem.selectedAttacker().knowsSorcery() && lightness.isFromTeam(warSystem.selectedAttacker())) { "darkSpells2.png" }
-		else { "attackSystemNoSorcery.png" } 
-		}
-	
-}
-*/
-
 class AttackTabs {
 	
 var property actualChamp
@@ -49,10 +28,10 @@ object attackSystem inherits AttackTabs {
 	method image() {
 		return 
 		if(actualChamp.knowsSorcery())	{
-			actualChamp.team().name().toString() + "AttackInterfaceS.png"
+			actualChamp.team().name() + "AttackInterfaceS.png"
 		}
 		else {
-			actualChamp.team().name().toString() + "AttackInterface.png"
+			actualChamp.team().name() + "AttackInterface.png"
 		}
 	}
 	
@@ -64,9 +43,9 @@ object spellsSystem inherits AttackTabs {
 	method image() {
 		return
 		if(actualChamp.spells().size() == 3) {
-			actualChamp.team().name().toString() + "Spells.png"
+			actualChamp.team().name() + "Spells.png"
 		}
-		else { actualChamp.team().name().toString() + "lastBreath.png" }
+		else { actualChamp.team().name() + "lastBreath.png" }
 	}
 	
 }

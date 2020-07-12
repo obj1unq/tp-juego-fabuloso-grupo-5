@@ -135,8 +135,8 @@ var property actualTurn = playerSelector.firstSelector()
 	}
 	
 	method actualTeamOfTurn() {
-		return if (actualTurn.team().isLight()) { allChampions.lightTeam() }
-			   else { allChampions.darkTeam() }
+		return if (actualTurn.team().isLight()) { championsToSelect.lightTeam() }
+			   else { championsToSelect.darkTeam() }
 	}
 
 
@@ -176,24 +176,25 @@ var property actualTurn = playerSelector.firstSelector()
 	
 	
 	method addCharactersVisual() {
-		game.addVisual(allChampions.paladin())
-		game.addVisual(allChampions.berserker())
-		game.addVisual(allChampions.archer())
-		game.addVisual(allChampions.mage())
-		game.addVisual(allChampions.doomGuy())
-		game.addVisual(allChampions.knight())
-		game.addVisual(allChampions.dracula())
-		game.addVisual(allChampions.darkBerserker())
-		game.addVisual(allChampions.goblin())
-		game.addVisual(allChampions.wizard())
-		game.addVisual(allChampions.pinkyDemon())
-		game.addVisual(allChampions.spellCaster())
+		game.addVisual(championsToSelect.paladin())
+		game.addVisual(championsToSelect.berserker())
+		game.addVisual(championsToSelect.archer())
+		game.addVisual(championsToSelect.mage())
+		game.addVisual(championsToSelect.doomGuy())
+		game.addVisual(championsToSelect.knight())
+		game.addVisual(championsToSelect.dracula())
+		game.addVisual(championsToSelect.darkBerserker())
+		game.addVisual(championsToSelect.goblin())
+		game.addVisual(championsToSelect.wizard())
+		game.addVisual(championsToSelect.pinkyDemon())
+		game.addVisual(championsToSelect.spellCaster())
 	}
 
 	method selectChar() {
 			if(!self.ready()) {
 				self.actualChamp().image(self.actualChamp().name() + "S.png")
-				actualTurn.team().addChampion(self.actualChamp())
+				//actualTurn.team().addChampion(self.actualChamp())
+				actualTurn.team().addChampion(self.actualChampSelect())
 				cursor.removeActual(self.actualTeamOfTurn())
 				cursor.adjustAfterSelection(self.actualTeamOfTurn())
 				self.changeTurn()
@@ -223,9 +224,13 @@ var property actualTurn = playerSelector.firstSelector()
 			darkness.champ3(darkness.champions().get(2))
 		}
 	}
-	
+
 	method actualChamp() {
 		return cursor.collider()
+	}
+
+	method actualChampSelect() {
+		return championsInBattle.find(cursor.collider(), actualTurn.team())
 	}
 	
 	method ready() {

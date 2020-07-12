@@ -93,7 +93,7 @@ var property selectedEnemy
 		}
 		else { 
 			objective.image(objective.name() + "1.png")
-			game.onTick(150, objective.name(), {allChampions.battlePose(objective)})
+			game.onTick(150, objective.name(), {championsInBattle.battlePose(objective)})
 		}
 		game.removeTickEvent("finishTurn")
 		self.checkTeams()

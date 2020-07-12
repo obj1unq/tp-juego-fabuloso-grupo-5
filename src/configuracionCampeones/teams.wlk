@@ -24,9 +24,9 @@ var property champ3
 	method configForBattle() { if(self.fullTeam()) { champions.forEach({champion=>champion.image(champion.name() + "1.png")})
 													 champions.forEach({champion=>game.addVisual(champion)})
 													 self.showHPbars()
-													 game.onTick(150, champ1.name(), {allChampions.battlePose(champ1)})
-													 game.onTick(150, champ2.name(), {allChampions.battlePose(champ2)})
-													 game.onTick(150, champ3.name(), {allChampions.battlePose(champ3)}) 
+													 game.onTick(150, champ1.name(), {championsInBattle.battlePose(champ1)})
+													 game.onTick(150, champ2.name(), {championsInBattle.battlePose(champ2)})
+													 game.onTick(150, champ3.name(), {championsInBattle.battlePose(champ3)}) 
 													 }
 	}
 	
@@ -70,7 +70,7 @@ object lightness inherits Team(position=game.at(2,6), image="light.png", name="l
 	}
 	
 	override method leader() {
-		return allChampions.paladin()
+		return championsToSelect.paladin()
 	}
 }
 
@@ -90,7 +90,7 @@ object darkness inherits Team(position=game.at(24,6), image="dark.png", name="da
 	}
 	
 	override method leader() {
-		return allChampions.dracula()
+		return championsToSelect.dracula()
 	}
 													
 }

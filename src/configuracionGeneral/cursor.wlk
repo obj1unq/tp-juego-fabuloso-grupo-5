@@ -13,7 +13,7 @@ var property attackStage = false
 		return if(!attackStage) {
 				  "cursor1.png"
 			   }
-		  else if(attackStage and allChampions.isFromTeam(self.collider(), warSystem.actualTurn().team())) {
+		  else if(attackStage and championsInBattle.isFromTeam(self.collider(), warSystem.actualTurn().team())) {
 			   	  "cursor2.png"
 			   }
 		  else { "cursor3.png" }
