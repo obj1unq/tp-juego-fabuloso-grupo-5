@@ -24,9 +24,9 @@ var property champ3
 	method configForBattle() { if(self.fullTeam()) { champions.forEach({champion=>champion.image(champion.name() + "1.png")})
 													 champions.forEach({champion=>game.addVisual(champion)})
 													 self.showHPbars()
-													 game.onTick(150, champ1.name(), {championsInBattle.battlePose(champ1)})
-													 game.onTick(150, champ2.name(), {championsInBattle.battlePose(champ2)})
-													 game.onTick(150, champ3.name(), {championsInBattle.battlePose(champ3)}) 
+													 game.onTick(150, champ1.name(), {champ1.battlePose()})
+													 game.onTick(150, champ2.name(), {champ2.battlePose()})
+													 game.onTick(150, champ3.name(), {champ3.battlePose()}) 
 													 }
 	}
 	
@@ -51,7 +51,14 @@ var property champ3
 		hp1.showHPbar()
 		hp2.showHPbar()
 		hp3.showHPbar()
-	}						 
+	}	
+	
+	method kill(objective) {
+		champions.remove(objective)
+		characters.remove(objective)
+		self.nextTeam().champions().remove(objective)
+		self.nextTeam().characters().remove(objective)
+	}					 
 }
 
 

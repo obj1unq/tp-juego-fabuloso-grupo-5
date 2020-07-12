@@ -36,6 +36,10 @@ class Champion inherits ChampionSelect {
 	var property yCoordinateForAttack = 0
 	//var property image
 	
+	method isAlive() {
+		return hp > 0
+	}
+	
 	method die() {
 		image = name + "4.png"
 		alive = false
@@ -55,7 +59,31 @@ class Champion inherits ChampionSelect {
 	}
 	
 	method recieveSpell(spellCaster, _spell) {
-		_spell.effect(self, spellCaster)
+		_spell.effect(spellCaster, self)
+	}
+	
+	method setAfterAttack() {
+		image = name + "1.png"
+		game.onTick(150, name, {self.battlePose()})
+	}
+	
+	method battlePose() {
+		if (self.hasImage(1)) {
+			image = name + "2.png"
+		}
+		else if (self.hasImage(2)) {
+				 image = name + "3.png"
+		}
+		else if (self.hasImage(3)) {
+				 image = name + "1.png"
+		}
+		else { game.removeTickEvent(name)
+			   image = name + "4.png"
+		}
+	}
+	
+	method hasImage(num) {
+		return image == name + num + ".png"
 	}
 }
 
@@ -73,6 +101,14 @@ class Sorcerer inherits Champion {
 	
 	method spellCast(champion) {
 		champion.recieveSpell(self, spellSelected)
+	}
+	
+	method hasMoreSpells(num) {
+		return num <= spells.size()
+	}
+	
+	method validateSpell(objective) {
+		spellSelected.validate(self, objective)
 	}
 }
 
@@ -109,11 +145,6 @@ const property spellCaster = new ChampionSelect(position=game.at(20,2), image="s
 //TEAMS
 const property lightTeam = [paladin,berserker,archer,mage,doomGuy,knight]
 const property darkTeam = [dracula,darkBerserker,goblin,wizard,pinkyDemon,spellCaster]
-
-	
-	method isFromTeam(_champ,_team) {
-		return _champ.team() == _team
-	}
 	
 }
 
@@ -163,22 +194,6 @@ const property spellCaster = new Sorcerer(position=game.at(10,11), image="spellC
 //TEAMS
 const property lightTeam = [paladin,berserker,archer,mage,doomGuy,knight]
 const property darkTeam = [dracula,darkBerserker,goblin,wizard,pinkyDemon,spellCaster]
-
-
-	method battlePose(champ) {   			
-		if (champ.image() == champ.name() + "1.png") {
-			champ.image(champ.name() + "2.png")
-		}
-		else if (champ.image() == champ.name() + "2.png") {
-				 champ.image(champ.name() + "3.png")
-		}
-		else if (champ.image() == champ.name() + "3.png") {
-				 champ.image(champ.name() + "1.png")
-		}
-		else { game.removeTickEvent(champ.name())
-			   champ.image(champ.name() + "4.png")
-		}
-	}
 	
 	
 	method isFromTeam(_champ, _team) {

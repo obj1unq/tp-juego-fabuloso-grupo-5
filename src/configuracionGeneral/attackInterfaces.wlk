@@ -15,6 +15,11 @@ var property actualChamp
 		else { game.at(21, actualChamp.yCoordinateForAttack()) }
 	}	
 	
+	method show(attacker) {
+		actualChamp=attacker
+		game.addVisual(self)
+	}
+	
 	method remove() {
 		if(game.hasVisual(self)) {
 			game.removeVisual(self)

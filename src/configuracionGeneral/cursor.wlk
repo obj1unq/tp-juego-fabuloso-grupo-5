@@ -9,6 +9,12 @@ var property image = "cursor1.png"
 var property initialPosition = 0
 var property attackStage = false
 	
+	method initializeForBattle() {
+		position = warSystem.actualTurn().team().champions().head().position()
+		initialPosition = 0
+		game.addVisual(self)
+	}
+	
 	method image() {
 		return if(!attackStage) {
 				  "cursor1.png"

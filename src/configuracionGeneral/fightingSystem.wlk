@@ -21,9 +21,7 @@ var property selectedEnemy
 		game.addVisual(self)
 		lightness.configForBattle()
 		darkness.configForBattle()
-		cursor.position(actualTurn.team().champions().head().position())
-		cursor.initialPosition(0)
-		game.addVisual(cursor)
+		cursor.initializeForBattle()
 		game.addVisual(flag)
 		game.addVisual(new Banner(player = player1))
 		game.addVisual(new Banner(player = player2))
@@ -54,15 +52,19 @@ var property selectedEnemy
 	}
 	
 	method executeAttack(type) {
-		if (selectedAttacker != null && selectedEnemy != null) { 
+		if (self.areInitialized()) { 
 			selectedAttacker.attack(type, selectedEnemy)
 			self.finishTurn() }
 	}
 	
 	method executeSpellCast() {
-		if (selectedAttacker != null && selectedEnemy != null) {
+		if (self.areInitialized()) {
 			selectedAttacker.spellCast(selectedEnemy)
 			self.finishTurn() }
+	}
+	
+	method areInitialized() {
+		return selectedAttacker != null && selectedEnemy != null
 	}
 	
 	method resetTurn() {
@@ -84,16 +86,12 @@ var property selectedEnemy
     }
 	
 	method kill(objective) {
-		if (objective.hp() == 0) {
+		if (!objective.isAlive()) {
 			 objective.die()
-			 actualTurn.team().champions().remove(objective)
-			 actualTurn.team().characters().remove(objective)
-			 actualTurn.team().nextTeam().champions().remove(objective)
-			 actualTurn.team().nextTeam().characters().remove(objective)
+			 actualTurn.team().kill(objective)
 		}
 		else { 
-			objective.image(objective.name() + "1.png")
-			game.onTick(150, objective.name(), {championsInBattle.battlePose(objective)})
+			objective.setAfterAttack()
 		}
 		game.removeTickEvent("finishTurn")
 		self.checkTeams()
@@ -102,7 +100,7 @@ var property selectedEnemy
 	method finishTurn() {
 		game.removeTickEvent(selectedEnemy.name())
 		selectedEnemy.image(selectedEnemy.name() + selectedAttacker.team().name() + ".png")
-		game.onTick(500, "finishTurn", {
+		game.onTick(150, "finishTurn", {
 			self.kill(selectedEnemy)
 			actualTurn = actualTurn.nextPlayer()
 			self.positionActualTurn()
@@ -132,21 +130,20 @@ var property selectedEnemy
 	}
 
 	method validateSpellCast() {
-		if (selectedAttacker.knowsSorcery()) {
-			spellsSystem.actualChamp(selectedAttacker)
-			game.addVisual(spellsSystem)
+		if (self.areInitialized() && selectedAttacker.knowsSorcery() && !game.hasVisual(spellsSystem)) {
+			spellsSystem.show(selectedAttacker)
 		}
-		else {
+		else if(self.areInitialized() && !game.hasVisual(spellsSystem)){
 			game.say(selectedAttacker, "Lamentablemente no sé de hechicería...")
 		}
 	}
 	
 	method castSpell(num) {
-		if(num < selectedAttacker.spells().size()) {
+		if(self.areInitialized() && selectedAttacker.knowsSorcery() && selectedAttacker.hasMoreSpells(num)) {
 			selectedAttacker.getSpell(num)
-			selectedAttacker.spellSelected().validate(selectedAttacker, selectedEnemy)
+			selectedAttacker.validateSpell(selectedEnemy)
 		}
-		else { game.say(selectedAttacker, "¡Sólo sé un hechizo!") }
+		else if(self.areInitialized() && selectedAttacker.knowsSorcery() && !selectedAttacker.hasMoreSpells(num)) { game.say(selectedAttacker, "¡Sólo sé un hechizo!") }
 	}
 	
 	method possibleCurrentMove() {
@@ -172,7 +169,6 @@ var property selectedEnemy
             attackerSelector.addVisual()
             cursor.nextStage()
             cursor.adjustAfterSelectionBattle(actualTurn.team())
-            
         }
     }
     

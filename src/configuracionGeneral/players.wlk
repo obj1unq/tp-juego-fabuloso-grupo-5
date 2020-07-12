@@ -18,6 +18,10 @@ const property number = 1
 	method nextPlayer() {
 		return player2
 	}
+	
+	method name() {
+		return team.name() + number
+	}
 
 }
 
@@ -28,6 +32,10 @@ const property number = 2
 	
 	method nextPlayer() {
 		return player1
+	}
+	
+	method name() {
+		return team.name() + number
 	}
 }
 
@@ -43,7 +51,7 @@ class Banner {
 	const property player
 	
 	method image() {
-		return player.team().name() + player.number().toString() + self.denoteActualTurn() + ".png" 
+		return player.name() + self.denoteActualTurn() + ".png" 
 	}
 	
 	method denoteActualTurn() {

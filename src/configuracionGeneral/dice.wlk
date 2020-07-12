@@ -13,4 +13,8 @@ var property position = game.origin()
 		image = "dice" + number.toString() + ".png"
 	}
 	
+	method isGreater(dice) {
+		return number > dice.number()
+	}
+	
 }

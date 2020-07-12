@@ -78,11 +78,11 @@ const dice2 = new Dice(position=game.at(24,5))
 	}
 	
 	method winSet() {
-		       if(dice1.number() > dice2.number()) { playerSelector.turn(1) 
+		       if(dice1.isGreater(dice2)) { playerSelector.turn(1) 
 		       										 game.say(self, "El jugador 1 elige")
 		       										 game.onTick(1500, "team Selection", { teamSelection.show() })
 		       }
-		  else if(dice2.number() > dice1.number()) { playerSelector.turn(2)
+		  else if(dice2.isGreater(dice1)) { playerSelector.turn(2)
 		  											 playerSelector.firstSelector(player2)
 		  											 playerSelector.secondSelector(player1)
 		  											 game.say(self, "El jugador 2 elige")
@@ -95,7 +95,7 @@ const dice2 = new Dice(position=game.at(24,5))
 	}
 	
 	method winnerSelectorNumber() {
-		return if (dice1.number() > dice2.number()) { 1 } else { 2 }
+		return if (dice1.isGreater(dice2)) { 1 } else { 2 }
 	}
 	
 }

@@ -7,10 +7,13 @@ class HPBar {
 	var property position
 	
 	method image() {
-		return if(character.team().isLight()) {
+		return if(character.team().isLight() && character.alive()) {
 			   "HPL-" +  (character.hpPercent() * 0.1).truncate(0).min(10).toString() + ".png" }
-			   else { "HPD-" +  (character.hpPercent() * 0.1).truncate(0).min(10).toString() + ".png" }
+			   else if(!character.team().isLight() && character.alive()) { "HPD-" +  (character.hpPercent() * 0.1).truncate(0).min(10).toString() + ".png" }
+			   else if(character.team().isLight()) { "HPLdead.png" }
+			   else { "HPDdead.png" }
 	}
+	
 }
 
 class HPinterface {

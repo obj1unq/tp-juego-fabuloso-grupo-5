@@ -43,7 +43,7 @@ object invigoratingWave inherits Spell {
 
 object lastBreath inherits Spell {
 	
-	override method effect(objective, attacker) {
+	override method effect(attacker, objective) {
  		objective.takeDamage(attacker.wisdom() * 4 + attacker.hp() * 1.5)
  		attacker.wisdom(0) 
  		attacker.hp(1)
