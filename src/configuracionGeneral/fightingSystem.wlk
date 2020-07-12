@@ -112,6 +112,8 @@ var property selectedEnemy
 			attackedSelector.removeVisual()
 			spellsSystem.remove()
 			attackSystem.remove()
+			game.say(selectedEnemy, "mi vida es " + selectedEnemy.hp())
+			game.say(selectedAttacker, "mi vida es " + selectedAttacker.hp())
 			selectedAttacker = null
 			selectedEnemy = null
 		})

@@ -13,6 +13,8 @@ const property position = game.at(14,8)
 			game.addVisual(self)
 			game.say(self, "Gana el jugador" + actualTurn.number().toString())
 			game.schedule(2000, {game.stop()})
+			
+			//TODO restart game
 		}
 		else { game.say(self, "Empate")
 			   game.schedule(2000, {game.stop()})
