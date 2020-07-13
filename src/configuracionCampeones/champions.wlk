@@ -22,7 +22,6 @@ class ChampionSelect {
 
 class Champion inherits ChampionSelect {
 	
-	//var property position 
 	var property maxHP = 1 
 	var property hp = 1
 	var property strength = 0
@@ -196,9 +195,9 @@ const property mage = new ChampionSelect(position=game.at(16,11), image="mage.pn
 const property doomGuy = new ChampionSelect(position=game.at(18,11), image="doomGuy.png", team=lightness, name="doomGuy", tip="Otro tipo duro.")
 const property knight = new ChampionSelect(position=game.at(20,11), image="knight.png", team=lightness, name="knight", tip="Tal vez sea el campeón perfecto... o tal vez el peor.")
 //DARKNESS
-const property dracula = new ChampionSelect(position=game.at(10,2), image="dracula.png", team=darkness, name="dracula")
+const property dracula = new ChampionSelect(position=game.at(10,2), image="dracula.png", team=darkness, name="dracula", tip="Solo chupo sangre...")
 const property darkBerserker = new ChampionSelect(position=game.at(12,2), image="darkBerserker.png", team=darkness, name="darkBerserker", tip="Sólo un pobre vikingo corrompido...")
-const property goblin = new ChampionSelect(position=game.at(14,2), image="goblin.png", team=darkness, name="goblin")
+const property goblin = new ChampionSelect(position=game.at(14,2), image="goblin.png", team=darkness, name="goblin", tip="gungigingan")
 const property wizard = new ChampionSelect(position=game.at(16,2), image="wizard.png", team=darkness, name="wizard", tip="La onda destructiva divide tu sabiduría por 4, ¡cuidado!")
 const property pinkyDemon = new ChampionSelect(position=game.at(18,2), image="pinkyDemon.png", team=darkness, name="pinkyDemon", tip="Sólo un demonio duro.")
 const property spellCaster = new ChampionSelect(position=game.at(20,2), image="spellCaster.png", team=darkness, name="spellCaster", tip="Tal vez sea el hechicero perfecto... o tal vez el peor.")

@@ -25,12 +25,10 @@ var property selectedEnemy
 		game.addVisual(flag)
 		player1.showBanner()
 		player2.showBanner()
-		//game.addVisual(new Banner(player = player1))
-		//game.addVisual(new Banner(player = player2))
 		
 		keyboard.up().onPressDo({cursor.previousChar(self.possibleCurrentMove())})
 		keyboard.down().onPressDo({cursor.nextChar(self.possibleCurrentMove())})
-		keyboard.s().onPressDo({self.validateSelectCursor()}) //self.selectCharB()})
+		keyboard.s().onPressDo({self.validateSelectCursor()}) 
 		
 		keyboard.x().onPressDo({ self.executeAttack(physical) })
 		keyboard.z().onPressDo({ self.executeAttack(magic) })
@@ -100,7 +98,7 @@ var property selectedEnemy
         spellsSystem.remove()
     }
 	
-	method kill(objective) {
+	method verifyDeath(objective) {
 		if (!objective.isAlive()) {
 			 objective.die()
 			 actualTurn.team().kill(objective)
@@ -121,7 +119,7 @@ var property selectedEnemy
 		selectedEnemy = null
 		
 		game.onTick(150, "finishTurn", {
-			self.kill(enemy)
+			self.verifyDeath(enemy)
 			actualTurn = actualTurn.nextPlayer()
 			cursor.initializeForBattle()
 			attackerSelector.removeVisual()

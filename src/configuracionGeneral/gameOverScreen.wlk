@@ -8,18 +8,22 @@ import players.*
 object gameOver {
 	
 const property position = game.origin()
+var image
 	
 	method image() {
-		return self.winner().name() + "gameOver.png" 
+		return image 
 	}
 	
 	method win(actualTurn) {
 		if (!actualTurn.team().champions().isEmpty()) {
-			self.clear()
-			game.addVisual(self)
+			image = self.winner().name() + "gameOver.png" 
+			game.schedule(1000, {self.clear()
+						         game.addVisual(self)})
 		}
-		else { game.say(self, "Empate")
-			   game.schedule(2000, {game.stop()})
+		else { game.say(self, "Empate, ¡se deberá jugar de nuevo!")
+			   image = "empate.png"
+			   game.schedule(1000, {self.clear()
+						            game.addVisual(self)})
 		}
 	}
 	
