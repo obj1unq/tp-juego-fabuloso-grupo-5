@@ -16,6 +16,43 @@ var property secondSelector = player2
 	
 }
 
+class Player {
+	
+var property banner = new Banner(player=self)
+
+	method team()
+	method number()
+	
+	method name() {
+		return self.team().name() + self.number()
+	}
+	
+	method nextPlayer()
+	method showBanner() {
+		game.addVisual(banner)
+	}
+	
+}
+
+object player1 inherits Player {
+	
+var property team = lightness
+const property number = 1
+
+	override method nextPlayer() { return player2 }
+	
+}
+
+object player2 inherits Player {
+	
+var property team = darkness
+const property number = 2
+	
+	override method nextPlayer() { return player1 }
+	
+}
+
+/* 
 object player1 {
 	
 var property team = lightness
@@ -44,12 +81,12 @@ const property number = 2
 		return team.name() + number
 	}
 }
-
+*/
 object flag {
-	const property position = game.at(14,12)
+	const property position = game.at(13,11)
 	
 	method image() {
-		return "dice1.png"
+		return "mainFlag.png"
 	}
 }
 

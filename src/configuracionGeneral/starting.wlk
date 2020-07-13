@@ -80,16 +80,16 @@ var dice2 = new Dice(position=game.at(24,5))
 	method winSet() {
 		       if(dice1.isGreater(dice2)) { playerSelector.turn(1) 
 		       								game.say(self, "El jugador 1 elige")
-		       								game.onTick(1000, "team Selection", { teamSelection.show() })
+		       								game.onTick(500, "team Selection", { teamSelection.show() })
 		       }
 		  else if(dice2.isGreater(dice1)) { playerSelector.turn(2)
 		  								    playerSelector.firstSelector(player2)
 		  									playerSelector.secondSelector(player1)
 		  									game.say(self, "El jugador 2 elige")
-		  									game.onTick(1000, "team Selection", { teamSelection.show() })
+		  									game.onTick(500, "team Selection", { teamSelection.show() })
 		  }
 		  else { game.say(self, "Un justo empate, otro intento...")
-		  		 game.onTick(2000, "empate", {playerSelector.turn(1) 
+		  		 game.onTick(1000, "empate", {playerSelector.turn(1) 
 		  		 							  self.show()})
 		  }
 	}
@@ -157,51 +157,50 @@ var property actualTurn
 		cursor.position(self.initialCharS().position())
 		game.addVisual(cursor)
 		game.addVisual(selectorChampIndicator)
-		keyboard.right().onPressDo({cursor.nextChar(self.actualTeamOfTurn())})
-		keyboard.left().onPressDo({cursor.previousChar(self.actualTeamOfTurn())})
+		keyboard.right().onPressDo({self.nextChar()})
+		keyboard.left().onPressDo({self.previousChar()})
 		keyboard.s().onPressDo({self.selectChar()})
 		keyboard.i().onPressDo({self.showInfo()})
+		keyboard.c().onPressDo({self.showActualTip()})
 		keyboard.backspace().onPressDo({self.back()})
 	}
 
-	//Queda agregar stats para luego mostrarlos como valores fijos en los primeros 5 pj de cada equipo.
 	method showInfo() {
-		if(!game.hasVisual(info) && !self.ready()) {
-			game.addVisual(info)
-		}
-		else { game.say(self, "Informaciones no disponibles") }
+		info.addVisual()
 	}
 
 	method back() {
-		if(game.hasVisual(info) && !self.ready()) {
+		if(info.isInGame() && !self.ready()) {
 		   game.removeVisual(info)
 		}
 	}
-	//Queda agregar stats para luego mostrarlos como valores fijos en los primeros 5 pj de cada equipo.
+	
+	method showActualTip() {
+		if(info.isInGame() && !self.ready()) {
+			info.sayTip(self.actualChamp())
+		}
+	}
 	
 	
 	method addCharactersVisual() {
 		championsToSelect.addVisuals()
-		/* 
-		game.addVisual(championsToSelect.paladin())
-		game.addVisual(championsToSelect.berserker())
-		game.addVisual(championsToSelect.archer())
-		game.addVisual(championsToSelect.mage())
-		game.addVisual(championsToSelect.doomGuy())
-		game.addVisual(championsToSelect.knight())
-		game.addVisual(championsToSelect.dracula())
-		game.addVisual(championsToSelect.darkBerserker())
-		game.addVisual(championsToSelect.goblin())
-		game.addVisual(championsToSelect.wizard())
-		game.addVisual(championsToSelect.pinkyDemon())
-		game.addVisual(championsToSelect.spellCaster())
-		*/
+	}
+	
+	method nextChar() {
+		if(!info.isInGame()) {
+			cursor.nextChar(self.actualTeamOfTurn())
+		}
+	}
+	
+	method previousChar() {
+		if(!info.isInGame()) {
+			cursor.previousChar(self.actualTeamOfTurn())
+		}
 	}
 
 	method selectChar() {
 			if(!self.ready()) {
 				self.actualChamp().image(self.actualChamp().name() + "S.png")
-				//actualTurn.team().addChampion(self.actualChamp())
 				actualTurn.team().addChampion(self.actualChampSelect())
 				cursor.removeActual(self.actualTeamOfTurn())
 				cursor.adjustAfterSelection(self.actualTeamOfTurn())
@@ -226,12 +225,6 @@ var property actualTurn
 			game.schedule(1200, {selectorArenaIndicator.show()})
 			lightness.configChampionsImmutable()
 			darkness.configChampionsImmutable()
-			//lightness.champ1(lightness.champions().get(0))
-			//lightness.champ2(lightness.champions().get(1))
-			//lightness.champ3(lightness.champions().get(2))
-			//darkness.champ1(darkness.champions().get(0))
-			//darkness.champ2(darkness.champions().get(1))
-			//darkness.champ3(darkness.champions().get(2))
 		}
 	}
 
@@ -344,6 +337,20 @@ const property position = game.origin()
 
 	method image() {
 		return cursor.collider().name().toString() + "I.png"
+	}
+	
+	method isInGame() {
+		return game.hasVisual(self)
+	}
+	
+	method sayTip(champ) {
+		game.say(self, champ.tip())
+	}
+	
+	method addVisual() {
+		if(!self.isInGame() && !champsSelection.ready()) {
+			game.addVisual(self)
+		}
 	}
 	
 }

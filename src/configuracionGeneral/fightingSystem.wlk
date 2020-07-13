@@ -23,8 +23,10 @@ var property selectedEnemy
 		darkness.configForBattle()
 		cursor.initializeForBattle()
 		game.addVisual(flag)
-		game.addVisual(new Banner(player = player1))
-		game.addVisual(new Banner(player = player2))
+		player1.showBanner()
+		player2.showBanner()
+		//game.addVisual(new Banner(player = player1))
+		//game.addVisual(new Banner(player = player2))
 		
 		keyboard.up().onPressDo({cursor.previousChar(self.possibleCurrentMove())})
 		keyboard.down().onPressDo({cursor.nextChar(self.possibleCurrentMove())})
@@ -38,17 +40,34 @@ var property selectedEnemy
 		keyboard.num2().onPressDo({ self.castSpell(1) })
 		keyboard.num3().onPressDo({ self.castSpell(2) })
 		
-		keyboard.h().onPressDo({self.sayHP()})
+		keyboard.h().onPressDo({self.showHP()})
+		keyboard.p().onPressDo({self.showPhysicalDmg()})
+		keyboard.m().onPressDo({self.showMagicDmg()})
+		keyboard.w().onPressDo({self.showWisdom()})
 	}
 	
-	method sayHP() {
-		if(game.hasVisual(cursor)) {
+	method showHP() {
+		if(cursor.isInGame()) {
 			cursor.collider().sayHP()
 		}
 	}
-	
+	method showPhysicalDmg() {
+		if(cursor.isInGame()) {
+			cursor.collider().sayPhysicalDmg()
+		}
+	}
+	method showMagicDmg() {
+		if(cursor.isInGame()) {
+			cursor.collider().sayMagicDmg()
+		}
+	}
+	method showWisdom() {
+		if(cursor.isInGame()) {
+			cursor.collider().sayWisdom()
+		}
+	}
 	method validateSelectCursor() {
-		if (game.hasVisual(cursor)) {
+		if (cursor.isInGame()) {
 			self.selectCharB()
 		}
 	}
@@ -74,19 +93,14 @@ var property selectedEnemy
 	method resetTurn() {
 		selectedAttacker = null
         selectedEnemy = null
-        self.addCursor()
-        cursor.adjustAfterSelection(actualTurn.team().champions())
-        cursor.attackStage(false)
+        cursor.initializeForBattle()
+        //cursor.addVisual()
+        //cursor.adjustAfterSelection(actualTurn.team().champions())
+        //cursor.attackStage(false)
         attackerSelector.removeVisual()
         attackedSelector.removeVisual()
         attackSystem.remove()
         spellsSystem.remove()
-    }
-    
-    method addCursor() {
-    	if (!game.hasVisual(cursor)) {
-    		game.addVisual(cursor)
-    	}
     }
 	
 	method kill(objective) {
@@ -161,7 +175,7 @@ var property selectedEnemy
         	self.selectEnemy()
             attackedSelector.show(selectedEnemy)
             attackSystem.show(selectedAttacker)
-            game.removeVisual(cursor)
+            cursor.removeVisual()
             cursor.setAfterSelection()
         } else if (!cursor.attackStage() && selectedAttacker != cursor.collider()) {
    			self.selectAttacker()

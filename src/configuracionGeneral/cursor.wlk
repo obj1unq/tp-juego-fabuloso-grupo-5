@@ -10,10 +10,11 @@ var property initialPosition = 0
 var property attackStage = false
 	
 	method initializeForBattle() {
-		if(!warSystem.actualTurn().team().isDefeated() && !game.hasVisual(self)) {
+		if(!warSystem.actualTurn().team().isDefeated()) {
+			attackStage = false
 			position = warSystem.actualTurn().team().champions().head().position()
 			initialPosition = 0
-			game.addVisual(self)
+			self.addVisual()
 		}
 	}
 	
@@ -77,6 +78,22 @@ var property attackStage = false
 	method setAfterSelection() {
 		self.nextStage()
         self.adjustAfterSelectionBattle(warSystem.actualTurn().team())
+	}
+	
+	method isInGame() {
+		return game.hasVisual(self)
+	}
+	
+	method addVisual() {
+		if(!self.isInGame()) {
+			game.addVisual(self)
+		}
+	}
+	
+	method removeVisual() {
+		if(self.isInGame()) {
+			game.removeVisual(self)
+		}
 	}
 
 }

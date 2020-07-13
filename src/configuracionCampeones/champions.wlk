@@ -13,7 +13,8 @@ class ChampionSelect {
 	var property position 
 	const property name
 	const property team
-	var property image 
+	var property image
+	var property tip = ""
 	
 }
 
@@ -29,7 +30,7 @@ class Champion inherits ChampionSelect {
 	var property alive = true
 	var property weapon = equipments.sword()
 	var property armor = equipments.leatherArmor()
-	var property buff = noBuff 
+	var property buff = buffs.noBuff() 
 	//var property name
 	//var property team
 	var property knowsSorcery = false
@@ -43,6 +44,26 @@ class Champion inherits ChampionSelect {
 	method die() {
 		image = name + "4.png"
 		alive = false
+	}
+	
+	method sayPhysicalDmg() {
+		game.say(self, "Mi daño físico es " + self.totalPhysicalDmg().toString())
+	}
+	
+	method totalPhysicalDmg() {
+		return weapon.physicalDmg() + buff.physicalGains() + strength
+	}
+	
+	method sayMagicDmg() {
+		game.say(self, "Mi daño mágico es " + self.totalMagicDmg().toString())
+	}
+	
+	method totalMagicDmg() {
+		return weapon.magicDmg() + buff.magicGains() + wisdom
+	}
+	
+	method sayWisdom() {
+		game.say(self, "Mi sabiduría es de " + wisdom)
 	}
 	
 	method sayHP() {
@@ -98,7 +119,7 @@ class Champion inherits ChampionSelect {
 		hp = maxHP
 		image = name + "1.png"
 		alive = true
-		buff = noBuff
+		buff = buffs.noBuff()
 	}
 	
 }
@@ -131,13 +152,13 @@ class Sorcerer inherits Champion {
 object physical {
 	method dmgCalculation(attacker, attacked) { 
 		//operación total = daño total attacker - armadura física attacked
-		return ( (attacker.strength() + attacker.buff().physicalGains() + attacker.weapon().physicalDmg()) - attacked.armor().physicalRes() )
+		return attacker.totalPhysicalDmg() - attacked.armor().physicalRes()
 	}
 }
 
 object magic {
 	method dmgCalculation(attacker, attacked) { 
-		return ( (attacker.wisdom() + attacker.buff().magicGains() + attacker.weapon().magicDmg()) - attacked.armor().magicRes() )
+		return attacker.totalMagicDmg() - attacked.armor().magicRes()
 	}
 }
 
@@ -145,19 +166,19 @@ object magic {
 object championsToSelect {
 	
 //LIGHTNESS
-const property paladin = new ChampionSelect(position=game.at(10,11), image="paladin.png", team=lightness, name="paladin")
-const property berserker = new ChampionSelect(position=game.at(12,11), image="berserker.png", team=lightness, name="berserker")
-const property archer = new ChampionSelect(position=game.at(14,11), image="archer.png", team=lightness, name="archer")
-const property mage = new ChampionSelect(position=game.at(16,11), image="mage.png", team=lightness, name="mage")
-const property doomGuy = new ChampionSelect(position=game.at(18,11), image="doomGuy.png", team=lightness, name="doomGuy")
-const property knight = new ChampionSelect(position=game.at(20,11), image="knight.png", team=lightness, name="knight")
+const property paladin = new ChampionSelect(position=game.at(10,11), image="paladin.png", team=lightness, name="paladin", tip="Último suspiro debería usarse al final...")
+const property berserker = new ChampionSelect(position=game.at(12,11), image="berserker.png", team=lightness, name="berserker", tip="Sólo es un tipo duro.")
+const property archer = new ChampionSelect(position=game.at(14,11), image="archer.png", team=lightness, name="archer", tip="Último suspiro debería usarse al final...")
+const property mage = new ChampionSelect(position=game.at(16,11), image="mage.png", team=lightness, name="mage", tip="La onda destructiva divide tu sabiduría por 4, ¡cuidado!")
+const property doomGuy = new ChampionSelect(position=game.at(18,11), image="doomGuy.png", team=lightness, name="doomGuy", tip="Otro tipo duro.")
+const property knight = new ChampionSelect(position=game.at(20,11), image="knight.png", team=lightness, name="knight", tip="Tal vez sea el campeón perfecto... o tal vez el peor.")
 //DARKNESS
 const property dracula = new ChampionSelect(position=game.at(10,2), image="dracula.png", team=darkness, name="dracula")
-const property darkBerserker = new ChampionSelect(position=game.at(12,2), image="darkBerserker.png", team=darkness, name="darkBerserker")
+const property darkBerserker = new ChampionSelect(position=game.at(12,2), image="darkBerserker.png", team=darkness, name="darkBerserker", tip="Sólo un pobre vikingo corrompido...")
 const property goblin = new ChampionSelect(position=game.at(14,2), image="goblin.png", team=darkness, name="goblin")
-const property wizard = new ChampionSelect(position=game.at(16,2), image="wizard.png", team=darkness, name="wizard")
-const property pinkyDemon = new ChampionSelect(position=game.at(18,2), image="pinkyDemon.png", team=darkness, name="pinkyDemon")
-const property spellCaster = new ChampionSelect(position=game.at(20,2), image="spellCaster.png", team=darkness, name="spellCaster")
+const property wizard = new ChampionSelect(position=game.at(16,2), image="wizard.png", team=darkness, name="wizard", tip="La onda destructiva divide tu sabiduría por 4, ¡cuidado!")
+const property pinkyDemon = new ChampionSelect(position=game.at(18,2), image="pinkyDemon.png", team=darkness, name="pinkyDemon", tip="Sólo un demonio duro.")
+const property spellCaster = new ChampionSelect(position=game.at(20,2), image="spellCaster.png", team=darkness, name="spellCaster", tip="Tal vez sea el hechicero perfecto... o tal vez el peor.")
 //TEAMS
 var property lightTeam = [paladin,berserker,archer,mage,doomGuy,knight]
 const property lightTeamImmutable = [paladin,berserker,archer,mage,doomGuy,knight]

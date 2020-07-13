@@ -36,7 +36,7 @@ object healingWave inherits Spell {
  
 object invigoratingWave inherits Spell {
  	override method effect(attacker, objective) {
- 		objective.buff(illumination)
+ 		objective.buff(buffs.illumination())
  	} 
 
 }

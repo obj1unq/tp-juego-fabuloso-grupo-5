@@ -1,3 +1,18 @@
+class Buff {
+var property physicalGains
+var property magicGains
+var property cost
+}
+
+object buffs {
+	
+const property noBuff = new Buff(physicalGains=0, magicGains=0, cost=0)	
+const property illumination = new Buff(physicalGains=0, magicGains=0, cost=0)	
+const property gloom = new Buff(physicalGains=0, magicGains=0, cost=0)	
+	
+}
+
+/* 
 object noBuff {
 	method physicalGains() { return 0 }
 	method magicGains() { return 0 }
@@ -21,3 +36,4 @@ object sacrifice {
 	method magicGains() { return 30 }
 	method cost() { return 20 }
 }
+*/
