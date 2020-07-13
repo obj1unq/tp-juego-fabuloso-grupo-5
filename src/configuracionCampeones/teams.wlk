@@ -26,6 +26,9 @@ var property championsImmutable = []
 													 }
 	}
 	
+	//Para la selección del turno actual en Warsystem:
+	// 1) Solo se pueden seleccionar sus campeones 
+	// 2) Se pueden seleccionar todos, excepto al selectedAttacker.
 	method listAfterSelection() {
 		return champions + self.nextTeam().champions()
 	}
@@ -34,6 +37,7 @@ var property championsImmutable = []
 		 return champions.contains(objective)
 	}	
 	
+	//Para cómoda posición en pantalla, y luego se guarda la coordenada "y" para las AttackTabs.
 	method showHPbars() {
 		const hp1 = new HPinterface(champ = championsImmutable.get(0), y=9)
 		championsImmutable.get(0).yCoordinateForAttack(9)
@@ -56,6 +60,7 @@ var property championsImmutable = []
 		self.nextTeam().characters().remove(objective)
 	}
 	
+	//Para que quede setteado bien tras un reinicio del juego.
 	method configChampionsImmutable() {
 		champions.forEach {c=> championsImmutable.add(c)}
 	}	
