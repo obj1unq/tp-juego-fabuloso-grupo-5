@@ -37,6 +37,14 @@ var property selectedEnemy
 		keyboard.num1().onPressDo({ self.castSpell(0) })
 		keyboard.num2().onPressDo({ self.castSpell(1) })
 		keyboard.num3().onPressDo({ self.castSpell(2) })
+		
+		keyboard.h().onPressDo({self.sayHP()})
+	}
+	
+	method sayHP() {
+		if(game.hasVisual(cursor)) {
+			cursor.collider().sayHP()
+		}
 	}
 	
 	method validateSelectCursor() {
@@ -46,10 +54,6 @@ var property selectedEnemy
 	}
 
 	//selectedAttacker.atacar(selectedEnemy)
-	
-	method areSameTeams(c1, c2) {
-		return (c1.team().isLight() == c2.team().isLight())
-	}
 	
 	method executeAttack(type) {
 		if (self.areInitialized()) { 
@@ -94,7 +98,7 @@ var property selectedEnemy
 			objective.setAfterAttack()
 		}
 		game.removeTickEvent("finishTurn")
-		self.checkTeams()
+		self.checkWinner()
 	}
 	
 	method finishTurn() {
@@ -103,28 +107,25 @@ var property selectedEnemy
 		game.onTick(150, "finishTurn", {
 			self.kill(selectedEnemy)
 			actualTurn = actualTurn.nextPlayer()
-			self.positionActualTurn()
-			self.addCursor()
-			cursor.initialPosition(0)
+			//gameOver.end()
+			cursor.initializeForBattle()
 			attackerSelector.removeVisual()
 			attackedSelector.removeVisual()
 			spellsSystem.remove()
 			attackSystem.remove()
-			game.say(selectedEnemy, "mi vida es " + selectedEnemy.hp())
-			game.say(selectedAttacker, "mi vida es " + selectedAttacker.hp())
+			//game.say(selectedEnemy, "mi vida es " + selectedEnemy.hp())
+			//game.say(selectedAttacker, "mi vida es " + selectedAttacker.hp())
 			selectedAttacker = null
 			selectedEnemy = null
 		})
 	}
 	
-	method positionActualTurn() {
-		if(!actualTurn.team().champions().isEmpty()) {
-			cursor.position(actualTurn.team().champions().head().position())
-		}
+	method thereIsAWinner() {
+		return actualTurn.team().isDefeated() || actualTurn.team().nextTeam().isDefeated()
 	}
 	
-	method checkTeams() { 
-		if(actualTurn.team().nextTeam().champions().isEmpty()) {
+	method checkWinner() { 
+		if(actualTurn.team().nextTeam().isDefeated()) {
 			gameOver.win(actualTurn)
 		} 
 	}
@@ -143,7 +144,9 @@ var property selectedEnemy
 			selectedAttacker.getSpell(num)
 			selectedAttacker.validateSpell(selectedEnemy)
 		}
-		else if(self.areInitialized() && selectedAttacker.knowsSorcery() && !selectedAttacker.hasMoreSpells(num)) { game.say(selectedAttacker, "¡Sólo sé un hechizo!") }
+		else if(self.areInitialized() && selectedAttacker.knowsSorcery() && !selectedAttacker.hasMoreSpells(num)) {
+			game.say(selectedAttacker, "¡Sólo sé un hechizo!")
+		}
 	}
 	
 	method possibleCurrentMove() {
@@ -155,62 +158,29 @@ var property selectedEnemy
     
     method selectCharB() {
         if (cursor.attackStage() && selectedAttacker != cursor.collider()) {
-            selectedEnemy = cursor.collider()
-   			attackedSelector.champion(selectedEnemy)
-            attackedSelector.addVisual()
-            attackSystem.actualChamp(selectedAttacker)
-            game.addVisual(attackSystem)
-            cursor.nextStage()
+        	self.selectEnemy()
+            attackedSelector.show(selectedEnemy)
+            attackSystem.show(selectedAttacker)
             game.removeVisual(cursor)
-            cursor.adjustAfterSelectionBattle(actualTurn.team())
+            cursor.setAfterSelection()
         } else if (!cursor.attackStage() && selectedAttacker != cursor.collider()) {
-   			selectedAttacker = cursor.collider()
-            attackerSelector.champion(selectedAttacker)
-            attackerSelector.addVisual()
-            cursor.nextStage()
-            cursor.adjustAfterSelectionBattle(actualTurn.team())
+   			self.selectAttacker()
+   			attackerSelector.show(selectedAttacker)
+            cursor.setAfterSelection()
         }
+    }
+    
+    method selectEnemy() {
+    	selectedEnemy = cursor.collider()
+    }
+    
+    method selectAttacker() {
+    	selectedAttacker = cursor.collider()
     }
     
 }
 
-/* 
 class Selector {
-	var property champion
-	
-	method image() {
-		return if (champion.team().isLight()) { "select" + self.side() + "L.png" }
-		   else { "select" + self.side() + "D.png" }
-	}
-	
-	method side()
-	
-	method position() {
-		return if (champion.team().isLight()) { champion.position().left(1) }
-		   else { champion.position().right(2) }
-	}
-	
-	method addVisual() {
-		if(!game.hasVisual(self)) { game.addVisual(self) }
-	}
-	
-	method removeVisual() {
-		if (game.hasVisual(self)) {
-			game.removeVisual(self)
-		}
-	}
-}
-
-object actualAllySelector inherits Selector {
-	override method side() { return "Ally" }
-}
-
-object actualEnemySelector inherits Selector {
-	override method side() { return "Enemy" }
-}
-*/
-
-class SelectorDos {
 	
 var property champion
 
@@ -223,8 +193,12 @@ var property champion
 		   else { champion.position().right(2) }
 	}
 	
-	method addVisual() {
-		if(!game.hasVisual(self)) { game.addVisual(self) }
+	method show(champ) {
+		if(!game.hasVisual(champ)) {
+			champion = champ	
+			game.addVisual(self)
+		}
+
 	}
 	
 	method removeVisual() {
@@ -235,10 +209,10 @@ var property champion
 	
 }
 
-object attackerSelector inherits SelectorDos {
+object attackerSelector inherits Selector {
 	
 }
 
-object attackedSelector inherits SelectorDos {
+object attackedSelector inherits Selector {
 	
 }

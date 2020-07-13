@@ -10,9 +10,11 @@ var property initialPosition = 0
 var property attackStage = false
 	
 	method initializeForBattle() {
-		position = warSystem.actualTurn().team().champions().head().position()
-		initialPosition = 0
-		game.addVisual(self)
+		if(!warSystem.actualTurn().team().isDefeated() && !game.hasVisual(self)) {
+			position = warSystem.actualTurn().team().champions().head().position()
+			initialPosition = 0
+			game.addVisual(self)
+		}
 	}
 	
 	method image() {
@@ -61,7 +63,7 @@ var property attackStage = false
 	}
 	
 	method removeActual(list) {
-		list.remove(game.uniqueCollider(self))
+		list.remove(self.collider())
 	}
 	
 	method collider() {
@@ -70,6 +72,11 @@ var property attackStage = false
 	
 	method nextStage() {
 		attackStage = !attackStage
+	}
+	
+	method setAfterSelection() {
+		self.nextStage()
+        self.adjustAfterSelectionBattle(warSystem.actualTurn().team())
 	}
 
 }

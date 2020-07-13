@@ -49,8 +49,8 @@ object teamSelector inherits Screen {
 	
 var property image = "3.png"
 	
-const dice1 = new Dice(position=game.at(4,5))
-const dice2 = new Dice(position=game.at(24,5))	
+var dice1 = new Dice(position=game.at(4,5))
+var dice2 = new Dice(position=game.at(24,5))	
 	
 	override method show() {
 		super()
@@ -80,18 +80,23 @@ const dice2 = new Dice(position=game.at(24,5))
 	method winSet() {
 		       if(dice1.isGreater(dice2)) { playerSelector.turn(1) 
 		       										 game.say(self, "El jugador 1 elige")
-		       										 game.onTick(1500, "team Selection", { teamSelection.show() })
+		       										 game.onTick(1000, "team Selection", { teamSelection.show() })
 		       }
 		  else if(dice2.isGreater(dice1)) { playerSelector.turn(2)
 		  											 playerSelector.firstSelector(player2)
 		  											 playerSelector.secondSelector(player1)
 		  											 game.say(self, "El jugador 2 elige")
-		  											 game.onTick(1500, "team Selection", { teamSelection.show() })
+		  											 game.onTick(1000, "team Selection", { teamSelection.show() })
 		  }
 		  else { game.say(self, "Un justo empate, otro intento...")
 		  		 game.onTick(2000, "empate", {playerSelector.turn(1) 
 		  		 							  self.show()})
 		  }
+	}
+	
+	method clear() {
+		dice1 = new Dice(position=game.at(4,5))
+    	dice2 = new Dice(position=game.at(24,5))	
 	}
 	
 	method winnerSelectorNumber() {
@@ -104,7 +109,7 @@ const dice2 = new Dice(position=game.at(24,5))
 
 object teamSelection inherits Screen {	
 
-const property image = "selectTeam" + teamSelector.winnerSelectorNumber().toString() + ".png"
+var property image = "selectTeam" + teamSelector.winnerSelectorNumber().toString() + ".png"
 	
 	override method show() {
 		super()
@@ -117,7 +122,7 @@ const property image = "selectTeam" + teamSelector.winnerSelectorNumber().toStri
 		keyboard.s().onPressDo({ playerSelector.firstSelector().team(cursor.collider())
 								 playerSelector.secondSelector().team(cursor.collider().nextTeam())
 								 champsSelection.show() })
-	}
+		}
 	
 }
 
@@ -125,10 +130,9 @@ const property image = "selectTeam" + teamSelector.winnerSelectorNumber().toStri
 
 object champsSelection inherits Screen {
 	
-const property image = "selectPJ.png"
+const property image = "SelectPJ.png"
 var property actualTurn = playerSelector.firstSelector()
 
-	
 	
 	method initialCharS() {
 		return actualTurn.team().leader()
@@ -152,11 +156,6 @@ var property actualTurn = playerSelector.firstSelector()
 		keyboard.s().onPressDo({self.selectChar()})
 		keyboard.i().onPressDo({self.showInfo()})
 		keyboard.backspace().onPressDo({self.back()})
-		keyboard.space().onPressDo({self.toBattle()})
-	}
-	
-	method toBattle() {
-		if(self.ready()) { warSystem.start() }
 	}
 
 	//Queda agregar stats para luego mostrarlos como valores fijos en los primeros 5 pj de cada equipo.
@@ -176,6 +175,8 @@ var property actualTurn = playerSelector.firstSelector()
 	
 	
 	method addCharactersVisual() {
+		championsToSelect.addVisuals()
+		/* 
 		game.addVisual(championsToSelect.paladin())
 		game.addVisual(championsToSelect.berserker())
 		game.addVisual(championsToSelect.archer())
@@ -188,6 +189,7 @@ var property actualTurn = playerSelector.firstSelector()
 		game.addVisual(championsToSelect.wizard())
 		game.addVisual(championsToSelect.pinkyDemon())
 		game.addVisual(championsToSelect.spellCaster())
+		*/
 	}
 
 	method selectChar() {
@@ -209,7 +211,7 @@ var property actualTurn = playerSelector.firstSelector()
 			game.say(self, "Elige 3 campeones el jugador" + playerSelector.turn().toString())
 			cursor.adjustAfterSelection(self.actualTeamOfTurn())
 		}
-	}	
+	}	 
 	
 	method validateEndSelection() {
 		if (self.ready()) {

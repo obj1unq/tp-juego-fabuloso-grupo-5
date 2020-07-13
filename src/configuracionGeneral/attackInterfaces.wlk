@@ -16,8 +16,10 @@ var property actualChamp
 	}	
 	
 	method show(attacker) {
-		actualChamp=attacker
-		game.addVisual(self)
+		if (!game.hasVisual(self)) {
+			actualChamp=attacker
+			game.addVisual(self)
+		}
 	}
 	
 	method remove() {

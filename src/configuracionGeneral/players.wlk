@@ -7,6 +7,12 @@ object playerSelector {
 var property turn = 1
 var property firstSelector = player1
 var property secondSelector = player2
+
+	method reset() {
+		turn = 1
+		firstSelector = player1
+		secondSelector = player2
+	}
 	
 }
 

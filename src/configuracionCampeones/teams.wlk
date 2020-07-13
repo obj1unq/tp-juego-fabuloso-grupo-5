@@ -24,6 +24,7 @@ var property champ3
 	method configForBattle() { if(self.fullTeam()) { champions.forEach({champion=>champion.image(champion.name() + "1.png")})
 													 champions.forEach({champion=>game.addVisual(champion)})
 													 self.showHPbars()
+													 champions.forEach({champion=>})
 													 game.onTick(150, champ1.name(), {champ1.battlePose()})
 													 game.onTick(150, champ2.name(), {champ2.battlePose()})
 													 game.onTick(150, champ3.name(), {champ3.battlePose()}) 
@@ -58,7 +59,19 @@ var property champ3
 		characters.remove(objective)
 		self.nextTeam().champions().remove(objective)
 		self.nextTeam().characters().remove(objective)
-	}					 
+	}	
+	
+	method isDefeated() {
+		return champions.isEmpty()
+	}	
+	
+	method clear() {
+		//champ1.reset()
+		//champ2.reset()
+		//champ3.reset()
+		champions = []
+		characters = []
+	}			 
 }
 
 

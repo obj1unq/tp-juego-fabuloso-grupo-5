@@ -9,7 +9,7 @@ class Spell {
 	method effect(attacker, objective)
 	
 	method validate(attacker, objective) {
-		if (warSystem.areSameTeams(attacker, objective)) {
+		if (attacker.isOfSameTeam(objective)) {
  			warSystem.executeSpellCast()
  		} else { game.say(attacker, "No debo ayudar a un enemigo") }
 	}
@@ -22,7 +22,7 @@ object destructiveWave inherits Spell {
  	}
  	
  	override method validate(attacker, objective) {
- 		if (not warSystem.areSameTeams(attacker, objective)) {
+ 		if (!attacker.isOfSameTeam(objective)) {
  			warSystem.executeSpellCast()
  		} else { game.say(attacker, "No debo atacar a mi amigo") }
  	}
@@ -50,7 +50,7 @@ object lastBreath inherits Spell {
  	}
  	
  	override method validate(attacker, objective) {
- 		if (not warSystem.areSameTeams(attacker, objective)) {
+ 		if (!attacker.isOfSameTeam(objective)) {
  			warSystem.executeSpellCast()
  		} else { game.say(attacker, "No debo atacar a mi amigo") }
  	}
