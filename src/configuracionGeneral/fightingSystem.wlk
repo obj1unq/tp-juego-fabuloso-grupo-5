@@ -194,7 +194,7 @@ var property champion
 	}
 	
 	method show(champ) {
-		if(!game.hasVisual(champ)) {
+		if(!game.hasVisual(self)) {
 			champion = champ	
 			game.addVisual(self)
 		}

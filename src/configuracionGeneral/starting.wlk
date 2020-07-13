@@ -79,14 +79,14 @@ var dice2 = new Dice(position=game.at(24,5))
 	
 	method winSet() {
 		       if(dice1.isGreater(dice2)) { playerSelector.turn(1) 
-		       										 game.say(self, "El jugador 1 elige")
-		       										 game.onTick(1000, "team Selection", { teamSelection.show() })
+		       								game.say(self, "El jugador 1 elige")
+		       								game.onTick(1000, "team Selection", { teamSelection.show() })
 		       }
 		  else if(dice2.isGreater(dice1)) { playerSelector.turn(2)
-		  											 playerSelector.firstSelector(player2)
-		  											 playerSelector.secondSelector(player1)
-		  											 game.say(self, "El jugador 2 elige")
-		  											 game.onTick(1000, "team Selection", { teamSelection.show() })
+		  								    playerSelector.firstSelector(player2)
+		  									playerSelector.secondSelector(player1)
+		  									game.say(self, "El jugador 2 elige")
+		  									game.onTick(1000, "team Selection", { teamSelection.show() })
 		  }
 		  else { game.say(self, "Un justo empate, otro intento...")
 		  		 game.onTick(2000, "empate", {playerSelector.turn(1) 
@@ -108,8 +108,10 @@ var dice2 = new Dice(position=game.at(24,5))
 
 
 object teamSelection inherits Screen {	
-
-var property image = "selectTeam" + teamSelector.winnerSelectorNumber().toString() + ".png"
+	
+	method image() {
+		return "selectTeam" + teamSelector.winnerSelectorNumber().toString() + ".png"
+	}
 	
 	override method show() {
 		super()
