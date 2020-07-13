@@ -77,7 +77,9 @@ var property selectedEnemy
 	method executeAttack(type) {
 		if (self.areInitialized()) { 
 			selectedAttacker.attack(type, selectedEnemy)
-			self.finishTurn() }
+			selectedAttacker.deleteBuffs()
+			self.finishTurn()		
+		}
 	}
 	
 	method executeSpellCast() {
@@ -152,11 +154,14 @@ var property selectedEnemy
 	}
 	
 	method castSpell(num) {
-		if(self.areInitialized() && selectedAttacker.knowsSorcery() && selectedAttacker.hasMoreSpells(num)) {
+		if(self.areInitialized() && selectedAttacker.knowsSorcery() && 
+		   selectedAttacker.hasMoreSpells(num)) {
 			selectedAttacker.getSpell(num)
 			selectedAttacker.validateSpell(selectedEnemy)
 		}
-		else if(self.areInitialized() && selectedAttacker.knowsSorcery() && !selectedAttacker.hasMoreSpells(num)) {
+		else if(self.areInitialized() && selectedAttacker.knowsSorcery() &&
+			   !selectedAttacker.hasMoreSpells(num)
+		) {
 			game.say(selectedAttacker, "¡Sólo sé un hechizo!")
 		}
 	}

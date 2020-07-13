@@ -47,17 +47,33 @@ var property invigoratedChamp
 
 	method image() {
 		return invigoratedChamp.team().name() + "Buff.png"
-	}	
+	}
+	
+	override method validate(attacker, objective) {
+		if (attacker.isOfSameTeam(objective) && not objective.isBuffed()) {
+ 			warSystem.executeSpellCast()
+ 		} else if (attacker.isOfSameTeam(objective)) {
+ 			game.say(attacker, "No debo ayudar a un enemigo")
+ 		} else {
+ 			game.say(attacker, "El " + objective.name() + " ya está buffeado")
+ 		}
+	}
 	
  	override method effect(attacker, objective) {
- 		invigoratedChamp = objective
- 		game.addVisual(self)
- 		if (attacker.team().isLight()) {
- 		    invigoratedChamp.buff(buffs.illumination()) 	
+ 		if (attacker.team().isLight() && not objective.isBuffed()) {
+ 			const illumination = new Illumination()
+ 		    objective.buff(illumination)
+ 		    illumination.appear(objective)
+ 		    game.say(objective, "¡El próximo ataque será mas fuerte!")
  		}
- 		else { invigoratedChamp.buff(buffs.gloom()) }
- 		game.say(invigoratedChamp, "¡El próximo ataque será mas fuerte!")
- 		attacker.wisdom( attacker.wisdom() / 2 )
+ 		else if (not objective.isBuffed()) {
+ 			const gloom = new Gloom() 
+ 			objective.buff(gloom)
+ 			gloom.appear(objective)
+ 			game.say(objective, "¡El próximo ataque será mas fuerte!")
+ 		} else {
+ 			game.say(attacker, "El " + objective.name() + " ya está buffeado")
+ 		}
  	} 
  	
  	method removeVisual() {

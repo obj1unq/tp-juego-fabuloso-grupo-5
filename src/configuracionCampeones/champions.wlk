@@ -30,12 +30,28 @@ class Champion inherits ChampionSelect {
 	var property alive = true
 	var property weapon = equipments.sword()
 	var property armor = equipments.leatherArmor()
-	var property buff = buffs.noBuff() 
-	//var property name
-	//var property team
+	var property buff = noBuff
 	var property knowsSorcery = false
 	var property yCoordinateForAttack = 0
-	//var property image
+	
+	method deleteBuffs() {
+		if(self.isBuffed()) {
+			game.removeVisual(buff)
+			buff = noBuff
+		}
+	}
+	
+	method isBuffed() {
+		return buff != noBuff
+	}
+	
+	method positionBuff() {
+		return if (team.isLight()) {
+			position.left(1)
+		} else {
+			position.right(2)
+		}
+	}
 	
 	method isAlive() {
 		return hp > 0
@@ -82,6 +98,7 @@ class Champion inherits ChampionSelect {
 	method attack(type, attacked) {
 	 	attacked.takeDamage(type.dmgCalculation(self, attacked))
 	 	invigoratingWave.removeVisual()
+	 	hp -= buff.cost()
 	}
 	
 	method recieveSpell(spellCaster, _spell) {
@@ -120,7 +137,7 @@ class Champion inherits ChampionSelect {
 		hp = maxHP
 		image = name + "1.png"
 		alive = true
-		buff = buffs.noBuff()
+		buff = noBuff
 	}
 	
 }
@@ -147,6 +164,12 @@ class Sorcerer inherits Champion {
 	
 	method validateSpell(objective) {
 		spellSelected.validate(self, objective)
+	}
+	
+	method canBuff(objective, num) {
+		return 
+			(not objective.isBuffed()) &&
+			num == 2
 	}
 }
 
