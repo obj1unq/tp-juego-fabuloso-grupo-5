@@ -299,4 +299,4 @@ const property darkTeam = [dracula,darkBerserker,goblin,wizard,pinkyDemon,spellC
 		darkTeam.forEach({champ=>champ.reset()})
 	}
 }
-//e
+//es
