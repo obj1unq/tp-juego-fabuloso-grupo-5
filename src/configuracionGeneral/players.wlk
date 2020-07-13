@@ -52,6 +52,7 @@ const property number = 2
 	
 }
 
+
 object flag {
 	const property position = game.at(13,11)
 	
@@ -61,7 +62,7 @@ object flag {
 }
 
 class Banner {
-	const property player
+	var property player
 	
 	method image() {
 		return player.name() + self.denoteActualTurn() + ".png" 
@@ -72,7 +73,7 @@ class Banner {
 		if(warSystem.actualTurn().number() == player.number()) {
 			"s"
 		}
-		else { "" }
+		else { "x" }
 	}
 	
 	method position() {
