@@ -40,9 +40,9 @@ var property invigoratedChamp
 	
 	method position() {
 		return if(invigoratedChamp.team().isLight()) {
-			game.at(0, invigoratedChamp.yCoordinateForAttack())
+			game.at(0, invigoratedChamp.yCoordinateForAttack() + 1)
 		}
-		else { game.at(28, invigoratedChamp.yCoordinateForAttack()) }
+		else { game.at(28, invigoratedChamp.yCoordinateForAttack() + 1) }
 	}
 
 	method image() {
