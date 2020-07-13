@@ -22,7 +22,7 @@ class ChampionSelect {
 class Champion inherits ChampionSelect {
 	
 	//var property position 
-	const property maxHP = 1 
+	var property maxHP = 1 
 	var property hp = 1
 	var property strength = 0
 	var property wisdom = 1
@@ -96,6 +96,7 @@ class Champion inherits ChampionSelect {
 	
 	method reset() {
 		hp = maxHP
+		image = name + "1.png"
 	}
 }
 
@@ -180,41 +181,41 @@ object championsInBattle {
 	
 //CONFIGURACIÓN PARA SU PRIMERA SELECCIÓN
 //LIGHTNESS
-const property paladin = new Sorcerer(position=game.at(10,11), image="paladin1.png", team=lightness, name="paladin", maxHP=500, hp=1, strength=25, wisdom=12, weapon=equipments.sword(),
+const property paladin = new Sorcerer(position=game.at(10,11), image="paladin1.png", team=lightness, name="paladin", maxHP=1, hp=1, strength=25, wisdom=12, weapon=equipments.sword(),
 									  armor=equipments.steelArmor(), spells=[lastBreath], spellSelected=lastBreath)
 
-const property berserker = new Champion(position=game.at(10,11), image="berserker1.png", team=lightness, name="berserker", maxHP=350, hp=1, strength=32, wisdom=0, weapon=equipments.axe(),
+const property berserker = new Champion(position=game.at(10,11), image="berserker1.png", team=lightness, name="berserker", maxHP=1, hp=1, strength=32, wisdom=0, weapon=equipments.axe(),
 									    armor=equipments.leatherArmor())
 
-const property archer = new Sorcerer(position=game.at(10,11), image="archer1.png", team=lightness, name="archer", maxHP=250, hp=1, strength=22, wisdom=15, weapon=equipments.bow(),
+const property archer = new Sorcerer(position=game.at(10,11), image="archer1.png", team=lightness, name="archer", maxHP=1, hp=1, strength=22, wisdom=15, weapon=equipments.bow(),
 									    armor=equipments.leatherArmor(), spells=[lastBreath], spellSelected=lastBreath)
 
-const property mage = new Sorcerer(position=game.at(10,11), image="mage1.png", team=lightness, name="mage", maxHP=180, hp=1, strength=10, wisdom=30, weapon=equipments.wand(),
+const property mage = new Sorcerer(position=game.at(10,11), image="mage1.png", team=lightness, name="mage", maxHP=1, hp=1, strength=10, wisdom=30, weapon=equipments.wand(),
 									    armor=equipments.leatherArmor(), spells=[destructiveWave, healingWave, invigoratingWave], spellSelected=destructiveWave)
 
-const property doomGuy = new Champion(position=game.at(10,11), image="doomGuy1.png", team=lightness, name="doomGuy", maxHP=450, hp=1, strength=28, wisdom=0, weapon=equipments.sword(),
+const property doomGuy = new Champion(position=game.at(10,11), image="doomGuy1.png", team=lightness, name="doomGuy", maxHP=1, hp=1, strength=28, wisdom=0, weapon=equipments.sword(),
 									     armor=equipments.leatherArmor())
 
-const property knight = new Champion(position=game.at(10,11), image="knight1.png", team=lightness, name="knight", maxHP=300, hp=1, strength=25, wisdom=0, weapon=equipments.sword(),
+const property knight = new Champion(position=game.at(10,11), image="knight1.png", team=lightness, name="knight", maxHP=1, hp=1, strength=25, wisdom=0, weapon=equipments.sword(),
 									     armor=equipments.leatherArmor())
 
 //DARKNESS
-const property dracula = new Sorcerer(position=game.at(10,11), image="dracula1.png", team=darkness, name="dracula", maxHP=500, hp=1, strength=25, wisdom=12, weapon=equipments.sword(),
+const property dracula = new Sorcerer(position=game.at(10,11), image="dracula1.png", team=darkness, name="dracula", maxHP=1, hp=1, strength=25, wisdom=12, weapon=equipments.sword(),
 									  armor=equipments.steelArmor(), spells=[lastBreath], spellSelected=lastBreath)
 
-const property darkBerserker = new Champion(position=game.at(10,11), image="darkBerserker1.png", team=darkness, name="darkBerserker", maxHP=350, hp=1, strength=30, wisdom=0, weapon=equipments.axe(),
+const property darkBerserker = new Champion(position=game.at(10,11), image="darkBerserker1.png", team=darkness, name="darkBerserker", maxHP=1, hp=1, strength=30, wisdom=0, weapon=equipments.axe(),
 									  armor=equipments.leatherArmor())
 
-const property goblin = new Sorcerer(position=game.at(10,11), image="goblin1.png", team=darkness, name="goblin", maxHP=200, hp=1, strength=18, wisdom=15, weapon=equipments.sword(),
+const property goblin = new Sorcerer(position=game.at(10,11), image="goblin1.png", team=darkness, name="goblin", maxHP=1, hp=1, strength=18, wisdom=15, weapon=equipments.sword(),
 									  armor=equipments.leatherArmor(), spells=[lastBreath], spellSelected=lastBreath)
 
-const property wizard = new Sorcerer(position=game.at(10,11), image="wizard1.png", team=darkness, name="wizard", maxHP=250, hp=1, strength=10, wisdom=30, weapon=equipments.wand(),
+const property wizard = new Sorcerer(position=game.at(10,11), image="wizard1.png", team=darkness, name="wizard", maxHP=1, hp=1, strength=10, wisdom=30, weapon=equipments.wand(),
 									  armor=equipments.leatherArmor(), spells=[destructiveWave, healingWave, invigoratingWave], spellSelected=destructiveWave)
 
-const property pinkyDemon = new Champion(position=game.at(10,11), image="pinkyDemon1.png", team=darkness, name="pinkyDemon", maxHP=350, hp=1, strength=30, wisdom=0, weapon=equipments.sword(),
+const property pinkyDemon = new Champion(position=game.at(10,11), image="pinkyDemon1.png", team=darkness, name="pinkyDemon", maxHP=1, hp=1, strength=30, wisdom=0, weapon=equipments.sword(),
 									  armor=equipments.leatherArmor())
 
-const property spellCaster = new Sorcerer(position=game.at(10,11), image="spellCaster1.png", team=darkness, name="spellCaster", maxHP=350, hp=1, strength=30, wisdom=0, weapon=equipments.sword(),
+const property spellCaster = new Sorcerer(position=game.at(10,11), image="spellCaster1.png", team=darkness, name="spellCaster", maxHP=1, hp=1, strength=30, wisdom=0, weapon=equipments.sword(),
 									  	  armor=equipments.leatherArmor(), spells=[destructiveWave, healingWave, invigoratingWave], spellSelected=destructiveWave)
 
 //TEAMS
