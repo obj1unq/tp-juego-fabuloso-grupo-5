@@ -31,12 +31,10 @@ var property attackStage = false
 	method nextChar(list) {
 		if (initialPosition < list.size() - 1 && not list.isEmpty()) {
 			initialPosition += 1
-			//self.position(list.get(initialPosition).position())
 			position = list.get(initialPosition).position()
 		}
 		else if (initialPosition >= list.size() - 1 && not list.isEmpty()) { 
 			initialPosition = 0
-			//self.position(list.head().position())
 			position = list.head().position()
 		}
 	}
@@ -54,7 +52,6 @@ var property attackStage = false
 	
 	method adjustAfterSelection(list) {
 		initialPosition = 0
-		//self.position(list.head().position())
 		position = list.head().position()
 	}
 	

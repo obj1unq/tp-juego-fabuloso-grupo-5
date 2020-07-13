@@ -175,7 +175,6 @@ class Sorcerer inherits Champion {
 
 object physical {
 	method dmgCalculation(attacker, attacked) { 
-		//operación total = daño total attacker - armadura física attacked
 		return attacker.totalPhysicalDmg() - attacked.armor().physicalRes()
 	}
 }

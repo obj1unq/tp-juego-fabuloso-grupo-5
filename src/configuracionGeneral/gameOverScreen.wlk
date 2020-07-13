@@ -17,10 +17,6 @@ const property position = game.origin()
 		if (!actualTurn.team().champions().isEmpty()) {
 			self.clear()
 			game.addVisual(self)
-			//game.say(self, "Gana el jugador " + actualTurn.number().toString())
-			//game.schedule(2000, {game.stop()})
-			//game.schedule(1000, {self.clear()})
-			//TODO restart game
 		}
 		else { game.say(self, "Empate")
 			   game.schedule(2000, {game.stop()})

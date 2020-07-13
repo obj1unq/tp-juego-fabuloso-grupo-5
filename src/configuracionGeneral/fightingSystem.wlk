@@ -71,8 +71,6 @@ var property selectedEnemy
 			self.selectCharB()
 		}
 	}
-
-	//selectedAttacker.atacar(selectedEnemy)
 	
 	method executeAttack(type) {
 		if (self.areInitialized()) { 
@@ -125,7 +123,6 @@ var property selectedEnemy
 		game.onTick(150, "finishTurn", {
 			self.kill(enemy)
 			actualTurn = actualTurn.nextPlayer()
-			//gameOver.end()
 			cursor.initializeForBattle()
 			attackerSelector.removeVisual()
 			attackedSelector.removeVisual()
