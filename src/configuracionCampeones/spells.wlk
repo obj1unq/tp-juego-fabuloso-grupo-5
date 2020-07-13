@@ -50,9 +50,10 @@ var property invigoratedChamp
 	}
 	
 	override method validate(attacker, objective) {
+		invigoratedChamp = objective
 		if (attacker.isOfSameTeam(objective) && not objective.isBuffed()) {
  			warSystem.executeSpellCast()
- 		} else if (attacker.isOfSameTeam(objective)) {
+ 		} else if (!attacker.isOfSameTeam(objective)) {
  			game.say(attacker, "No debo ayudar a un enemigo")
  		} else {
  			game.say(attacker, "El " + objective.name() + " ya está buffeado")
@@ -60,7 +61,7 @@ var property invigoratedChamp
 	}
 	
  	override method effect(attacker, objective) {
- 		if (attacker.team().isLight() && not objective.isBuffed()) {
+ 		if (attacker.team().isLight()) {
  			const illumination = new Illumination()
  		    objective.buff(illumination)
  		    illumination.appear(objective)
@@ -71,8 +72,6 @@ var property invigoratedChamp
  			objective.buff(gloom)
  			gloom.appear(objective)
  			game.say(objective, "¡El próximo ataque será mas fuerte!")
- 		} else {
- 			game.say(attacker, "El " + objective.name() + " ya está buffeado")
  		}
  	} 
  	
