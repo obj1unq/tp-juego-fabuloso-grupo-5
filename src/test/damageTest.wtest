@@ -3,15 +3,15 @@ import configuracionCampeones.champions.*
 test "doomguy physical attacks pinkydemon"{
 	championsInBattle.doomGuy().attack(physical, championsInBattle.pinkyDemon())
 	
-	assert.equals(33, physical.dmgCalculation(championsInBattle.doomGuy(), championsInBattle.pinkyDemon()))
-	assert.equals(117, championsInBattle.pinkyDemon().hp())
+	assert.equals(43, physical.dmgCalculation(championsInBattle.doomGuy(), championsInBattle.pinkyDemon()))
+	assert.equals(107, championsInBattle.pinkyDemon().hp())
 }
 
 test "pinkydemon physical attacks doomguy" {
 	championsInBattle.pinkyDemon().attack(physical, championsInBattle.doomGuy())
 	
-	assert.equals(35, physical.dmgCalculation(championsInBattle.pinkyDemon(), championsInBattle.doomGuy()))
-	assert.equals(215, championsInBattle.doomGuy().hp())
+	assert.equals(28, physical.dmgCalculation(championsInBattle.pinkyDemon(), championsInBattle.doomGuy()))
+	assert.equals(172, championsInBattle.doomGuy().hp())
 }
 
 test "doomguy magical attacks pinkydemon"{
@@ -25,7 +25,7 @@ test "pinkydemon magical attacks pinkydemon"{
 	championsInBattle.pinkyDemon().attack(magic, championsInBattle.doomGuy())
 	
 	assert.equals(0, magic.dmgCalculation(championsInBattle.pinkyDemon(), championsInBattle.doomGuy()))
-	assert.equals(250, championsInBattle.doomGuy().hp())
+	assert.equals(200, championsInBattle.doomGuy().hp())
 }
 
 test "pinkydemon gets oraora'd"{
