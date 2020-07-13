@@ -56,6 +56,7 @@ var property invigoratedChamp
  		    invigoratedChamp.buff(buffs.illumination()) 	
  		}
  		else { invigoratedChamp.buff(buffs.gloom()) }
+ 		game.say(invigoratedChamp, "¡El próximo ataque será mas fuerte!")
  	} 
  	
  	method removeVisual() {
