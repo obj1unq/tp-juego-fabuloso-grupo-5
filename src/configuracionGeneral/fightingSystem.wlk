@@ -160,8 +160,7 @@ var property selectedEnemy
 			selectedAttacker.validateSpell(selectedEnemy)
 		}
 		else if(self.areInitialized() && selectedAttacker.knowsSorcery() &&
-			   !selectedAttacker.hasMoreSpells(num)
-		) {
+			   !selectedAttacker.hasMoreSpells(num)) {
 			game.say(selectedAttacker, "¡Sólo sé un hechizo!")
 		}
 	}

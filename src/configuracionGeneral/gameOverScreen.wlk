@@ -7,18 +7,19 @@ import players.*
 
 object gameOver {
 	
-const property position = game.at(14,8)
+const property position = game.origin()
 	
 	method image() {
-		return "dice6.png"
+		return self.winner().name() + "gameOver.png" 
 	}
 	
 	method win(actualTurn) {
 		if (!actualTurn.team().champions().isEmpty()) {
+			self.clear()
 			game.addVisual(self)
-			game.say(self, "Gana el jugador " + actualTurn.number().toString())
+			//game.say(self, "Gana el jugador " + actualTurn.number().toString())
 			//game.schedule(2000, {game.stop()})
-			game.schedule(1000, {self.clear()})
+			//game.schedule(1000, {self.clear()})
 			//TODO restart game
 		}
 		else { game.say(self, "Empate")
@@ -36,19 +37,20 @@ const property position = game.at(14,8)
 		championsToSelect.clear()
 		championsInBattle.reset()
 		keyboard.r().onPressDo({teamSelector.show()})
+		keyboard.backspace().onPressDo({game.stop()})
 	}
 	
 	method validateEnd() {
 		if(warSystem.actualTurn().team().isDefeated() || warSystem.actualTurn().team().nextTeam().isDefeated()) {
-			game.say(self, "Gana el jugador " + self.winner())
+			game.say(self, "Gana el jugador " + self.winner().number())
 		}
 	}
 	
 	method winner() {
 		if(warSystem.actualTurn().team().isDefeated()) {
-			return warSystem.actualTurn().nextPlayer().number()
+			return warSystem.actualTurn().nextPlayer()
 		}
-		else { return warSystem.actualTurn().number() }
+		else { return warSystem.actualTurn() }
 	}
 	
 }
