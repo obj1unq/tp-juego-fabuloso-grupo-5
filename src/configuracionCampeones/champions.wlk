@@ -81,6 +81,7 @@ class Champion inherits ChampionSelect {
 	}
 	method attack(type, attacked) {
 	 	attacked.takeDamage(type.dmgCalculation(self, attacked))
+	 	invigoratingWave.removeVisual()
 	}
 	
 	method recieveSpell(spellCaster, _spell) {

@@ -35,9 +35,34 @@ object healingWave inherits Spell {
 }
  
 object invigoratingWave inherits Spell {
+	
+var property invigoratedChamp
+	
+	method position() {
+		return if(invigoratedChamp.team().isLight()) {
+			game.at(0, invigoratedChamp.yCoordinateForAttack())
+		}
+		else { game.at(28, invigoratedChamp.yCoordinateForAttack()) }
+	}
+
+	method image() {
+		return invigoratedChamp.team().name() + "Buff.png"
+	}	
+	
  	override method effect(attacker, objective) {
- 		objective.buff(buffs.illumination())
+ 		invigoratedChamp = objective
+ 		game.addVisual(self)
+ 		if (attacker.team().isLight()) {
+ 		    invigoratedChamp.buff(buffs.illumination()) 	
+ 		}
+ 		else { invigoratedChamp.buff(buffs.gloom()) }
  	} 
+ 	
+ 	method removeVisual() {
+ 		if(game.hasVisual(self)) {
+ 			game.removeVisual(self)
+ 		}
+ 	}
 
 }
 

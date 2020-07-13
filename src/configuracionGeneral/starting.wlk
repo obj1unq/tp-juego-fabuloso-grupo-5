@@ -336,7 +336,7 @@ object info {
 const property position = game.origin()
 
 	method image() {
-		return cursor.collider().name().toString() + "I.png"
+		return champsSelection.actualChamp().name() + "I.png"
 	}
 	
 	method isInGame() {
