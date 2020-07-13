@@ -116,10 +116,15 @@ var property selectedEnemy
 	}
 	
 	method finishTurn() {
+		const enemy = selectedEnemy
+		
 		game.removeTickEvent(selectedEnemy.name())
 		selectedEnemy.image(selectedEnemy.name() + selectedAttacker.team().name() + ".png")
+		selectedAttacker = null
+		selectedEnemy = null
+		
 		game.onTick(150, "finishTurn", {
-			self.kill(selectedEnemy)
+			self.kill(enemy)
 			actualTurn = actualTurn.nextPlayer()
 			//gameOver.end()
 			cursor.initializeForBattle()
@@ -127,10 +132,6 @@ var property selectedEnemy
 			attackedSelector.removeVisual()
 			spellsSystem.remove()
 			attackSystem.remove()
-			//game.say(selectedEnemy, "mi vida es " + selectedEnemy.hp())
-			//game.say(selectedAttacker, "mi vida es " + selectedAttacker.hp())
-			selectedAttacker = null
-			selectedEnemy = null
 		})
 	}
 	
