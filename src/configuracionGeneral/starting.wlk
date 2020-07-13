@@ -133,8 +133,11 @@ object teamSelection inherits Screen {
 object champsSelection inherits Screen {
 	
 const property image = "SelectPJ.png"
-var property actualTurn = playerSelector.firstSelector()
+var property actualTurn
 
+	method initializeActualTurn() {
+		actualTurn = playerSelector.firstSelector()
+	}
 	
 	method initialCharS() {
 		return actualTurn.team().leader()
@@ -148,6 +151,7 @@ var property actualTurn = playerSelector.firstSelector()
 
 	override method show() {
 		super()
+		self.initializeActualTurn()
 		self.addCharactersVisual()
 		game.say(self, "Elige 3 campeones el jugador " + playerSelector.turn().toString())
 		cursor.position(self.initialCharS().position())
@@ -220,12 +224,14 @@ var property actualTurn = playerSelector.firstSelector()
 			game.removeVisual(cursor)
 			game.say(self, "¡Concluyen las elecciones!")
 			game.schedule(1200, {selectorArenaIndicator.show()})
-			lightness.champ1(lightness.champions().get(0))
-			lightness.champ2(lightness.champions().get(1))
-			lightness.champ3(lightness.champions().get(2))
-			darkness.champ1(darkness.champions().get(0))
-			darkness.champ2(darkness.champions().get(1))
-			darkness.champ3(darkness.champions().get(2))
+			lightness.configChampionsImmutable()
+			darkness.configChampionsImmutable()
+			//lightness.champ1(lightness.champions().get(0))
+			//lightness.champ2(lightness.champions().get(1))
+			//lightness.champ3(lightness.champions().get(2))
+			//darkness.champ1(darkness.champions().get(0))
+			//darkness.champ2(darkness.champions().get(1))
+			//darkness.champ3(darkness.champions().get(2))
 		}
 	}
 
@@ -268,6 +274,7 @@ const property arena7 = new Arena7()
 const property arena8 = new Arena8()
 
 const property arenas = [arena1, arena2, arena3, arena4, arena5, arena6, arena7, arena8]
+var property arenaSelected
 
 const property image = "backgroundSelectArena.png"
 
@@ -296,6 +303,7 @@ const property image = "backgroundSelectArena.png"
 	method selectArena() {
 		if(game.hasVisual(cursor)) { 
 			cursor.collider().isSelected(true)
+			arenaSelected = cursor.collider()
 			game.say(self, "¡Empieza la batalla!")
 			warSystem.image("arena" + cursor.collider().number().toString() + "SS.png")
 			game.removeVisual(cursor)
@@ -309,6 +317,10 @@ const property image = "backgroundSelectArena.png"
 	
 	method previousCharA() {
 		if(game.hasVisual(cursor)) { cursor.previousChar(arenas) }
+	}
+	
+	method reset() {
+		arenaSelected.isSelected(false)
 	}
 	
 }

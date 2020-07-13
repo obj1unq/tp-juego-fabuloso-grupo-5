@@ -97,7 +97,10 @@ class Champion inherits ChampionSelect {
 	method reset() {
 		hp = maxHP
 		image = name + "1.png"
+		alive = true
+		buff = noBuff
 	}
+	
 }
 
 class Sorcerer inherits Champion {
@@ -157,20 +160,30 @@ const property pinkyDemon = new ChampionSelect(position=game.at(18,2), image="pi
 const property spellCaster = new ChampionSelect(position=game.at(20,2), image="spellCaster.png", team=darkness, name="spellCaster")
 //TEAMS
 var property lightTeam = [paladin,berserker,archer,mage,doomGuy,knight]
-var property lightTeamImmutable = [paladin,berserker,archer,mage,doomGuy,knight]
+const property lightTeamImmutable = [paladin,berserker,archer,mage,doomGuy,knight]
 var property darkTeam = [dracula,darkBerserker,goblin,wizard,pinkyDemon,spellCaster]
-var property darkTeamImmutable = [dracula,darkBerserker,goblin,wizard,pinkyDemon,spellCaster]
+const property darkTeamImmutable = [dracula,darkBerserker,goblin,wizard,pinkyDemon,spellCaster]
 
 	method clear() {
 		lightTeamImmutable.forEach({champ=>champ.image(champ.name() + ".png")})
-		lightTeam = lightTeamImmutable
+		self.lightListReseted()
 		darkTeamImmutable.forEach({champ=>champ.image(champ.name() + ".png")})
-		darkTeam  = darkTeamImmutable
+		self.darkListReseted()
 	}
 	
 	method addVisuals() {
 		lightTeam.forEach({champ=>game.addVisual(champ)})
 		darkTeam.forEach({champ=>game.addVisual(champ)})
+	}
+	
+	method lightListReseted() {
+		lightTeam = []
+		lightTeamImmutable.forEach({champ=>lightTeam.add(champ)})
+	}
+	
+	method darkListReseted() {
+		darkTeam = []
+		darkTeamImmutable.forEach({champ=>darkTeam.add(champ)})
 	}
 	
 }

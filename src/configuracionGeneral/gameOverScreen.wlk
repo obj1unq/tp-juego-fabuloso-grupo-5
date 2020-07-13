@@ -28,6 +28,7 @@ const property position = game.at(14,8)
 	
 	method clear() {
 		game.clear()
+		selectorArenaIndicator.reset()
 		playerSelector.reset()
 		teamSelector.clear()
 		lightness.clear()

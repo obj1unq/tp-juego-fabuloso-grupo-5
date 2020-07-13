@@ -3,8 +3,9 @@ import champions.*
 import teams.*
 
 class HPBar {
-	var property character 
-	var property position
+	
+var property character 
+var property position
 	
 	method image() {
 		return if(character.team().isLight() && character.alive()) {

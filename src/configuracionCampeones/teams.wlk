@@ -11,9 +11,10 @@ var property champions=[]
 var property characters=[]
 var property name
 var property isLight
-var property champ1
-var property champ2
-var property champ3
+//var property champ1
+//var property champ2
+//var property champ3
+var property championsImmutable = []
 
 	method leader()
 	method nextTeam()
@@ -24,10 +25,10 @@ var property champ3
 	method configForBattle() { if(self.fullTeam()) { champions.forEach({champion=>champion.image(champion.name() + "1.png")})
 													 champions.forEach({champion=>game.addVisual(champion)})
 													 self.showHPbars()
-													 champions.forEach({champion=>})
-													 game.onTick(150, champ1.name(), {champ1.battlePose()})
-													 game.onTick(150, champ2.name(), {champ2.battlePose()})
-													 game.onTick(150, champ3.name(), {champ3.battlePose()}) 
+													 championsImmutable.forEach({champ=>game.onTick(150, champ.name(), {champ.battlePose()})})
+													 //game.onTick(150, champ1.name(), {champ1.battlePose()})
+													 //game.onTick(150, champ2.name(), {champ2.battlePose()})
+													 //game.onTick(150, champ3.name(), {champ3.battlePose()}) 
 													 }
 	}
 	
@@ -40,12 +41,12 @@ var property champ3
 	}	
 	
 	method showHPbars() {
-		const hp1 = new HPinterface(champ = champ1, y=9)
-		champ1.yCoordinateForAttack(9)
-		const hp2 = new HPinterface(champ = champ2, y=5)
-		champ2.yCoordinateForAttack(5)
-		const hp3 = new HPinterface(champ = champ3, y=1)
-		champ3.yCoordinateForAttack(1)
+		const hp1 = new HPinterface(champ = championsImmutable.get(0), y=9)
+		championsImmutable.get(0).yCoordinateForAttack(9)
+		const hp2 = new HPinterface(champ = championsImmutable.get(1), y=5)
+		championsImmutable.get(1).yCoordinateForAttack(5)
+		const hp3 = new HPinterface(champ = championsImmutable.get(2), y=1)
+		championsImmutable.get(2).yCoordinateForAttack(1)
 		game.addVisual (hp1)
 		game.addVisual (hp2)
 		game.addVisual (hp3)
@@ -59,6 +60,10 @@ var property champ3
 		characters.remove(objective)
 		self.nextTeam().champions().remove(objective)
 		self.nextTeam().characters().remove(objective)
+	}
+	
+	method configChampionsImmutable() {
+		champions.forEach {c=> championsImmutable.add(c)}
 	}	
 	
 	method isDefeated() {
@@ -66,11 +71,9 @@ var property champ3
 	}	
 	
 	method clear() {
-		//champ1.reset()
-		//champ2.reset()
-		//champ3.reset()
 		champions = []
 		characters = []
+		championsImmutable = []
 	}			 
 }
 
