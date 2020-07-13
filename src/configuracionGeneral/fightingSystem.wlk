@@ -94,9 +94,6 @@ var property selectedEnemy
 		selectedAttacker = null
         selectedEnemy = null
         cursor.initializeForBattle()
-        //cursor.addVisual()
-        //cursor.adjustAfterSelection(actualTurn.team().champions())
-        //cursor.attackStage(false)
         attackerSelector.removeVisual()
         attackedSelector.removeVisual()
         attackSystem.remove()

@@ -52,36 +52,6 @@ const property number = 2
 	
 }
 
-/* 
-object player1 {
-	
-var property team = lightness
-const property number = 1
-	
-	method nextPlayer() {
-		return player2
-	}
-	
-	method name() {
-		return team.name() + number
-	}
-
-}
-
-object player2 {
-	
-var property team = darkness
-const property number = 2
-	
-	method nextPlayer() {
-		return player1
-	}
-	
-	method name() {
-		return team.name() + number
-	}
-}
-*/
 object flag {
 	const property position = game.at(13,11)
 	
