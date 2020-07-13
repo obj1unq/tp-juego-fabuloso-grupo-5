@@ -51,11 +51,17 @@ var property invigoratedChamp
 	
  	override method effect(attacker, objective) {
  		invigoratedChamp = objective
- 		game.addVisual(self)
+ 		//game.addVisual(self) 										Modificado
  		if (attacker.team().isLight()) {
- 		    invigoratedChamp.buff(buffs.illumination()) 	
+ 		    invigoratedChamp.buff(illumination)				//Modificado
+ 		    //game.addVisual(illumination)					//Modificado
+ 		    illumination.appear(invigoratedChamp)
  		}
- 		else { invigoratedChamp.buff(buffs.gloom()) }
+ 		else { 
+ 			invigoratedChamp.buff(gloom)
+ 			//game.addVisual(buffs.gloom())
+ 			gloom.appear(invigoratedChamp)
+ 		}
  		game.say(invigoratedChamp, "¡El próximo ataque será mas fuerte!")
  		attacker.wisdom( attacker.wisdom() / 2 )
  	} 

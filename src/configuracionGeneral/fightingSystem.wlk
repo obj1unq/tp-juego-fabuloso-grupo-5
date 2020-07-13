@@ -77,7 +77,9 @@ var property selectedEnemy
 	method executeAttack(type) {
 		if (self.areInitialized()) { 
 			selectedAttacker.attack(type, selectedEnemy)
-			self.finishTurn() }
+			selectedAttacker.deleteBuffs()
+			self.finishTurn()		
+		}
 	}
 	
 	method executeSpellCast() {

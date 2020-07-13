@@ -30,12 +30,27 @@ class Champion inherits ChampionSelect {
 	var property alive = true
 	var property weapon = equipments.sword()
 	var property armor = equipments.leatherArmor()
-	var property buff = buffs.noBuff() 
+	var property buff = noBuff 
 	//var property name
 	//var property team
 	var property knowsSorcery = false
 	var property yCoordinateForAttack = 0
 	//var property image
+	
+	method deleteBuffs() {
+		if(buff != noBuff) {
+			game.removeVisual(buff)
+			buff = noBuff
+		}
+	}
+	
+	method positionBuff() {
+		return if (team.isLight()) {
+			position.left(1)
+		} else {
+			position.right(2)
+		}
+	}
 	
 	method isAlive() {
 		return hp > 0
@@ -120,7 +135,7 @@ class Champion inherits ChampionSelect {
 		hp = maxHP
 		image = name + "1.png"
 		alive = true
-		buff = buffs.noBuff()
+		buff = noBuff
 	}
 	
 }
