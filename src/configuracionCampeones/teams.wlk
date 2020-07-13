@@ -11,9 +11,6 @@ var property champions=[]
 var property characters=[]
 var property name
 var property isLight
-//var property champ1
-//var property champ2
-//var property champ3
 var property championsImmutable = []
 
 	method leader()
@@ -26,9 +23,6 @@ var property championsImmutable = []
 													 champions.forEach({champion=>game.addVisual(champion)})
 													 self.showHPbars()
 													 championsImmutable.forEach({champ=>game.onTick(150, champ.name(), {champ.battlePose()})})
-													 //game.onTick(150, champ1.name(), {champ1.battlePose()})
-													 //game.onTick(150, champ2.name(), {champ2.battlePose()})
-													 //game.onTick(150, champ3.name(), {champ3.battlePose()}) 
 													 }
 	}
 	
