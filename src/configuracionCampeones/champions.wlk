@@ -164,7 +164,7 @@ var property darkTeamImmutable = [dracula,darkBerserker,goblin,wizard,pinkyDemon
 		lightTeamImmutable.forEach({champ=>champ.image(champ.name() + ".png")})
 		lightTeam = lightTeamImmutable
 		darkTeamImmutable.forEach({champ=>champ.image(champ.name() + ".png")})
-		darkTeam = darkTeamImmutable
+		darkTeam  = darkTeamImmutable
 	}
 	
 	method addVisuals() {
