@@ -1,0 +1,41 @@
+import configuracionCampeones.champions.*
+
+test "doomguy physical attacks pinkydemon"{
+	championsInBattle.doomGuy().attack(physical, championsInBattle.pinkyDemon())
+	
+	assert.equals(33, physical.dmgCalculation(championsInBattle.doomGuy(), championsInBattle.pinkyDemon()))
+	assert.equals(117, championsInBattle.pinkyDemon().hp())
+}
+
+test "pinkydemon physical attacks doomguy" {
+	championsInBattle.pinkyDemon().attack(physical, championsInBattle.doomGuy())
+	
+	assert.equals(35, physical.dmgCalculation(championsInBattle.pinkyDemon(), championsInBattle.doomGuy()))
+	assert.equals(215, championsInBattle.doomGuy().hp())
+}
+
+test "doomguy magical attacks pinkydemon"{
+	championsInBattle.doomGuy().attack(magic, championsInBattle.pinkyDemon())
+	
+	assert.equals(0, magic.dmgCalculation(championsInBattle.doomGuy(), championsInBattle.pinkyDemon()))
+	assert.equals(150, championsInBattle.pinkyDemon().hp())
+}
+
+test "pinkydemon magical attacks pinkydemon"{
+	championsInBattle.pinkyDemon().attack(magic, championsInBattle.doomGuy())
+	
+	assert.equals(0, magic.dmgCalculation(championsInBattle.pinkyDemon(), championsInBattle.doomGuy()))
+	assert.equals(250, championsInBattle.doomGuy().hp())
+}
+
+test "pinkydemon gets oraora'd"{
+	championsInBattle.doomGuy().attack(physical, championsInBattle.pinkyDemon())
+	championsInBattle.doomGuy().attack(physical, championsInBattle.pinkyDemon())
+	championsInBattle.doomGuy().attack(physical, championsInBattle.pinkyDemon())
+	championsInBattle.doomGuy().attack(physical, championsInBattle.pinkyDemon())
+	championsInBattle.doomGuy().attack(physical, championsInBattle.pinkyDemon())
+	
+	assert.equals(0, championsInBattle.pinkyDemon().hp())
+	assert.notThat(championsInBattle.pinkyDemon().isAlive())
+	assert.equals("0/150", championsInBattle.pinkyDemon().totalHP())
+}
